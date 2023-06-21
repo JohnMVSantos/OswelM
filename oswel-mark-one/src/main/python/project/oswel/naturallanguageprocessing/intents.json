@@ -1,0 +1,31 @@
+{
+    "intents": [
+        {
+            "tag": "weather",
+            "patterns": ["What's the weather forecast?", 
+                        "What's the temperature?", 
+                        "How's the weather?", 
+                        "What's it like outside?",
+                        "Is it hot or cold?",
+                        "Is it raining outside?",
+                        "Is it sunny outside?",
+                        "Is it cloudy outside?",
+                        "Is it snowing outside?",
+                        "How many degrees is it outside?",
+                        "What's the temperature like?",
+                        "How warm is it?",
+                        "What's the weather today?"
+                    ],
+            "responses": []
+        },
+        {
+            "tag": "time",
+            "patterns": [],
+            "responses": []
+        },
+        {
+            "tag": "events",
+            "patterns": [],
+            "responses": []
+        }
+]}
