@@ -2,26 +2,68 @@
     "intents": [
         {
             "tag": "weather",
-            "patterns": ["What's the weather forecast?", 
-                        "What's the temperature?", 
-                        "How's the weather?", 
-                        "What's it like outside?",
-                        "Is it hot or cold?",
-                        "Is it raining outside?",
-                        "Is it sunny outside?",
-                        "Is it cloudy outside?",
-                        "Is it snowing outside?",
-                        "How many degrees is it outside?",
-                        "What's the temperature like?",
-                        "How warm is it?",
-                        "What's the weather today?"
+            "patterns": ["What's the weather forecast", 
+                        "What's the temperature", 
+                        "How's the weather", 
+                        "What is the weather",
+                        "What's it like outside",
+                        "Is it hot or cold",
+                        "Is it raining outside",
+                        "Is it sunny outside",
+                        "Is it cloudy outside",
+                        "Is it snowing outside",
+                        "How many degrees is it outside",
+                        "What's the temperature like",
+                        "How warm is it",
+                        "What's the weather today",
+                        "I want to know the temperature",
+                        "I want to know the weather today",
+                        "Tell me the weather forecast",
+                        "Show me the weather in.",
+                        "The weather condition in",
+                        "How's the weather in",
+                        "What is the temperature at"
                     ],
-            "responses": []
+            "responses": ["The current weather outside is", 
+                        "The current weather is",
+                        "The current temperature outside is",
+                        "The current temperature is",
+                        "It looks like it is"
+                    ]
         },
         {
             "tag": "time",
-            "patterns": [],
-            "responses": []
+            "patterns": ["What time is it",
+                        "Could you tell me what time it is",
+                        "Could you tell me the time",
+                        "Do you have the time",
+                        "Have you got the time",
+                        "What time is it in",
+                        "What time is it at",
+                        "Do you know the time",
+                        "Do you know the time at"
+                    ],
+            "responses": ["It is",
+                        "It is currently",
+                        "The time is"
+                    ]
+        },
+        {
+
+            "tag": "date",
+            "patterns": ["What is the date today",
+                        "What is the date",
+                        "Do you know the date",
+                        "Could you please tell me the date",
+                        "Tell me the current date in",
+                        "Tell me the current date at",
+                        "Tell me the current date",
+                        "What is the date in"
+                    ],
+            "responses": ["The current date is",
+                        "It is currently",
+                        "The date is"
+                    ]
         },
         {
             "tag": "events",
