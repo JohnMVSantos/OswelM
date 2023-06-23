@@ -3,10 +3,11 @@ package project.oswel;
 import marytts.signalproc.effects.StadiumEffect;
 import java.io.IOException;
 import project.oswel.speech.TextToSpeech;
+import project.oswel.knowledgebase.Weather;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException{
+    public static void main(String[] args) throws IOException, InterruptedException, Exception{
 		
         
 		TextToSpeech tts = new TextToSpeech();
@@ -22,7 +23,10 @@ public class Main {
 
         // tts.speak(user_input, 2.0f, false, true);
 
-		tts.speak("I have indeed been uploaded sir. We're online and ready.", 2.0f, false, true);
+		Weather.timelineRequestHttpClient();
+
+		tts.speak("I have indeed been uploaded. We're online and ready.", 2.0f, false, true);
+		tts.speak("It is currently 11:14 PM", 2.0f, false, true);
 
     };
     
