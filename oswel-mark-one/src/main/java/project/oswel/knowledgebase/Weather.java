@@ -23,47 +23,56 @@ import java.time.ZoneId;
 
 /*******************************************************************************
  * Class that contains methods fetch current or historical weather information.
- * Source was found in: 
- * https://github.com/visualcrossing/WeatherApi/blob/master/Java/com/
- * visualcrossing/weather/samples/TimelineApiForecastSample.java
+ * {@link https://github.com/visualcrossing/WeatherApi/blob/master/Java/com/
+ * visualcrossing/weather/samples/TimelineApiForecastSample.java} 
  ******************************************************************************/
 public class Weather {
 
     private static final String APIENDPOINT = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
     private String unitGroup = "metric";
     private String location;
-    // Dates should be in YYYY-MM-DD format.
-    private String startDate;
-    private String endDate;
     private String apiKey;
 
     // This contains the weather information for the dates passed.
     private JSONArray weatherInformation;
+    private ZoneId zoneId;
+
+    // The following members are weather information for the date prompted.
+    private String dateTime;
+    private double maxTemp;
+    private double minTemp;
+    private double temp;
+    private double precip;
+    private String condition;
+    private String description;
 
     /**
      * Constructor
      * @param apiKey The api-key to access the API data.
-     * @param startDate The start date to recieve weather information.
-     * @param endDate The end date to recieve weather information.
      */
-    public Weather(String apiKey, String startDate, String endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.apiKey = apiKey;
+    public Weather(String apiKey, String location) { 
+        this.apiKey = apiKey; 
+        this.location = location;
     }
 
     /**
      * This method requests weather information using the following API:
      * https://www.visualcrossing.com/weather-api
+     * Dates should be in YYYY-MM-DD format.
+     * @param startDate The start date to recieve weather information.
+     * @param endDate The end date to recieve weather information.
      * @throws WeatherFetchFailedException This exception is thrown when the 
      *            following exceptions are thrown: 
      *            UnsupportedEncodingException,URISyntaxException, IOException.
      */
-    public void timelineRequestHttpClient() throws WeatherFetchFailedException{
+    public void timelineRequestHttpClient(String startDate, String endDate) 
+                                        throws WeatherFetchFailedException{
 		StringBuilder requestBuilder = new StringBuilder(APIENDPOINT);
         try {
 		    requestBuilder.append(
-                URLEncoder.encode(this.location, StandardCharsets.UTF_8.toString()));
+                URLEncoder.encode(
+                    this.location, 
+                    StandardCharsets.UTF_8.toString()));
         } catch(UnsupportedEncodingException e) {
             throw new WeatherFetchFailedException(
                 "Encountered an UnsupportedEncodingException " +
@@ -134,24 +143,8 @@ public class Weather {
 		}
 		
 		JSONObject timelineResponse = new JSONObject(rawResult);
-		ZoneId zoneId=ZoneId.of(timelineResponse.getString("timezone"));
+		this.zoneId = ZoneId.of(timelineResponse.getString("timezone"));
         this.weatherInformation = timelineResponse.getJSONArray("days");
-
-		
-		JSONArray values=timelineResponse.getJSONArray("days");
-		
-		System.out.printf("Date\tMaxTemp\tMinTemp\tPrecip\tSource%n");
-		for (int i = 0; i < values.length(); i++) {
-			JSONObject dayValue = values.getJSONObject(i);
-            
-            ZonedDateTime datetime=ZonedDateTime.ofInstant(Instant.ofEpochSecond(dayValue.getLong("datetimeEpoch")), zoneId);
-            
-            double maxtemp=dayValue.getDouble("tempmax");
-            double mintemp=dayValue.getDouble("tempmin");
-            double pop=dayValue.getDouble("precip");
-            String source=dayValue.getString("source");
-            System.out.printf("%s\t%.1f\t%.1f\t%.1f\t%s%n", datetime.format(DateTimeFormatter.ISO_LOCAL_DATE), maxtemp, mintemp, pop,source );
-        }
 	}
 
     /**
@@ -160,11 +153,28 @@ public class Weather {
      * @param index This is the index of the days passed between startDate and
      * endDate. The startDate is at index 0. 
      */
-    private void getWeatherInfoDay(int index) {
-
+    public void setWeatherInfoDay(String name) {
+        int index = WeekDay.getWeekDayFromString(name.toLowerCase()).getIndex();
+        JSONObject dayValue = this.weatherInformation.getJSONObject(index);
+        ZonedDateTime datetime = ZonedDateTime.ofInstant(
+            Instant.ofEpochSecond(
+                dayValue.getLong("datetimeEpoch")), 
+                this.zoneId);
+        this.dateTime = datetime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        this.maxTemp = dayValue.getDouble("tempmax");
+        this.minTemp = dayValue.getDouble("tempmin");
+        this.temp = dayValue.getDouble("temp");
+        this.precip = dayValue.getDouble("precipprob");
+        //this.condition = dayValue.getString("condition");
+        this.description = dayValue.getString("description");
     }
 
-
-
-    
+    public double getMaxTemp() { return this.maxTemp; }
+    public double getMinTemp() { return this.minTemp; }
+    public double getTemp() { return this.temp; }
+    public double getPrecipitation() { return this.precip; }
+    public String getCondition() { return this.condition; }
+    public String getDescription() { return this.description; }
+    public String getDateTime() { return this.dateTime; }
+ 
 }

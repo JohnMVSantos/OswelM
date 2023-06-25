@@ -8,6 +8,11 @@ import com.squareup.okhttp.Request;
 import org.json.simple.JSONObject;
 import java.io.IOException;
 
+/**
+ * JWiki provides summary gathered from wikipedia for a certain topic 
+ * represented by a single string keyword.
+ * {@link https://github.com/viralvaghela/Jwiki} 
+ */
 public class JWiki {
     final String BASE_URL="https://en.wikipedia.org/api/rest_v1/page/summary/";
     String subject=null;
@@ -37,7 +42,8 @@ public class JWiki {
             displayTitle= (String) jsonObject.get("displaytitle");
 
             //first create a image object and then get image URL
-            JSONObject jsonObjectOriginalImage = (JSONObject) jsonObject.get("originalimage");
+            JSONObject jsonObjectOriginalImage = 
+                            (JSONObject) jsonObject.get("originalimage");
             imageURL= (String) jsonObjectOriginalImage.get("source");
 
             //get text
