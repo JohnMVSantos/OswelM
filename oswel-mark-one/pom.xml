@@ -88,35 +88,35 @@
       <artifactId>guava</artifactId>
       <scope>system</scope>
       <version>5.2.1</version>
-      <systemPath>${basedir}/src/main/java/external libraries/guava-22.0.jar</systemPath>   
+      <systemPath>${basedir}/external libraries/guava-22.0.jar</systemPath>   
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
       <artifactId>marytts-lang-en</artifactId>
       <scope>system</scope>
       <version>5.2.1</version>
-      <systemPath>${basedir}/src/main/java/external libraries/marytts-lang-en-5.2.jar</systemPath>   
+      <systemPath>${basedir}/external libraries/marytts-lang-en-5.2.jar</systemPath>   
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
       <artifactId>marytts-builder</artifactId>
       <scope>system</scope>
       <version>5.2.1</version>
-      <systemPath>${basedir}/src/main/java/external libraries/marytts-builder-5.2-jar-with-dependencies.jar</systemPath>   
+      <systemPath>${basedir}/external libraries/marytts-builder-5.2-jar-with-dependencies.jar</systemPath>   
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
       <artifactId>voice-dfki-spike-hsmm</artifactId>
       <scope>system</scope>
       <version>5.2.1</version>
-      <systemPath>${basedir}/src/main/java/external libraries/voices/voice-dfki-spike-hsmm-5.2.jar</systemPath>   
+      <systemPath>${basedir}/external libraries/voices/voice-dfki-spike-hsmm-5.2.jar</systemPath>   
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
       <artifactId>voice-dfki-obadiah-hsmm</artifactId>
       <scope>system</scope>
       <version>5.2.1</version>
-      <systemPath>${basedir}/src/main/java/external libraries/voices/voice-dfki-obadiah-hsmm-5.2.jar</systemPath>   
+      <systemPath>${basedir}/external libraries/voices/voice-dfki-obadiah-hsmm-5.2.jar</systemPath>   
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
