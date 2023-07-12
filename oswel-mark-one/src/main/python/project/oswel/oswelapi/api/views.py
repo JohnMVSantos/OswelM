@@ -1,5 +1,6 @@
 from rest_framework import status, serializers
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from base.models import Item
 from .serializers import ItemSerializer
@@ -8,7 +9,7 @@ from .serializers import ItemSerializer
 def ApiOverview(request):
     api_urls = {
         'all_items': '/all',
-        'Search by Category': '/?category=category_name',
+        'Search by Category': '/get/<category_name>',
         'Add': '/add',
         'Update': '/update/<category_name>',
         'Delete': '/delete/<category_name>'
@@ -17,7 +18,7 @@ def ApiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
-def getData(request):
+def getItems(request):
     
     # checking for the parameters from the URL
     if request.query_params:
@@ -31,6 +32,15 @@ def getData(request):
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+def getItem(request, category):
+
+    items = Item.objects.all()
+    item = get_object_or_404(items, category=category)
+    serializer = ItemSerializer(item)
+    return Response(serializer.data)
+   
 
 @api_view(['POST'])
 def addItem(request):
