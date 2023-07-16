@@ -50,7 +50,28 @@
     </developer>
   </developers>
 
+  <resources>
+     <resource>
+       <directory>src/main/resources</directory>
+     </resource>
+   </resources>
+
   <dependencies>
+    <dependency>
+      <groupId>org.deeplearning4j</groupId>
+      <artifactId>deeplearning4j-core</artifactId>
+      <version>1.0.0-M2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.nd4j</groupId>
+      <artifactId>nd4j-native</artifactId>
+      <version>1.0.0-M2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.deeplearning4j</groupId>
+      <artifactId>deeplearning4j-modelimport</artifactId>
+      <version>1.0.0-M2.1</version> 
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -82,6 +103,21 @@
       <groupId>net.sourceforge.javaflacencoder</groupId>
       <artifactId>java-flac-encoder</artifactId>
       <version>0.3.7</version>
+    </dependency>
+    <dependency>
+      <groupId>com.3rdparty</groupId>
+      <artifactId>stanford-corenlp-4-models</artifactId>
+      <scope>system</scope>
+      <version>4.5.4</version>
+      <systemPath>${basedir}/external libraries/stanford-corenlp-4.5.4-models.jar</systemPath>
+      <classifier>models</classifier>   
+    </dependency>
+    <dependency>
+      <groupId>com.3rdparty</groupId>
+      <artifactId>stanford-corenlp-4</artifactId>
+      <scope>system</scope>
+      <version>4.5.4</version>
+      <systemPath>${basedir}/external libraries/stanford-corenlp-4.5.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
