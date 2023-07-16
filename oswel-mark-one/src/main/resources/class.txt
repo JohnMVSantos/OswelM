@@ -1,3 +1,8 @@
 date
+departure
+events
+feeling
+greetings
+status
 time
 weather

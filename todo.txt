@@ -1,0 +1,22 @@
+
+
+2) Implement method for ChatGPT which uses a POST Request.
+3) Extend ChatKeras to output a random sentence based on the predicted class by reading intents.json.
+4) Clean ChatKeras source code...
+5) Functionality to recognize speech and output the prediction class and sentence.
+6) Is there no POM endpoints for MaryTTS and Guava?
+7) For weather parsing of locations maybe?
+8) Any given sentence, the most important noun to be searched in wikipedia?
+9) Need to extends exceptions directory.
+11) Speech recognition in Java is timed out?
+
+Overall functionality is to recognize speech and deliver meaningful responses...
+
+Next steps is to integrate to Raspberry PI and develop the OLED display and Firebeetle Microcontroller to output the Oswel Logo and information to be displayed. 
+
+
+
+Confirmation responses:
+Check,
+Will do,
+As you wish,

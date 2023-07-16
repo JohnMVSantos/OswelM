@@ -218,7 +218,7 @@ class TrainOswelNLP:
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(
-        description=("OswelNLP Model Deployment"),
+        description=("OswelNLP Model Training"),
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument('-m', '--model',
@@ -237,7 +237,7 @@ if __name__ == '__main__':
                         default=CLASS_PATH
                         )
     parser.add_argument('-i', '--intents',
-                        help=("The path to save the intents.json"),
+                        help=("The path that points to the intents.json"),
                         type=str,
                         default=INTENTS_PATH
                         )
