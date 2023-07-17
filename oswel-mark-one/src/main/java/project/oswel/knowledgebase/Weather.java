@@ -15,6 +15,9 @@ import org.apache.http.HttpStatus;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
 import org.json.JSONObject;
+
+import project.oswel.exceptions.WeatherFetchFailedException;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import org.json.JSONArray;

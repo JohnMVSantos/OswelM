@@ -1,81 +1,84 @@
 package project.oswel.nlp;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.Properties;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
-import org.json.simple.parser.ParseException;
-
-import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
-import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.exceptions.UnsupportedKerasConfigurationException;
+import org.deeplearning4j.nn.modelimport.keras.exceptions.InvalidKerasConfigurationException;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import org.json.simple.parser.ParseException;
+import edu.stanford.nlp.pipeline.Annotation;
 import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.json.simple.parser.JSONParser;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.util.CoreMap;
 import org.nd4j.linalg.factory.Nd4j;
-// import org.nd4j.linalg.io.ClassPathResource;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.util.LinkedList;
+import java.util.Properties;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.io.FileReader;
+import java.util.Random;
+import java.util.List;
 
 public class ChatKeras {
 
-
     protected StanfordCoreNLP pipeline;
     private static MultiLayerNetwork model;
+    private static ArrayList<String> words;
+    private static ArrayList<String> classes;
+    private static JSONArray intents;
 
-    private static ArrayList<String> words = new ArrayList<String>(Arrays.asList("'s", "could", "do", "have", "how", "i", "is", "show", "tell", "the", "what", "at", "cloudy", "cold", "condition", "current", "date", "degree", "forecast", "got", "have", "hot", "in", "is", "it", "know", "like", "many", "me", "or", "outside", "please", "raining", "snowing", "sunny", "tell", "temperature", "the", "time", "to", "today", "want", "warm", "weather", "what", "you"));
-
-    private static String[] classes = new String[]{ "date", "time", "weather" };
-
-    public ChatKeras() {
+    public ChatKeras(
+        String modelFileName, 
+        String wordsFileName, 
+        String classesFileName, 
+        String intentsFileName
+    ) {
         // Create StanfordCoreNLP object properties, with POS tagging
-        // (required for lemmatization), and lemmatization
+        // (required for lemmatization), and lemmatization.
         Properties props;
         props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
 
         // StanfordCoreNLP loads a lot of models, so you probably
-        // only want to do this once per execution
+        // only want to do this once per execution.
         this.pipeline = new StanfordCoreNLP(props);
 
-        try {
-            
-           
-            
-            // String simpleMlp = new ClassPathResource(
-            //     "oswel_nlp.h5").getFile().getPath();
-
-            String fullModel = new ClassPathResource("oswel.h5").getFile().getPath();
-         
-            model = KerasModelImport.
-                        importKerasSequentialModelAndWeights(fullModel, false);
-                       
-        } catch (IOException | InvalidKerasConfigurationException | UnsupportedKerasConfigurationException e) {
-            e.printStackTrace();
-        }
-
-    
+        model = loadModel(modelFileName);
+        intents = readIntents(intentsFileName);
+        words = readText(wordsFileName);
+        classes = readText(classesFileName);
     }
 
-    public JSONArray readIntents() { 
+    private static MultiLayerNetwork loadModel(String modelFileName) {
+        try {
+            String fullModel = new ClassPathResource(
+                    modelFileName).getFile().getPath();
+            model = KerasModelImport.importKerasSequentialModelAndWeights(
+                fullModel, false);
+        } catch (IOException | InvalidKerasConfigurationException | 
+                                UnsupportedKerasConfigurationException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+    private static JSONArray readIntents(String intentsFileName) { 
         JSONParser parser = new JSONParser();
         JSONArray intents = new JSONArray();
         try {
-            String intentsPath = new ClassPathResource("intents.json").getFile().getPath();
-            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(intentsPath));
+            String intentsPath = new ClassPathResource(
+                    intentsFileName).getFile().getPath();
+            JSONObject jsonObject = (JSONObject) parser.parse(
+                    new FileReader(intentsPath));
             intents = (JSONArray) jsonObject.get("intents");
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -83,33 +86,46 @@ public class ChatKeras {
         return intents;
     }
 
-    public void readText() { }
+    private static ArrayList<String> readText(String fileName) {
+        ArrayList<String> contents = new ArrayList<String>();
+        try {
+            String filePath = new ClassPathResource(
+                    fileName).getFile().getPath();
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    contents.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contents;
+    }
 
-    public LinkedList<String> lemmatize(String documentText)
+    private LinkedList<String> lemmatize(String documentText)
     {
         LinkedList<String> lemmas = new LinkedList<String>();
-
         // create an empty Annotation just with the given text
         Annotation document = new Annotation(documentText);
-
         // run all Annotators on this text
         this.pipeline.annotate(document);
-
         // Iterate over all of the sentences found
         List<CoreMap> sentences = document.get(SentencesAnnotation.class);
         for(CoreMap sentence: sentences) {
             // Iterate over all tokens in a sentence
             for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
-                // Retrieve and add the lemma for each word into the list of lemmas
+                // Retrieve and add the lemma for each word into the 
+                // list of lemmas.
                 lemmas.add(token.get(LemmaAnnotation.class));
             }
         }
-
         return lemmas;
     }
 
-
-    public LinkedList<String> cleanUpSentence(String sentence) {
+    private LinkedList<String> cleanUpSentence(String sentence) {
         StringTokenizer tokenizer = new StringTokenizer(sentence);
         String documentText = "";
         while (tokenizer.hasMoreElements()) {
@@ -119,8 +135,7 @@ public class ChatKeras {
         return lemmatizedTokens;
     }
 
-    public INDArray bagOfWords(String sentence) { 
-        
+    private INDArray bagOfWords(String sentence) { 
         LinkedList<String> lemmatizedTokens = this.cleanUpSentence(sentence);
         INDArray bag = Nd4j.zeros(1, words.size());
         for (int i=0; i<lemmatizedTokens.size(); i++) {
@@ -132,15 +147,24 @@ public class ChatKeras {
         return bag;
     }
 
-    public void predict_class(String sentence) {
-
+    public String predict_class(String sentence) {
         INDArray bow = this.bagOfWords(sentence);
-        System.out.println("" + model.output(bow));
-
+        INDArray scores = model.output(bow);
+        int maxIndex = Nd4j.argMax(scores,1).getInt(0);
+        return classes.get(maxIndex);
     }
 
-    
-
-
-    
+    public String getRandomResponse(String sentence) {
+        String cls = this.predict_class(sentence);
+        Random rand = new Random();
+        for (int i=0; i<intents.size(); i++) {
+            JSONObject intent = (JSONObject) intents.get(i);
+            if (cls.equals(intent.get("tag"))) {
+                JSONArray responses = (JSONArray) intent.get("responses");
+                int index = rand.nextInt(responses.size());
+                return (String) responses.get(index);
+            }
+        }
+        return "Could not generate a response.";
+    }
 }
