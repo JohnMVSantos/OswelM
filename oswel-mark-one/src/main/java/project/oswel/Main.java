@@ -2,11 +2,9 @@ package project.oswel;
 
 import marytts.signalproc.effects.StadiumEffect;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
-import netscape.javascript.JSObject;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,63 +19,28 @@ import project.oswel.speechrecognition.recognizer.GoogleResponse;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.knowledgebase.Weather;
+import project.oswel.knowledgebase.schedule.DateTime;
 import project.oswel.nlp.ChatGPT;
 import project.oswel.nlp.ChatKeras;
+import project.oswel.nlp.NER;
 // import project.oswel.OswelApi;
+import project.oswel.utilities.Utils;
 
 import project.oswel.exceptions.InvalidAPIKeyException;
 
 
 public class Main {
 
-	private static JSONParser parser = new JSONParser();
+	
 	private static TextToSpeech tts = new TextToSpeech();
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
-
-	private static JSONObject readOswelLicense(String licenseFileName) {
-		JSONObject oswelLicense = new JSONObject();
-		try {
-			String licensePath = new ClassPathResource(licenseFileName)
-				.getFile()
-				.getPath();
-			oswelLicense = (JSONObject) parser.parse(
-				new FileReader(licensePath));
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-		return oswelLicense;
-	}
-
-	private static void validateLicenseContents(JSONObject oswelLicense) 
-												throws InvalidAPIKeyException {
-		String googleSpeechKey = (String) oswelLicense.get("googlespeech");
-		String weatherKey = (String) oswelLicense.get("visualcrossing");
-		String openAIKey = (String) oswelLicense.get("openai");
-		String deepAIKey = (String) oswelLicense.get("deepai");
-		String palmAIKey = (String) oswelLicense.get("palm");
-
-		if (googleSpeechKey.equals("None")) {
-			throw new InvalidAPIKeyException("A proper Google Speech " +
-			"Recognition API Key is needed to allow speech " +
-			"recognition in the application. Please visit: " +
-			"https://cloud.google.com/speech-to-text/docs/before-you-begin " + 
-			"for more information.");
-		}
-
-		if (weatherKey.equals("None")) {
-			throw new InvalidAPIKeyException("A proper VisualCrossing " +
-			"API Key is needed to access weather information. Please visit: " +
-			"https://www.visualcrossing.com/weather-api " + 
-			"for more information.");
-		}
-
-		if (openAIKey.equals("None") && 
-				deepAIKey.equals("None")) {
-			throw new InvalidAPIKeyException("Text generation is " +
-			"handled through the use of either OpenAI, PaLM, or DeepAI API. " +
-			"One of these keys is required to proceed with the application.");
-		}
- 	}
+	private static ChatKeras chatKeras = new ChatKeras(
+											"oswel.h5",
+											"words.txt",
+											"classes.txt",
+											"intents.json"
+												);
+	private static Weather weatherInfo;
 
 	private static void setVoiceAndEffect(String voice, double d) {
 		// Setting the Current Voice.
@@ -111,8 +74,7 @@ public class Main {
 						System.out.println("User said: " + userInput);		
 						try {
 							if (userInput != "") {
-								JWiki jwiki = new JWiki(userInput);
-								oswelOutput = jwiki.getExtractText();
+								oswelOutput = chatKeras.getRandomResponse(userInput);
 								System.out.println("Oswel said: " + oswelOutput);
 								speak(oswelOutput);
 							}		
@@ -135,66 +97,46 @@ public class Main {
 		
 		System.out.println("Reading and validating license file...");
 		// Reading and validating the license containing API keys.
-		JSONObject oswelLicense = readOswelLicense("oswel.lic");
-		validateLicenseContents(oswelLicense);
+		JSONObject oswelLicense = Utils.readOswelLicense("oswel.lic");
+		Utils.validateLicenseContents(oswelLicense);
 
 		System.out.println("Configuring Oswel voice...");
 		// Set Oswel voice.
 		setVoiceAndEffect("dfki-obadiah-hsmm", 5.0);
-		
-		System.out.println("Loading Oswel Keras NLP model...");
-		// Load Python trained Keras NLP model.
-		ChatKeras chatKeras = new ChatKeras(
-			"oswel.h5",
-			"words.txt",
-			"classes.txt",
-			"intents.json"
-		);
 
+		NER ner = new NER("en-ner-date.bin");
+		String[] dates = ner.findDate("Give me the weather on Thursday please");
+		for (String date: dates) {
+			System.out.println(date);
+		}
+		
+		// Initializing weather information for the week.
+		// weatherInfo = new Weather(
+		// 	(String) oswelLicense.get("visualcrossing"));
+		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
+		// weatherInfo.timelineRequestHttpClient(
+		// 	weekStartEndDates[0], weekStartEndDates[1], "Calgary,AB");
+		// JSONObject dayValue = weatherInfo.getWeatherInfoDay("saturday");
+        // double maxTemp = dayValue.getDouble("tempmax");
+        // double minTemp = dayValue.getDouble("tempmin");
+        // double temp = dayValue.getDouble("temp");
+        // double precip = dayValue.getDouble("precipprob");
+        // double description = dayValue.getString("description");
+		// System.out.printf("%s\t%.1f\t%s\n", dateTime, temp, description);
+		// tts.speak(String.format("The current temperature is: %.1f degrees celsius that is %s", temp, description), 2.0f, false, true);
 		
 		// Start Voice Recognition
 		// GSpeechDuplex duplex = setVoiceRecognition(
 		// 	(String) oswelLicense.get("googlespeech"));
 		// startProcess(duplex);
 
-		// OswelApi oswelapi = new OswelApi();
-		// String output = oswelapi.getGPTResponse();
-		// System.out.println(output);
+		// JWiki jwiki = new JWiki(userInput);
+		// oswelOutput = jwiki.getExtractText();
 
-		
-
-		// Sample Speaking
-		speak("I have indeed been uploaded. We're online and ready.");
-
-
-		// Sample deploying Keras NLP.
-		String response = chatKeras.getRandomResponse("Hello what is the time right now?");
-		System.out.println(response);
-		response = chatKeras.getRandomResponse("How are you doing?");
-		System.out.println(response);
-		
 		// Sample Getting ChatGPT response. 
 		// ChatGPT chatGPT = new ChatGPT("quickstart-QUdJIGlzIGNvbWluZy4uLi4K");
 		// String description = chatGPT.getGPTResponse("It is higher than 30 degrees celsius outside.");
 		// System.out.println(description);
 
-	
-		// Sample Getting the time and date information.
-	
-		
-		// Sample getting weather information. 
-		// Weather weatherInfo = new Weather("Secret", "Calgary,AB");
-		// weatherInfo.timelineRequestHttpClient("2023-06-18", "2023-06-24");
-		// weatherInfo.setWeatherInfoDay("saturday");
-		// double temp = weatherInfo.getTemp();
-		// //String condition = weatherInfo.getCondition();
-		// String description = weatherInfo.getDescription();
-		// String dateTime = weatherInfo.getDateTime();
-
-		// System.out.printf("%s\t%.1f\t%s\n", dateTime, temp, description);
-		// tts.speak(String.format("The current temperature is: %.1f degrees celsius that is %s", temp, description), 2.0f, false, true);
-
-
-    };
-    
+    };    
 }

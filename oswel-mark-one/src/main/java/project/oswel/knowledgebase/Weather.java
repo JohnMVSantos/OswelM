@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import org.json.JSONObject;
 
 import project.oswel.exceptions.WeatherFetchFailedException;
+import project.oswel.knowledgebase.schedule.WeekDay;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -33,29 +34,18 @@ public class Weather {
 
     private static final String APIENDPOINT = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
     private String unitGroup = "metric";
-    private String location;
     private String apiKey;
 
     // This contains the weather information for the dates passed.
     private JSONArray weatherInformation;
     private ZoneId zoneId;
 
-    // The following members are weather information for the date prompted.
-    private String dateTime;
-    private double maxTemp;
-    private double minTemp;
-    private double temp;
-    private double precip;
-    private String condition;
-    private String description;
-
     /**
      * Constructor
      * @param apiKey The api-key to access the API data.
      */
-    public Weather(String apiKey, String location) { 
+    public Weather(String apiKey) { 
         this.apiKey = apiKey; 
-        this.location = location;
     }
 
     /**
@@ -68,13 +58,14 @@ public class Weather {
      *            following exceptions are thrown: 
      *            UnsupportedEncodingException,URISyntaxException, IOException.
      */
-    public void timelineRequestHttpClient(String startDate, String endDate) 
+    public void timelineRequestHttpClient(
+            String startDate, String endDate, String location) 
                                         throws WeatherFetchFailedException{
 		StringBuilder requestBuilder = new StringBuilder(APIENDPOINT);
         try {
 		    requestBuilder.append(
                 URLEncoder.encode(
-                    this.location, 
+                    location, 
                     StandardCharsets.UTF_8.toString()));
         } catch(UnsupportedEncodingException e) {
             throw new WeatherFetchFailedException(
@@ -156,28 +147,13 @@ public class Weather {
      * @param index This is the index of the days passed between startDate and
      * endDate. The startDate is at index 0. 
      */
-    public void setWeatherInfoDay(String name) {
+    public JSONObject getWeatherInfoDay(String name) {
         int index = WeekDay.getWeekDayFromString(name.toLowerCase()).getIndex();
-        JSONObject dayValue = this.weatherInformation.getJSONObject(index);
+        JSONObject weatherInfo = this.weatherInformation.getJSONObject(index);
         ZonedDateTime datetime = ZonedDateTime.ofInstant(
             Instant.ofEpochSecond(
-                dayValue.getLong("datetimeEpoch")), 
+                weatherInfo.getLong("datetimeEpoch")), 
                 this.zoneId);
-        this.dateTime = datetime.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        this.maxTemp = dayValue.getDouble("tempmax");
-        this.minTemp = dayValue.getDouble("tempmin");
-        this.temp = dayValue.getDouble("temp");
-        this.precip = dayValue.getDouble("precipprob");
-        //this.condition = dayValue.getString("condition");
-        this.description = dayValue.getString("description");
+        return weatherInfo;
     }
-
-    public double getMaxTemp() { return this.maxTemp; }
-    public double getMinTemp() { return this.minTemp; }
-    public double getTemp() { return this.temp; }
-    public double getPrecipitation() { return this.precip; }
-    public String getCondition() { return this.condition; }
-    public String getDescription() { return this.description; }
-    public String getDateTime() { return this.dateTime; }
- 
 }

@@ -1,15 +1,15 @@
 
-1) Fix weather functionalities...
-2) Add time and date functionalities...
 3) Add current events functionalities...
 4) Stocks?? Optional...
 5) For weather or time/date parse any location provided in the user prompt?
 6) Use speech recognition now for the implementation..
 7) Is there no POM endpoints for MaryTTS and Guava?
 8) Any given sentence, the most important noun to be searched in wikipedia?
+8.1) Need another method in main to process the user input and get keras output in Utils.java maybe which handle the rest of objects such as weather?
 9) Speech recognition in Java is timed out?
 10) Logger in Java instead of print statements.
 11) Alternative to free ChatGPT..Explore PALM API.
+12) Face Detection in JAVA
 
 Overall functionality is to recognize speech and deliver meaningful responses...
 Next steps is to integrate to Raspberry PI and develop the OLED display and Firebeetle Microcontroller to output the Oswel Logo and information to be displayed. 
