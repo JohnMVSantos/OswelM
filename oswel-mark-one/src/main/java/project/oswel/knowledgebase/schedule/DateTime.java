@@ -27,6 +27,11 @@ public class DateTime {
         return String.format("%d:%02d %s", hour, minute, identifier);
     }
 
+    public static String getCurrentDay() {
+        LocalDate today = LocalDate.now();
+        return today.getDayOfWeek().toString().toLowerCase();
+    }
+
     public static String getCurrentDate() {
         LocalDate today = LocalDate.now();
         today.getDayOfWeek();

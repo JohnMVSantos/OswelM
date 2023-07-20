@@ -10,6 +10,14 @@
 10) Logger in Java instead of print statements.
 11) Alternative to free ChatGPT..Explore PALM API.
 12) Face Detection in JAVA
+13) Need a lot of cleaning in the code, do we really need Month.java and WeekDay.java??
+14) License file should contain the following information file names
+
+							"oswel.h5",
+							"words.txt",
+							"classes.txt",
+							"intents.json"
+Also should contain the current location by default? such as Calgary.
 
 Overall functionality is to recognize speech and deliver meaningful responses...
 Next steps is to integrate to Raspberry PI and develop the OLED display and Firebeetle Microcontroller to output the Oswel Logo and information to be displayed. 

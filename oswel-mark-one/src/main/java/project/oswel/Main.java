@@ -31,17 +31,10 @@ import project.oswel.exceptions.InvalidAPIKeyException;
 
 public class Main {
 
-	
+	private static Utils utils;
 	private static TextToSpeech tts = new TextToSpeech();
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
-	private static ChatKeras chatKeras = new ChatKeras(
-											"oswel.h5",
-											"words.txt",
-											"classes.txt",
-											"intents.json"
-												);
-	private static Weather weatherInfo;
-
+	
 	private static void setVoiceAndEffect(String voice, double d) {
 		// Setting the Current Voice.
 		// Options are "dfki-spike-hsmm" and "dfki-obadiah-hsmm"
@@ -74,7 +67,7 @@ public class Main {
 						System.out.println("User said: " + userInput);		
 						try {
 							if (userInput != "") {
-								oswelOutput = chatKeras.getRandomResponse(userInput);
+								oswelOutput = utils.processResponse(userInput);
 								System.out.println("Oswel said: " + oswelOutput);
 								speak(oswelOutput);
 							}		
@@ -95,40 +88,21 @@ public class Main {
     public static void main(String[] args) 
 						throws IOException, InterruptedException, Exception{
 		
-		System.out.println("Reading and validating license file...");
 		// Reading and validating the license containing API keys.
-		JSONObject oswelLicense = Utils.readOswelLicense("oswel.lic");
-		Utils.validateLicenseContents(oswelLicense);
+		utils = new Utils("oswel.lic");
 
+		// String oswelResponse = utils.processResponse("What is the weather in New York");
+		// System.out.println(oswelResponse);
+		
 		System.out.println("Configuring Oswel voice...");
 		// Set Oswel voice.
 		setVoiceAndEffect("dfki-obadiah-hsmm", 5.0);
 
-		NER ner = new NER("en-ner-date.bin");
-		String[] dates = ner.findDate("Give me the weather on Thursday please");
-		for (String date: dates) {
-			System.out.println(date);
-		}
-		
-		// Initializing weather information for the week.
-		// weatherInfo = new Weather(
-		// 	(String) oswelLicense.get("visualcrossing"));
-		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-		// weatherInfo.timelineRequestHttpClient(
-		// 	weekStartEndDates[0], weekStartEndDates[1], "Calgary,AB");
-		// JSONObject dayValue = weatherInfo.getWeatherInfoDay("saturday");
-        // double maxTemp = dayValue.getDouble("tempmax");
-        // double minTemp = dayValue.getDouble("tempmin");
-        // double temp = dayValue.getDouble("temp");
-        // double precip = dayValue.getDouble("precipprob");
-        // double description = dayValue.getString("description");
-		// System.out.printf("%s\t%.1f\t%s\n", dateTime, temp, description);
-		// tts.speak(String.format("The current temperature is: %.1f degrees celsius that is %s", temp, description), 2.0f, false, true);
 		
 		// Start Voice Recognition
-		// GSpeechDuplex duplex = setVoiceRecognition(
-		// 	(String) oswelLicense.get("googlespeech"));
-		// startProcess(duplex);
+		GSpeechDuplex duplex = setVoiceRecognition(
+			(String) utils.getLicense().get("googlespeech"));
+		startProcess(duplex);
 
 		// JWiki jwiki = new JWiki(userInput);
 		// oswelOutput = jwiki.getExtractText();

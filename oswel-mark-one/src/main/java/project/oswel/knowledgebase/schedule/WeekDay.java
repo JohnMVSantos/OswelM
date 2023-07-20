@@ -28,6 +28,11 @@ public enum WeekDay {
      */
     public int getIndex() { return this.index; }
 
+    public static String[] getDaysOfWeek() {
+        String[] daysOfWeek = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
+        return daysOfWeek;
+    }
+
     /**
      * Checks if the given name string exists in the WeekDay enum.
      * It will only match if the name is in all lower case.

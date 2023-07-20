@@ -154,17 +154,21 @@ public class ChatKeras {
         return classes.get(maxIndex);
     }
 
-    public String getRandomResponse(String sentence) {
+    public String[] getRandomResponse(String sentence) {
+        String[] response = new String[2];
         String cls = this.predict_class(sentence);
+        response[0] = cls;
         Random rand = new Random();
         for (int i=0; i<intents.size(); i++) {
             JSONObject intent = (JSONObject) intents.get(i);
             if (cls.equals(intent.get("tag"))) {
                 JSONArray responses = (JSONArray) intent.get("responses");
                 int index = rand.nextInt(responses.size());
-                return (String) responses.get(index);
+                response[1] = (String) responses.get(index);
+                return response;
             }
         }
-        return "Could not generate a response.";
+        response[1] = "Could not generate a response."; 
+        return response;
     }
 }

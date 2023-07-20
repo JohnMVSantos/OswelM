@@ -12,36 +12,41 @@ import opennlp.tools.util.Span;
 
 public class NER {
 
-    private static TokenNameFinderModel dateNERModel;
+    private static TokenNameFinderModel locationNERModel;
 
-    public NER(String dateNERModelFileName) {
-        dateNERModel = loadDateNERModel(dateNERModelFileName);
+    public NER(String locationNERModelFileName) {
+        locationNERModel = loadLocationNERModel(locationNERModelFileName); 
     }
 
-    private static TokenNameFinderModel loadDateNERModel(
-                                                String dateNERModelFileName) {
+    private static TokenNameFinderModel loadLocationNERModel(
+                                            String locationNERModelFileName) {
         try {
             String modelPath = new ClassPathResource(
-                        dateNERModelFileName).getFile().getPath();
+                        locationNERModelFileName).getFile().getPath();
             InputStream is = new FileInputStream(modelPath);
-            dateNERModel = new TokenNameFinderModel(is);
+            locationNERModel = new TokenNameFinderModel(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return dateNERModel;
+        return locationNERModel;
     }
 
-    public static String[] findDate(String sentence) {
-        NameFinderME finder = new NameFinderME(dateNERModel);
+    public String[] findLocation(String sentence) {
+        NameFinderME finder = new NameFinderME(locationNERModel);
         String[] words = sentence.split(" ");
         Span[] spans = finder.find(words);
-        String[] dates = new String[spans.length];
+        String[] locations = new String[spans.length];
         
         for (int i=0; i<spans.length; i++) {
             Span span = spans[i];
-            int index = span.getStart();
-            dates[i] = words[index];
+            int start = span.getStart();
+            int end = span.getEnd() - 1;
+            if (start == end) {
+                locations[i] = words[start];
+            } else {
+                locations[i] = words[start] + " " + words[end];
+            }
         }
-        return dates;
+        return locations;
     }
 }

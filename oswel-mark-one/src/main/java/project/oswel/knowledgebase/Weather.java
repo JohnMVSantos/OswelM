@@ -14,14 +14,16 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import project.oswel.exceptions.WeatherFetchFailedException;
 import project.oswel.knowledgebase.schedule.WeekDay;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import org.json.JSONArray;
+import org.json.simple.JSONArray;
 import java.time.Instant;
 import java.time.ZoneId;
 
@@ -35,6 +37,7 @@ public class Weather {
     private static final String APIENDPOINT = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
     private String unitGroup = "metric";
     private String apiKey;
+    private String location;
 
     // This contains the weather information for the dates passed.
     private JSONArray weatherInformation;
@@ -62,6 +65,7 @@ public class Weather {
             String startDate, String endDate, String location) 
                                         throws WeatherFetchFailedException{
 		StringBuilder requestBuilder = new StringBuilder(APIENDPOINT);
+        this.location = location;
         try {
 		    requestBuilder.append(
                 URLEncoder.encode(
@@ -135,10 +139,15 @@ public class Weather {
 			System.out.printf("No raw data%n");
 			return;
 		}
-		
-		JSONObject timelineResponse = new JSONObject(rawResult);
-		this.zoneId = ZoneId.of(timelineResponse.getString("timezone"));
-        this.weatherInformation = timelineResponse.getJSONArray("days");
+
+        JSONParser parser = new JSONParser();  
+        JSONObject timelineResponse;
+        try {
+            timelineResponse = (JSONObject) parser.parse(rawResult);
+            this.weatherInformation = (JSONArray) timelineResponse.get("days");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }  
 	}
 
     /**
@@ -149,11 +158,15 @@ public class Weather {
      */
     public JSONObject getWeatherInfoDay(String name) {
         int index = WeekDay.getWeekDayFromString(name.toLowerCase()).getIndex();
-        JSONObject weatherInfo = this.weatherInformation.getJSONObject(index);
-        ZonedDateTime datetime = ZonedDateTime.ofInstant(
-            Instant.ofEpochSecond(
-                weatherInfo.getLong("datetimeEpoch")), 
-                this.zoneId);
+        JSONObject weatherInfo = (JSONObject) this.weatherInformation.get(index);
+        // ZonedDateTime datetime = ZonedDateTime.ofInstant(
+        //     Instant.ofEpochSecond(
+        //         weatherInfo.getLong("datetimeEpoch")), 
+        //         this.zoneId);
         return weatherInfo;
+    }
+
+    public String getLocation() {
+        return this.location;
     }
 }
