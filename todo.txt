@@ -22,7 +22,9 @@ Also should contain the current location by default? such as Calgary.
 Overall functionality is to recognize speech and deliver meaningful responses...
 Next steps is to integrate to Raspberry PI and develop the OLED display and Firebeetle Microcontroller to output the Oswel Logo and information to be displayed. 
 
-Confirmation responses examples:
+Any other non categories should be confirmation responses examples:
 Check,
 Will do,
 As you wish,
+
+Otherwise ChatGPT is prompted. 

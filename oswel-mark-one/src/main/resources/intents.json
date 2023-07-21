@@ -217,9 +217,9 @@
                         "Do you know the time",
                         "Do you know the time at"
                     ],
-            "responses": ["It is",
-                        "It is currently",
-                        "The time is"
+            "responses": ["it is",
+                        "it is currently",
+                        "the time is"
                     ]
         },
         {

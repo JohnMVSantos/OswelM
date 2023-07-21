@@ -2,6 +2,7 @@ package project.oswel.utilities;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -48,13 +49,13 @@ public class Utils {
 
 		ner = new NER("en-ner-location.bin");
 		
-		String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-		try {
-			weatherInfo.timelineRequestHttpClient(
-				weekStartEndDates[0], weekStartEndDates[1], "Calgary");
-		} catch (WeatherFetchFailedException e) {
-			throw new WeatherFetchFailedException(e.getMessage());
-		}
+		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
+		// try {
+		// 	weatherInfo.timelineRequestHttpClient(
+		// 		weekStartEndDates[0], weekStartEndDates[1], "Calgary");
+		// } catch (WeatherFetchFailedException e) {
+		// 	throw new WeatherFetchFailedException(e.getMessage());
+		// }
 	}
 
     private void readOswelLicense(String licenseFileName) {
@@ -105,52 +106,80 @@ public class Utils {
 		return oswelLicense;
 	}
 
+	private String processWeatherResponse(String userResponse, String oswelResponse) throws WeatherFetchFailedException {
+		String[] daysOfWeek = WeekDay.getDaysOfWeek();
+		String[] locations = ner.findLocation(userResponse);
+		if (locations.length > 0) {
+			if (!locations[0].equalsIgnoreCase(weatherInfo.getLocation())) {
+				String[] weekStartEndDates = DateTime.getStartEndWeekDates();
+				try {
+					weatherInfo.timelineRequestHttpClient(
+						weekStartEndDates[0], weekStartEndDates[1], locations[0]);
+				} catch (WeatherFetchFailedException e) {
+					throw new WeatherFetchFailedException(e.getMessage());
+				}
+			}
+		}
+
+		String day = "None";
+		JSONObject dayValue = new JSONObject();
+		ArrayList<String> userWords = new ArrayList<String>(Arrays.asList(userResponse.split(" ")));
+		for(int i=0; i<daysOfWeek.length; i++) {
+			if (userWords.contains(daysOfWeek[i])) {
+				day = daysOfWeek[i];
+				dayValue = weatherInfo.getWeatherInfoDay(day);
+				break;
+			} 
+		}
+
+		if (day.equals("None")) {
+			day = DateTime.getCurrentDay();
+			dayValue = weatherInfo.getWeatherInfoDay(day);
+		}
+		
+		String location = weatherInfo.getLocation();
+		double maxTemp = (double) dayValue.get("tempmax");
+		double minTemp = (double) dayValue.get("tempmin");
+		double temp = (double) dayValue.get("temp");
+		double precip = (double) dayValue.get("precipprob");
+		String description = (String) dayValue.get("description");
+
+		return String.format("In %s, ", location) + oswelResponse + 
+			String.format(" on %s %.1f degrees celsius with %s.", day, temp, description)
+				+ String.format(" A high of %.1f degrees and a low of %.1f degrees celsius.", maxTemp, minTemp);
+		
+	}
+
+	private String processTimeResponse(String userResponse, String oswelResponse) {
+		String[] locations = ner.findLocation(userResponse);
+		String time = "";
+		String location = "";
+		if (locations.length > 0) {
+			location = locations[0];
+			time = DateTime.getCurrentTimeCity(location);
+		} else {
+			location = "Calgary";
+			time = DateTime.getCurrentTime();
+		}
+		return String.format("In %s, ", location) + oswelResponse + " " + time;
+		
+	}
+
+	private void processDateTimeResponse(String response, String oswelResponse) {
+
+	}
+
 	public String processResponse(String userResponse) throws WeatherFetchFailedException {
 		String[] oswelResponse = chatKeras.getRandomResponse(userResponse);
 		String category = oswelResponse[0];
 		String oswelMessage = oswelResponse[1];
-		String[] daysOfWeek = WeekDay.getDaysOfWeek();
+		
 
 		if (category.equalsIgnoreCase("weather")) {
-			String[] locations = ner.findLocation(userResponse);
-			if (locations.length > 0) {
-				if (!locations[0].equalsIgnoreCase(weatherInfo.getLocation())) {
-					String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-					try {
-						weatherInfo.timelineRequestHttpClient(
-							weekStartEndDates[0], weekStartEndDates[1], locations[0]);
-					} catch (WeatherFetchFailedException e) {
-						throw new WeatherFetchFailedException(e.getMessage());
-					}
-				}
-			}
-
-			String day = "None";
-			JSONObject dayValue = new JSONObject();
-			ArrayList<String> userWords = new ArrayList<String>(Arrays.asList(userResponse.split(" ")));
-			for(int i=0; i<daysOfWeek.length; i++) {
-				if (userWords.contains(daysOfWeek[i])) {
-					day = daysOfWeek[i];
-					dayValue = weatherInfo.getWeatherInfoDay(day);
-					break;
-				} 
-			}
-
-			if (day.equals("None")) {
-				day = DateTime.getCurrentDay();
-				dayValue = weatherInfo.getWeatherInfoDay(day);
-			}
-			
-			String location = weatherInfo.getLocation();
-			double maxTemp = (double) dayValue.get("tempmax");
-			double minTemp = (double) dayValue.get("tempmin");
-			double temp = (double) dayValue.get("temp");
-			double precip = (double) dayValue.get("precipprob");
-			String description = (String) dayValue.get("description");
-
-			oswelMessage = String.format("In %s, ", location) + 
-							oswelMessage + 
-								String.format(" on %s %.1f degrees celsius with %s. A high of %.1f degrees and a low of %.1f degrees celsisus.", day, temp, description, maxTemp, minTemp);
+			// oswelMessage = this.processWeatherResponse(userResponse, oswelMessage);
+			return "Trying to save the API.";
+		} else if (category.equalsIgnoreCase("time")) {
+			oswelMessage = this.processTimeResponse(userResponse, oswelMessage);
 		}
 
 		return oswelMessage;

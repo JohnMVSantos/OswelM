@@ -37,7 +37,7 @@ public class Main {
 	
 	private static void setVoiceAndEffect(String voice, double d) {
 		// Setting the Current Voice.
-		// Options are "dfki-spike-hsmm" and "dfki-obadiah-hsmm"
+		// Options are dfki-spike-hsmm, dfki-obadiah-hsmm, cmu-bdl-hsmm, cmu-rms-hsmm
 		tts.setVoice(voice);	
 		StadiumEffect stadiumEffect = new StadiumEffect();
 		stadiumEffect.setParams("amount:" + d);
@@ -96,10 +96,9 @@ public class Main {
 		
 		System.out.println("Configuring Oswel voice...");
 		// Set Oswel voice.
-		setVoiceAndEffect("dfki-obadiah-hsmm", 5.0);
-
+		setVoiceAndEffect("cmu-bdl-hsmm", 5.0);
 		
-		// Start Voice Recognition
+		//Start Voice Recognition
 		GSpeechDuplex duplex = setVoiceRecognition(
 			(String) utils.getLicense().get("googlespeech"));
 		startProcess(duplex);
