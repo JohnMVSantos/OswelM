@@ -24,8 +24,10 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.FileReader;
 import java.util.Random;
+import java.util.Stack;
 import java.util.List;
 
 public class ChatKeras {
@@ -147,16 +149,17 @@ public class ChatKeras {
         return bag;
     }
 
-    public String predict_class(String sentence) {
+    public String predictClass(String sentence) {
         INDArray bow = this.bagOfWords(sentence);
         INDArray scores = model.output(bow);
         int maxIndex = Nd4j.argMax(scores,1).getInt(0);
+        double score = scores.getDouble(maxIndex);
         return classes.get(maxIndex);
     }
 
     public String[] getRandomResponse(String sentence) {
         String[] response = new String[2];
-        String cls = this.predict_class(sentence);
+        String cls = this.predictClass(sentence);
         response[0] = cls;
         Random rand = new Random();
         for (int i=0; i<intents.size(); i++) {

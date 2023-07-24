@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,6 +15,7 @@ import org.nd4j.common.io.ClassPathResource;
 import project.oswel.exceptions.InvalidAPIKeyException;
 import project.oswel.exceptions.WeatherFetchFailedException;
 import project.oswel.knowledgebase.Weather;
+import project.oswel.knowledgebase.currentevents.NewsAPI;
 import project.oswel.knowledgebase.schedule.DateTime;
 import project.oswel.knowledgebase.schedule.WeekDay;
 import project.oswel.nlp.ChatKeras;
@@ -25,6 +27,7 @@ public class Utils {
 	private static JSONObject oswelLicense = new JSONObject();
 	private static ChatKeras chatKeras;
 	private static Weather weatherInfo;
+	private static NewsAPI newsAPI;
 	private static NER ner;
 
 	public Utils(String licenseFileName) throws InvalidAPIKeyException, WeatherFetchFailedException {
@@ -47,7 +50,12 @@ public class Utils {
 		weatherInfo = new Weather(
 			(String) oswelLicense.get("visualcrossing"));
 
-		ner = new NER("en-ner-location.bin");
+		ner = new NER(
+			"en-ner-location.bin", 
+			"en-pos-maxent.bin");
+
+		newsAPI = new NewsAPI((String) oswelLicense.get("newsapi"));
+		
 		
 		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
 		// try {
@@ -165,7 +173,32 @@ public class Utils {
 		
 	}
 
-	private void processDateTimeResponse(String response, String oswelResponse) {
+	private String processDateResponse(String userResponse, String oswelResponse) {
+		String date = "";
+		date = DateTime.getCurrentDate();
+		return oswelResponse + " " + date;
+	}
+
+	private String processNewsResponse(String userResponse, String oswelResponse) {
+
+		Stack<Integer> nouns = new Stack<Integer>();
+		String[] tags = ner.tagSentence(userResponse);
+		String[] words = userResponse.split(" ");
+		String description = "";
+		for (int i=0; i<tags.length; i++) {
+			if (tags[i].equalsIgnoreCase("NN")) {
+				nouns.push(i);
+			}
+		}
+
+		if (nouns.size() >= 2) {
+			String topic = words[nouns.pop()];
+			description = newsAPI.getNewsByTopic(topic);
+		} else {
+			description = newsAPI.getNewsTopHeadline();
+		}
+
+		return oswelResponse + description;
 
 	}
 
@@ -180,8 +213,11 @@ public class Utils {
 			return "Trying to save the API.";
 		} else if (category.equalsIgnoreCase("time")) {
 			oswelMessage = this.processTimeResponse(userResponse, oswelMessage);
+		} else if (category.equalsIgnoreCase("date")) {
+			oswelMessage = this.processDateResponse(userResponse, oswelMessage);
+		} else if (category.equalsIgnoreCase("events")) {
+			oswelMessage = this.processNewsResponse(userResponse, oswelMessage);
 		}
-
 		return oswelMessage;
 	}
 }

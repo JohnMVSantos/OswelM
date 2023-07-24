@@ -5,6 +5,7 @@ import net.sourceforge.javaflacencoder.FLACFileWriter;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,6 +20,9 @@ import project.oswel.speechrecognition.recognizer.GoogleResponse;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.knowledgebase.Weather;
+import project.oswel.knowledgebase.currentevents.NewsAPI;
+
+
 import project.oswel.knowledgebase.schedule.DateTime;
 import project.oswel.nlp.ChatGPT;
 import project.oswel.nlp.ChatKeras;

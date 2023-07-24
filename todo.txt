@@ -12,6 +12,11 @@
 12) Face Detection in JAVA
 13) Need a lot of cleaning in the code, do we really need Month.java and WeekDay.java??
 14) License file should contain the following information file names
+15) Make sure external references to sources are provided in the source code.
+16) Check out this news implementation as inpiration to better implement current news. 
+https://github.com/KwabenBerko/News-API-Java
+
+17) Should be able to ask the assistant what a word means or translate a word to english
 
 							"oswel.h5",
 							"words.txt",

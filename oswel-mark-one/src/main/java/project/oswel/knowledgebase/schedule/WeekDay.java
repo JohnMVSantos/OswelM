@@ -44,19 +44,19 @@ public enum WeekDay {
     public static WeekDay getWeekDayFromString (String name) 
                                         throws IllegalArgumentException {
         switch (name) {
-            case "sunday":
+            case "Sunday":
                 return WeekDay.SUNDAY;
-            case "monday":
+            case "Monday":
                 return WeekDay.MONDAY;
-            case "tuesday":
+            case "Tuesday":
                 return WeekDay.TUESDAY;
-            case "wednesday":
+            case "Wednesday":
                 return WeekDay.WEDNESDAY;
-            case "thursday":
+            case "Thursday":
                 return WeekDay.THURSDAY;
-            case "friday":
+            case "Friday":
                 return WeekDay.FRIDAY;
-            case "saturday":
+            case "Saturday":
                 return WeekDay.SATURDAY;
             default:
                 throw new IllegalArgumentException(
