@@ -12,7 +12,8 @@ The following can be handled by ChatGPT.
 
 8) Speech recognition in Java is timed out?
 9) Stocks?? Optional...
-
+10) Maybe retrain a better model, also should be able to handle responses to user responding to how they are feeling such as "I am doing well".
+Also should have some confirmation responses. 
 
 14) License file or perhaps another file called info.json should contain the following information file names
 							"oswel.h5",

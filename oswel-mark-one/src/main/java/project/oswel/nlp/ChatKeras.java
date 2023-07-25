@@ -272,7 +272,7 @@ public class ChatKeras {
                 return response;
             }
         }
-        response.put("response", "Could not generate a response.")
+        response.put("response", "Could not generate a response.");
         return response;
     }
 }
