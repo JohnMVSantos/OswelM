@@ -2,15 +2,10 @@ package project.oswel;
 
 import marytts.signalproc.effects.StadiumEffect;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
-
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.nd4j.common.io.ClassPathResource;
+
+
 
 import project.oswel.speech.TextToSpeech;
 import project.oswel.speechrecognition.microphone.Microphone;

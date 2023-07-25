@@ -17,9 +17,8 @@ import java.io.File;
 
 /**
  * A single Thread Audio Player Once used it has to be initialised again
- * 
+ * https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/AudioPlayer.java
  * @author GOXR3PLUS
- *
  */
 public class AudioPlayer extends Thread {
 	
@@ -129,7 +128,7 @@ public class AudioPlayer extends Thread {
 	 * @param lineListener
 	 *            lineListener
 	 * @param outputMode
-	 *            if MONO, force output to be mono; if STEREO, 
+	 *            If MONO, force output to be mono; if STEREO, 
 	 * 			  force output to be STEREO; if LEFT_ONLY, play a mono signal 
 	 * 			  over the left channel of a stereo output, 
 	 * 			  or mute the right channel of a stereo signal; 
@@ -159,7 +158,7 @@ public class AudioPlayer extends Thread {
 	 * @param lineListener
 	 *            lineListener
 	 * @param outputMode
-	 *            if MONO, force output to be mono; if STEREO, 
+	 *            If MONO, force output to be mono; if STEREO, 
 	 * 			  force output to be STEREO; if LEFT_ONLY, play a mono signal 
 	 * 			  over the left channel of a stereo output, 
 	 * 			  or mute the right channel of a stereo signal; if RIGHT_ONLY, 
@@ -250,8 +249,8 @@ public class AudioPlayer extends Thread {
 			}
 		} else {
 			assert audioFormat
-			.getChannels() == 2 : "Unexpected number of channels: " + 
-			audioFormat.getChannels();
+				.getChannels() == 2 : "Unexpected number of channels: " + 
+				audioFormat.getChannels();
 			if (outputMode == 0) {
 				ais = new MonoAudioInputStream(ais);
 			} else if (outputMode == 1 || outputMode == 2) {
@@ -294,8 +293,9 @@ public class AudioPlayer extends Thread {
 			}
 			line.open(audioFormat);
 		} catch (Exception ex) {
-			Logger.getLogger(getClass().getName()).log(
-				Level.WARNING, null, ex);
+			Logger
+				.getLogger(getClass().getName())
+				.log(Level.WARNING, null, ex);
 			return;
 		}
 		
@@ -308,8 +308,9 @@ public class AudioPlayer extends Thread {
 			try {
 				nRead = ais.read(abData, 0, abData.length);
 			} catch (IOException ex) {
-				Logger.getLogger(getClass().getName()).log(
-					Level.WARNING, null, ex);
+				Logger
+					.getLogger(getClass().getName())
+					.log(Level.WARNING, null, ex);
 			}
 			if (nRead >= 0) {
 				line.write(abData, 0, nRead);

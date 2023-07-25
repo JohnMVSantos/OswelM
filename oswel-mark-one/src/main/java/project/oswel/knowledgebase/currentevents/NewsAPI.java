@@ -1,18 +1,17 @@
 package project.oswel.knowledgebase.currentevents;
 
+import org.json.simple.parser.ParseException;
+import org.json.simple.parser.JSONParser;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.Request;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import java.io.IOException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
+/**
+ * 
+ */
 public class NewsAPI {
     private static OkHttpClient client = new OkHttpClient();
     private static JSONParser parser = new JSONParser();
@@ -25,7 +24,6 @@ public class NewsAPI {
     }
 
     public String getNewsByTopic(String topic) {
-        // https://newsapi.org/v2/everything?q=bitcoin&apiKey=API_KEY
 
         String finalEndpoint = this.endPoint + String.format("everything?q=%s", topic) + 
                             String.format("&apiKey=%s", this.apiKey);

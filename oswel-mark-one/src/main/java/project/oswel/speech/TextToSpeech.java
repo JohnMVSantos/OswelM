@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/TextToSpeech.java
  * @author GOXR3PLUS
- *
  */
 public class TextToSpeech {
 	

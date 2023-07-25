@@ -203,21 +203,26 @@ public class Utils {
 	}
 
 	public String processResponse(String userResponse) throws WeatherFetchFailedException {
-		String[] oswelResponse = chatKeras.getRandomResponse(userResponse);
-		String category = oswelResponse[0];
-		String oswelMessage = oswelResponse[1];
-		
+		JSONObject oswelResponse = chatKeras.getRandomResponse(userResponse);
+		String category = (String) oswelResponse.get("category");
+		double score = (double) oswelResponse.get("score");
+		String oswelMessage = (String) oswelResponse.get("response");
 
-		if (category.equalsIgnoreCase("weather")) {
+		if (score >= 0.25) {
+			if (category.equalsIgnoreCase("weather")) {
 			// oswelMessage = this.processWeatherResponse(userResponse, oswelMessage);
 			return "Trying to save the API.";
-		} else if (category.equalsIgnoreCase("time")) {
-			oswelMessage = this.processTimeResponse(userResponse, oswelMessage);
-		} else if (category.equalsIgnoreCase("date")) {
-			oswelMessage = this.processDateResponse(userResponse, oswelMessage);
-		} else if (category.equalsIgnoreCase("events")) {
-			oswelMessage = this.processNewsResponse(userResponse, oswelMessage);
+			} else if (category.equalsIgnoreCase("time")) {
+				oswelMessage = this.processTimeResponse(userResponse, oswelMessage);
+			} else if (category.equalsIgnoreCase("date")) {
+				oswelMessage = this.processDateResponse(userResponse, oswelMessage);
+			} else if (category.equalsIgnoreCase("events")) {
+				oswelMessage = this.processNewsResponse(userResponse, oswelMessage);
+			}
+		} else {
+			oswelMessage = "The score returned is below the threshold";
 		}
+		
 		return oswelMessage;
 	}
 }

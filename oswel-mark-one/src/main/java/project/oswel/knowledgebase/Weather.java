@@ -1,30 +1,25 @@
 package project.oswel.knowledgebase;
 
+import project.oswel.exceptions.WeatherFetchFailedException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
+import project.oswel.knowledgebase.schedule.WeekDay;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.client.methods.HttpGet;
+import org.json.simple.parser.ParseException;
 import java.io.UnsupportedEncodingException;
-import java.time.format.DateTimeFormatter;
+import org.json.simple.parser.JSONParser;
 import java.nio.charset.StandardCharsets;
 import org.apache.http.util.EntityUtils;
 import java.net.URISyntaxException;
+import org.json.simple.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
+import org.json.simple.JSONArray;
 import java.nio.charset.Charset;
-import java.time.ZonedDateTime;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import project.oswel.exceptions.WeatherFetchFailedException;
-import project.oswel.knowledgebase.schedule.WeekDay;
-
 import java.io.IOException;
 import java.net.URLEncoder;
-import org.json.simple.JSONArray;
-import java.time.Instant;
 import java.time.ZoneId;
 
 /*******************************************************************************
