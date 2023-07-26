@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.io.File;
 
 /**
- * A single Thread Audio Player Once used it has to be initialised again
- * https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/AudioPlayer.java
+ * A single Thread Audio Player Once used it has to be initialised again.
+ * {@link https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/AudioPlayer.java}
  * @author GOXR3PLUS
  */
 public class AudioPlayer extends Thread {
@@ -239,7 +239,6 @@ public class AudioPlayer extends Thread {
 	
 	@Override
 	public void run() {
-		
 		status = Status.PLAYING;
 		AudioFormat audioFormat = ais.getFormat();
 		if (audioFormat.getChannels() == 1) {
@@ -321,5 +320,4 @@ public class AudioPlayer extends Thread {
 		}
 		line.close();
 	}
-	
 }

@@ -1,5 +1,8 @@
 package project.oswel.speechrecognition.recognizer;
 
+/**
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
+ */
 public enum Languages {
 	
 	AUTO_DETECT("auto"),//tells Google to auto-detect the language
@@ -76,8 +79,6 @@ public enum Languages {
 	SWEDISH("sv-SE"),
 	TURKISH("tr"),
 	ZULU("zu");
-    
-	//TODO Clean Up JavaDoc for Overloaded Methods using @link
 	
     /**
      *Stores the LanguageCode

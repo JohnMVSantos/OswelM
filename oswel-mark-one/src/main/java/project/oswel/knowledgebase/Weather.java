@@ -20,13 +20,12 @@ import org.json.simple.JSONArray;
 import java.nio.charset.Charset;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.time.ZoneId;
 
-/*******************************************************************************
+/**
  * Class that contains methods fetch current or historical weather information.
  * {@link https://github.com/visualcrossing/WeatherApi/blob/master/Java/com/
  * visualcrossing/weather/samples/TimelineApiForecastSample.java} 
- ******************************************************************************/
+*/
 public class Weather {
 
     private static final String APIENDPOINT = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
@@ -36,15 +35,21 @@ public class Weather {
 
     // This contains the weather information for the dates passed.
     private JSONArray weatherInformation;
-    private ZoneId zoneId;
 
     /**
-     * Constructor
+     * Creates an object to allow weather data fetching from the API given
+     * the API key. 
      * @param apiKey The api-key to access the API data.
      */
     public Weather(String apiKey) { 
         this.apiKey = apiKey; 
     }
+
+    /**
+     * Returns the location for which the weather information was parsed.
+     * @return The city location (String).
+     */
+    public String getLocation() { return this.location; }
 
     /**
      * This method requests weather information using the following API:
@@ -154,14 +159,6 @@ public class Weather {
     public JSONObject getWeatherInfoDay(String name) {
         int index = WeekDay.getWeekDayFromString(name.toLowerCase()).getIndex();
         JSONObject weatherInfo = (JSONObject) this.weatherInformation.get(index);
-        // ZonedDateTime datetime = ZonedDateTime.ofInstant(
-        //     Instant.ofEpochSecond(
-        //         weatherInfo.getLong("datetimeEpoch")), 
-        //         this.zoneId);
         return weatherInfo;
-    }
-
-    public String getLocation() {
-        return this.location;
     }
 }

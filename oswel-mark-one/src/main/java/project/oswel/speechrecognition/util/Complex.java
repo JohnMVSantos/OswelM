@@ -14,6 +14,7 @@ package project.oswel.speechrecognition.util;
  *
  *  Class based off of Princeton University's Complex.java class
  *  @author Aaron Gokaslan, Princeton University
+ *  {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  ******************************************************************************/
 
  public class Complex {
@@ -124,5 +125,4 @@ package project.oswel.speechrecognition.util;
         }
         return false;
     }
-    
 }

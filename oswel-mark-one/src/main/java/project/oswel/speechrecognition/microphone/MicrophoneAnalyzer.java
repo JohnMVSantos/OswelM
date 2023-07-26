@@ -8,7 +8,7 @@ import javax.sound.sampled.AudioFileFormat;
  * microphone class. Implemented as a precursor to a Voice Activity Detection
  * (VAD) algorithm. Currently can be used for audio data analysis. 
  * Dependencies: FFT.java and Complex.java. Both found in the utility package.
- * 
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  * @author Aaron Gokaslan
  ******************************************************************************/
 

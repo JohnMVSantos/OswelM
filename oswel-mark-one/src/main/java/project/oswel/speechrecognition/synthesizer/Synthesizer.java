@@ -7,11 +7,12 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.net.URL;
 
-/*******************************************************************************
- * Synthesiser class that connects to Google's unoffical API to retrieve data
- *
+/**
+ * Synthesiser class that connects to 
+ * Google's unoffical API to retrieve data.
  * @author Luke Kuza, Aaron Gokaslan (Skylion)
- ******************************************************************************/
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
+ */
 public class Synthesizer extends BaseSynthesizer {
 
 	/**

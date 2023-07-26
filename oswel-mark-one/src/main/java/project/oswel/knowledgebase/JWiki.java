@@ -20,12 +20,19 @@ public class JWiki {
     String imageURL="";
     String extractText="";
 
+    /**
+     * This creates a new object with the subject to search for.
+     * @param subject The subject to search for in wikipedia. 
+     */
     public JWiki(String subject)
     {
         this.subject=subject;
         getData();
     }
 
+    /**
+     * Communicates to the API to fetch the description of the topic passed. 
+     */
     private void getData() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -48,17 +55,27 @@ public class JWiki {
 
             //get text
             extractText = (String)jsonObject.get("extract");
-
         }
         catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Returns the title of the wikipedia page.
+     * @return The title (String).
+     */
     public String getDisplayTitle() {return displayTitle;}
 
+    /**
+     * Returns the URL pointing to the wikipedia page.
+     * @return The URL (String).
+     */
     public String getImageURL() {return imageURL;}
 
+    /**
+     * Returns the extracted text based on the topic provided.
+     * @return The description of the topic provided (String).
+     */
     public String getExtractText() {return extractText;}
 }

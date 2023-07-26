@@ -4,11 +4,11 @@ import javax.sound.sampled.*;
 import java.io.Closeable;
 import java.io.File;
 
-/***************************************************************************
+/**
  * Microphone class that contains methods to capture audio from microphone
- *
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  * @author Luke Kuza, Aaron Gokaslan
- ***************************************************************************/
+ */
 public class Microphone implements Closeable {
 	
 	/**

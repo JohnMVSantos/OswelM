@@ -5,7 +5,7 @@ import java.util.List;
 
 /******************************************************************************
  * Class that holds the response and confidence of a Google recognizer request
- *
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  * @author Luke Kuza, Duncan Jauncey, Aaron Gokaslan
  ******************************************************************************/
 public class GoogleResponse {

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/TextToSpeech.java
+ * {@link https://github.com/goxr3plus/Java-Speech-Recognizer-Tutorial--Calculator/blob/master/Tutorial%203/src/tts/TextToSpeech.java}
  * @author GOXR3PLUS
  */
 public class TextToSpeech {
@@ -37,8 +37,6 @@ public class TextToSpeech {
 				Level.SEVERE, null, ex);
 		}
 	}
-	
-	//----------------------GENERAL METHODS-----------------------------------//
 	
 	/**
 	 * Transform text to speech
@@ -106,8 +104,6 @@ public class TextToSpeech {
 			tts.cancel();
 	}
 	
-	//----------------------GETTERS-------------------------------------------//
-	
 	/**
 	 * Available voices in String representation
 	 * 
@@ -132,8 +128,6 @@ public class TextToSpeech {
 			AudioEffects.getEffects().spliterator(), 
 			false).collect(Collectors.toList());
 	}
-	
-	//----------------------SETTERS-------------------------------------------//
 	
 	/**
 	 * Change the default voice of the MaryTTS

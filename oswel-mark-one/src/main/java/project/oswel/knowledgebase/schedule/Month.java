@@ -32,9 +32,6 @@ public enum Month {
         this.monthNumber = monthNumber;
     }
 
-    private String getMonthName() { return this.monthName; }
-    private int getMonthNumber() { return this.monthNumber; }
-
     /**
      * Checks if the given name string exists in the Month enum.
      * It will only match if the name is in all lower case.
@@ -76,8 +73,12 @@ public enum Month {
         }
     }
 
-    public static String getStringFromInt (int number) 
-                                        throws IllegalArgumentException {
+    /**
+     * This method returns the name of the month represented by an integer.
+     * @param number The integer which the month represents.
+     * @return The name of the month (String).
+     */
+    public static String getStringFromInt (int number) {
         switch (number) {
             case 1:
                 return "January";

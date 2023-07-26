@@ -3,11 +3,10 @@ package project.oswel.speechrecognition.recognizer;
 import project.oswel.speechrecognition.microphone.Microphone;
 import javax.sound.sampled.LineUnavailableException;
 
-/******************************************************************************
- * Class that acts as a thread to recognize user input
- *
+/**
+ * Class that acts as a thread to recognize user input.
  * @author John Santos
- ******************************************************************************/
+ */
 public class Recognize implements Runnable {
     
     /**

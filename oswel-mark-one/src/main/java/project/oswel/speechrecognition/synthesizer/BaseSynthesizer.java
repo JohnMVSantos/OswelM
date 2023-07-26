@@ -17,8 +17,8 @@ import java.util.Set;
 
 /*******************************************************************************
  * Synthesiser class that connects to Google's unoffical API to retrieve data
- *
  * @author Luke Kuza, Aaron Gokaslan (Skylion)
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  *******************************************************************************/
 public abstract class BaseSynthesizer {
 	

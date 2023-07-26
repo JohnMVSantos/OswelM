@@ -13,6 +13,7 @@ import java.net.URL;
  * additional specification of parameters including speed and pitch. 
  * See the constructor for instructions regarding the API_Key.
  * @author Skylion (Aaron Gokaslan)
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  */
 public class SynthesizerV2 extends BaseSynthesizer {
 

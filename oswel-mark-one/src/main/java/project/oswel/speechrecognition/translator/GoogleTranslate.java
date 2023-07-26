@@ -21,6 +21,7 @@ import java.net.URL;
  * provided via Google Translate
  * 
  * @author Aaron Gokaslan (Skylion)
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  ******************************************************************************/
 //Class marked as final since all methods are static
 public final class GoogleTranslate { 

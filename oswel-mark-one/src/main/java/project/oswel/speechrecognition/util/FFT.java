@@ -23,6 +23,7 @@ package project.oswel.speechrecognition.util;
 /*******************************************************************************
  * @author Skylion implementation 
  * @author Princeton University for the actual algorithm.
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  ******************************************************************************/
 
  public class FFT {
@@ -37,8 +38,9 @@ package project.oswel.speechrecognition.util;
         if (N == 1) return new Complex[] { x[0] };
 
         // radix 2 Cooley-Tukey FFT
-        if (N % 2 != 0) { throw new RuntimeException(
-            "N is not a power of 2"); }
+        if (N % 2 != 0) { 
+            throw new RuntimeException("N is not a power of 2"); 
+        }
 
         // fft of even terms
         Complex[] even = new Complex[N/2];
@@ -65,7 +67,6 @@ package project.oswel.speechrecognition.util;
         return y;
     }
 
-
     // compute the inverse FFT of x[], assuming its length is a power of 2
     public static Complex[] ifft(Complex[] x) {
         int N = x.length;
@@ -88,9 +89,7 @@ package project.oswel.speechrecognition.util;
         for (int i = 0; i < N; i++) {
             y[i] = y[i].times(1.0 / N);
         }
-
         return y;
-
     }
 
     // compute the circular convolution of x and y
@@ -98,8 +97,9 @@ package project.oswel.speechrecognition.util;
 
         // should probably pad x and y with 0s so that they have same length
         // and are powers of 2
-        if (x.length != y.length) { throw new RuntimeException(
-            "Dimensions don't agree"); }
+        if (x.length != y.length) { 
+            throw new RuntimeException("Dimensions don't agree"); 
+        }
 
         int N = x.length;
 
@@ -132,5 +132,4 @@ package project.oswel.speechrecognition.util;
 
         return cconvolve(a, b);
     }
-
 }

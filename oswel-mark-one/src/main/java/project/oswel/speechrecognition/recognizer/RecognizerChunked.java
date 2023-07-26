@@ -24,6 +24,7 @@ import java.net.URL;
  * The class also requires an API-Key (see Constructor) for details. 
  * This class is experimental and subject to change as we restructure the API.
  * @author Aaron Gokaslan (Skylion)
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  */
 public class RecognizerChunked {
 	

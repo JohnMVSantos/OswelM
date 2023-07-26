@@ -29,6 +29,7 @@ import java.net.URL;
  * data as data is sent to it. For this reason, this class uses listeners.
  * 
  * @author Skylion (Aaron Gokaslan), Robert Rowntree.
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  */
 public class GSpeechDuplex {
 	

@@ -9,8 +9,8 @@ import java.io.*;
 
 /*******************************************************************************
  * Class that submits FLAC audio and retrieves recognized text
- *
  * @author Luke Kuza, Duncan Jauncey, Aaron Gokaslan
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  ******************************************************************************/
 public class Recognizer {
 

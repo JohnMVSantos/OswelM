@@ -11,6 +11,7 @@ import java.nio.ByteOrder;
 import java.io.File;
 
 /*******************************************************************************
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  * Class that contains methods to encode Wave files to FLAC files
  * THIS IS THANKS TO THE javaFlacEncoder Project created here: 
  * http://sourceforge.net/projects/javaflacencoder/

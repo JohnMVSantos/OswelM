@@ -1,34 +1,28 @@
 package project.oswel.speechrecognition.util;
 
-//TODO Replace this class with something that isn't 20 years old.
-
-//ChunkedOutputStream - an OutputStream that implements HTTP/1.1 chunking
-//
-//Copyright (C) 1996 by Jef Poskanzer <jef@acme.com>.  All rights reserved.
-//
-//Redistribution and use in source and binary forms, with or without
-//modification, are permitted provided that the following conditions
-//are met:
-//1. Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//2. Redistributions in binary form must reproduce the above copyright
-// notice, this list of conditions and the following disclaimer in the
-// documentation and/or other materials provided with the distribution.
-//
-//THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-//ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-//IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-//FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-//DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-//OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-//HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-//LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-//OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE.
-//
-//Visit the ACME Labs Java page for up-to-date versions of this and other
-//fine Java utilities: http://www.acme.com/java/
+// ChunkedOutputStream - an OutputStream that implements HTTP/1.1 chunking
+// Copyright (C) 1996 by Jef Poskanzer <jef@acme.com>.  All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+// Visit the ACME Labs Java page for up-to-date versions of this and other
+// fine Java utilities: http://www.acme.com/java/
 
 import java.util.*;
 import java.io.*;
@@ -58,58 +52,48 @@ import java.io.*;
 //<A HREF="/resources/classes/Acme/Serve/servlet/http/ChunkedOutputStream.java">Fetch the software.</A><BR>
 //<A HREF="/resources/classes/Acme.tar.Z">Fetch the entire Acme package.</A>
 
-public class ChunkedOutputStream extends BufferedOutputStream
-{
+/**
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
+ */
+public class ChunkedOutputStream extends BufferedOutputStream {
 
 	private static final byte[] crlf = { 13, 10 };
 	private byte[] lenBytes = new byte[20]; // big enough for any number in hex
 	private List<String> footerNames = new ArrayList<String>();
 	private List<String> footerValues = new ArrayList<String>();
 
-
 	/// Make a ChunkedOutputStream with a default buffer size.
 	// @param out the underlying output stream
-	public ChunkedOutputStream( OutputStream out )
-	{
-		super( out );
-	}
-
+	public ChunkedOutputStream( OutputStream out ) { super( out ); }
 
 	/// Make a ChunkedOutputStream with a specified buffer size.
 	// @param out the underlying output stream
 	// @param size the buffer size
-	public ChunkedOutputStream( OutputStream out, int size )
-	{
+	public ChunkedOutputStream( OutputStream out, int size ) {
 		super( out, size );
 	}
 
 	/// Flush the stream.  This will write any buffered output
 	// bytes as a chunk.
 	// @exception IOException if an I/O error occurred
-	public synchronized void flush() throws IOException
-	{
-		if ( count != 0 )
-		{
+	public synchronized void flush() throws IOException {
+		if ( count != 0 ) {
 			writeBuf( buf, 0, count );
 			count = 0;
 		}
 	}
 
-
 	/// Set a footer.  Footers are much like HTTP headers, except that
 	// they come at the end of the data instead of at the beginning.
-	public void setFooter( String name, String value )
-	{
+	public void setFooter( String name, String value ) {
 		footerNames.add( name );
 		footerValues.add( value );
 	}
 
-
 	/// Indicate the end of the chunked data by sending a zero-length chunk,
 	// possible including footers.
 	// @exception IOException if an I/O error occurred
-	public void done() throws IOException
-	{
+	public void done() throws IOException {
 		flush();
 		PrintStream pout = new PrintStream( out );
 		pout.println( "0" );
@@ -129,15 +113,12 @@ public class ChunkedOutputStream extends BufferedOutputStream
 		pout.flush();
 	}
 
-
 	/// Make sure that calling close() terminates the chunked stream.
-	public void close() throws IOException
-	{
+	public void close() throws IOException {
 		if ( footerNames != null )
 			done();
 		super.close();
 	}
-
 
 	/// Write a sub-array of bytes.
 	// <P>
@@ -151,12 +132,9 @@ public class ChunkedOutputStream extends BufferedOutputStream
 	// @param len the number of bytes that are written
 	// @exception IOException if an I/O error occurred
 	public synchronized void write( byte b[], int off, int len ) 
-	throws IOException
-	{
+													throws IOException {
 		int avail = buf.length - count;
-
-		if ( len <= avail )
-		{
+		if ( len <= avail ) {
 			System.arraycopy( b, off, buf, count, len );
 			count += len;
 			return;
@@ -169,8 +147,7 @@ public class ChunkedOutputStream extends BufferedOutputStream
 	// This is where chunking semantics are implemented.
 	// @exception IOException if an I/O error occurred
 	@SuppressWarnings("deprecation")
-	private void writeBuf( byte b[], int off, int len ) throws IOException
-	{
+	private void writeBuf( byte b[], int off, int len ) throws IOException {
 		// Write the chunk length as a hex number.
 		String lenStr = Integer.toString( len, 16 );
 		lenStr.getBytes( 0, lenStr.length(), lenBytes, 0 );

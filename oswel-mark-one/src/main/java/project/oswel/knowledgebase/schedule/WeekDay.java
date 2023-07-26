@@ -29,7 +29,14 @@ public enum WeekDay {
     public int getIndex() { return this.index; }
 
     public static String[] getDaysOfWeek() {
-        String[] daysOfWeek = {"sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
+        String[] daysOfWeek = {
+                            "sunday", 
+                            "monday", 
+                            "tuesday", 
+                            "wednesday", 
+                            "thursday", 
+                            "friday"
+                        };
         return daysOfWeek;
     }
 
@@ -44,19 +51,19 @@ public enum WeekDay {
     public static WeekDay getWeekDayFromString (String name) 
                                         throws IllegalArgumentException {
         switch (name) {
-            case "Sunday":
+            case "sunday":
                 return WeekDay.SUNDAY;
-            case "Monday":
+            case "monday":
                 return WeekDay.MONDAY;
-            case "Tuesday":
+            case "tuesday":
                 return WeekDay.TUESDAY;
-            case "Wednesday":
+            case "wednesday":
                 return WeekDay.WEDNESDAY;
-            case "Thursday":
+            case "thursday":
                 return WeekDay.THURSDAY;
-            case "Friday":
+            case "friday":
                 return WeekDay.FRIDAY;
-            case "Saturday":
+            case "saturday":
                 return WeekDay.SATURDAY;
             default:
                 throw new IllegalArgumentException(
@@ -87,5 +94,4 @@ public enum WeekDay {
                 return "unknown";
         }
     }
-
 }

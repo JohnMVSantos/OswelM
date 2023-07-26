@@ -4,6 +4,7 @@ package project.oswel.speechrecognition.util;
  * A string utility class for commonly used methods. 
  * These methods are particularly useful for parsing.
  * @author Skylion
+ * {@link https://github.com/goxr3plus/java-google-speech-api/tree/master/src/main/java/com/goxr3plus/speech}
  */
 public class StringUtil {
 	
@@ -47,7 +48,6 @@ public class StringUtil {
             int nStart = i + part1.length();
             sub = s.substring(nStart, j);
         }
-
         return sub;
     }
     

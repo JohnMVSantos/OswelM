@@ -1,9 +1,10 @@
 
 1) Need a lot of cleaning in the code, do we really need Month.java and WeekDay.java??
-1.1) Make sure external references to sources are provided in the source code.
 1.2) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
+1.3) Refactor Utils.java some code are repeated.
 2) Is there no POM endpoints for MaryTTS and Guava?
 3) Logger in Java instead of print statements.
+4) Need a graceful exit when saying goodbye. 
 4) Face Detection in JAVA
 The following can be handled by ChatGPT.
 5) Any given sentence, the most important noun to be searched in wikipedia?
@@ -14,6 +15,7 @@ The following can be handled by ChatGPT.
 9) Stocks?? Optional...
 10) Maybe retrain a better model, also should be able to handle responses to user responding to how they are feeling such as "I am doing well".
 Also should have some confirmation responses. 
+11) For news updates maybe add an option to specify the country and also allow talking about the author and the title. 
 
 14) License file or perhaps another file called info.json should contain the following information file names
 							"oswel.h5",
