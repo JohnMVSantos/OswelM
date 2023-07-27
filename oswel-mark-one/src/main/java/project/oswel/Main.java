@@ -7,7 +7,6 @@ import project.oswel.speechrecognition.microphone.Microphone;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
 import marytts.signalproc.effects.StadiumEffect;
-import project.oswel.knowledgebase.schedule.WeekDay;
 import project.oswel.speech.TextToSpeech;
 import project.oswel.utilities.Utils;
 import java.io.IOException;
@@ -69,9 +68,8 @@ public class Main {
 		duplex.addResponseListener(new GSpeechResponseListener() {
 			public void onResponse(GoogleResponse googleResponse) {
 				String userInput = "";
-				String oswelOutput = "";
+				String[] oswelOutput;
 				userInput = googleResponse.getResponse();
-
 				if (userInput != null) {
 					if (googleResponse.isFinalResponse()) {
 						System.out.println("User said: " + userInput);		
@@ -79,8 +77,14 @@ public class Main {
 							if (userInput != "") {
 								oswelOutput = utils.processResponse(userInput);
 								System.out.println("Oswel said: " + 
-														oswelOutput);
-								speak(oswelOutput);
+														oswelOutput[1]);
+								speak(oswelOutput[1]);
+								if (oswelOutput[0].equalsIgnoreCase(
+												"departure")) {
+									System.exit(1);
+								}
+								System.out.println("Listening...");
+								
 							}		
 						} catch (Exception  e) {
 							e.printStackTrace();
@@ -117,6 +121,7 @@ public class Main {
 		//Start Voice Recognition
 		GSpeechDuplex duplex = setVoiceRecognition(
 			(String) utils.getLicense().get("googlespeech"));
+		System.out.println("Listening...");
 		startProcess(duplex);
 
 		// Sample Getting ChatGPT response. 

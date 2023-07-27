@@ -7,10 +7,9 @@ import project.oswel.knowledgebase.schedule.DateTime;
 import project.oswel.knowledgebase.schedule.WeekDay;
 import org.json.simple.parser.ParseException;
 import org.nd4j.common.io.ClassPathResource;
-
-import project.oswel.knowledgebase.JWiki;
 import project.oswel.knowledgebase.Weather;
 import org.json.simple.parser.JSONParser;
+import project.oswel.knowledgebase.JWiki;
 import project.oswel.nlp.ChatKeras;
 import org.json.simple.JSONObject;
 import project.oswel.nlp.NER;
@@ -146,16 +145,30 @@ public class Utils {
 	}
 
 	/**
+	 * This method collected the nouns in a given sentence.
+	 * @param sentence The sentence to collect the nouns.
+	 * @return The indices of each word in the sentence identified to be nouns.
+	 */
+	private Stack<Integer> collectNouns(String sentence) {
+		Stack<Integer> nouns = new Stack<Integer>();
+		String[] tags = ner.tagSentence(sentence);
+		for (int i=0; i<tags.length; i++) {
+			if (tags[i].equalsIgnoreCase("NN")) {
+				nouns.push(i);
+			}
+		}
+		return nouns;
+	}
+
+	/**
 	 * This method processes the weather response to detect if the user
 	 * specified the location to fetch weather information from. Or if the
 	 * user specified the day to fetch the weather. 
 	 * @param userResponse The response of the user to process.
-	 * @param oswelResponse The random response returned by the NLP class.
 	 * @return The processed string to output (String).
 	 * @throws WeatherFetchFailedException
 	 */
-	private String processWeatherResponse(
-		String userResponse, String oswelResponse) 
+	private String processWeatherResponse(String userResponse) 
 								throws WeatherFetchFailedException {
 
 		String[] daysOfWeek = WeekDay.getDaysOfWeek();
@@ -199,9 +212,18 @@ public class Utils {
 		double precip = (double) dayValue.get("precipprob");
 		String description = (String) dayValue.get("description");
 
-		return String.format("In %s, ", location) + oswelResponse + 
-			String.format(" on %s %.1f degrees celsius with %s.", day, temp, description)
-				+ String.format(" A high of %.1f degrees and a low of %.1f degrees celsius.", maxTemp, minTemp);
+		return "In " + location + " %s "
+				+ String.format("on %s %.1f degrees celsius with %s. ", 
+							day, temp, description)
+				+ String.format(
+					"A high of %.1f degrees and ", 
+							maxTemp)
+				+ String.format(
+						"a low of %.1f degrees celsius. ", 
+						minTemp)  
+				+ String.format(
+						"There is a %.1f percent chance of rain", 
+						precip);
 	}
 
 	/**
@@ -209,12 +231,10 @@ public class Utils {
 	 * specified the location to parse the time. Otherwise, by default it
 	 * parses the time in Calgary.
 	 * @param userResponse The response from the user to process.
-	 * @param oswelResponse The random response fetched by the NLP class.
 	 * @return The processed string containing the time information for a
 	 * 		   particular city.
 	 */
-	private String processTimeResponse(
-							String userResponse, String oswelResponse) {
+	private String processTimeResponse(String userResponse) {
 		String[] locations = ner.findLocation(userResponse);
 		String time = "";
 		String location = "";
@@ -225,53 +245,39 @@ public class Utils {
 			location = "Calgary";
 			time = DateTime.getCurrentTime();
 		}
-		return String.format("In %s, ", location) + oswelResponse + " " + time;
+		return "In " + location + " %s " + time;
 	}
 
 	/**
 	 * This method processes the date response which returns the current
 	 * date. 
 	 * @param userResponse The user response to process.
-	 * @param oswelResponse The random generated response returned by the 
-	 * 						NLP class.
 	 * @return The processed response containing the current date (String).
 	 */
-	private String processDateResponse(
-					String userResponse, String oswelResponse) {
+	private String processDateResponse(String userResponse) {
 		String date = "";
 		date = DateTime.getCurrentDate();
-		return oswelResponse + " " + date;
+		return "%s " + date;
 	}	
 
 	/**
 	 * This method processes the current events/news response to return
 	 * the top headlines in the US or by specific category. 
 	 * @param userResponse The user response to process.
-	 * @param oswelResponse The random generated response returned by the 
-	 * 						NLP class.
 	 * @return The processed response containing the fetched current evernts
 	 * 		   information.
 	 */
-	private String processNewsResponse(
-			String userResponse, String oswelResponse) {
-
-		Stack<Integer> nouns = new Stack<Integer>();
-		String[] tags = ner.tagSentence(userResponse);
+	private String processNewsResponse(String userResponse) {
 		String[] words = userResponse.split(" ");
 		String description = "";
-		for (int i=0; i<tags.length; i++) {
-			if (tags[i].equalsIgnoreCase("NN")) {
-				nouns.push(i);
-			}
-		}
-
+		Stack<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
 			description = newsAPI.getNewsByTopic(topic);
 		} else {
 			description = newsAPI.getNewsTopHeadline();
 		}
-		return oswelResponse + description;
+		return "%s " + description;
 	}
 
 	/**
@@ -282,19 +288,11 @@ public class Utils {
 	 * 						NLP model
 	 * @return The wikipedia information based on the topic specified. 
 	 */
-	private String processWikipediaResponse(
-			String userResponse, String oswelResponse) {		
+	private String processWikipediaResponse(String userResponse) {		
 
-		Stack<Integer> nouns = new Stack<Integer>();
-		String[] tags = ner.tagSentence(userResponse);
 		String[] words = userResponse.split(" ");
 		String description = "";
-		for (int i=0; i<tags.length; i++) {
-			if (tags[i].equalsIgnoreCase("NN")) {
-				nouns.push(i);
-			}
-		}
-
+		Stack<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
 			JWiki jwiki = new JWiki(topic);
@@ -312,35 +310,40 @@ public class Utils {
 	 * user response. 
 	 * @throws WeatherFetchFailedException
 	 */
-	public String processResponse(String userResponse) 
+	public String[] processResponse(String userResponse) 
 									throws WeatherFetchFailedException {
 		JSONObject oswelResponse = chatKeras.getRandomResponse(userResponse);
 		String category = (String) oswelResponse.get("category");
 		double score = (double) oswelResponse.get("score");
 		String oswelMessage = (String) oswelResponse.get("response");
+		String[] finalResponse = new String[2];
 
-		if (score >= 0.25) {
+		if (score >= 0.50) {
 			if (category.equalsIgnoreCase("weather")) {
-				oswelMessage = this.processWeatherResponse(
-											userResponse, oswelMessage);
+				oswelMessage = String.format(
+									this.processWeatherResponse(userResponse), 
+									oswelMessage);
 			} else if (category.equalsIgnoreCase("time")) {
-				oswelMessage = this.processTimeResponse(
-											userResponse, oswelMessage);
+				oswelMessage = String.format(
+									this.processTimeResponse(userResponse), 
+									oswelMessage);
 			} else if (category.equalsIgnoreCase("date")) {
-				oswelMessage = this.processDateResponse(
-											userResponse, oswelMessage);
+				oswelMessage = String.format(
+									this.processDateResponse(userResponse), 
+									oswelMessage);
 			} else if (category.equalsIgnoreCase("events")) {
-				oswelMessage = this.processNewsResponse(
-											userResponse, oswelMessage);
+				oswelMessage = String.format(
+									this.processNewsResponse(userResponse), 
+									oswelMessage);
 			}
+			finalResponse[0] = category;
+			finalResponse[1] = oswelMessage;
 		} else {
 			String wikiMessage = "";
-			wikiMessage = this.processWikipediaResponse(
-											userResponse, oswelMessage);
-			if (wikiMessage.length() > 0) {
-				return wikiMessage;
-			}
+			wikiMessage = this.processWikipediaResponse(userResponse);
+			finalResponse[0] = "general";
+			finalResponse[1] = wikiMessage;
 		}
-		return oswelMessage;
+		return finalResponse;
 	}
 }

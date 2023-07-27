@@ -30,12 +30,12 @@ public enum WeekDay {
 
     public static String[] getDaysOfWeek() {
         String[] daysOfWeek = {
-                            "sunday", 
-                            "monday", 
-                            "tuesday", 
-                            "wednesday", 
-                            "thursday", 
-                            "friday"
+                            "Sunday", 
+                            "Monday", 
+                            "Tuesday", 
+                            "Wednesday", 
+                            "Thursday", 
+                            "Friday"
                         };
         return daysOfWeek;
     }

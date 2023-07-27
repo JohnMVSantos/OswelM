@@ -384,7 +384,7 @@ public class GSpeechDuplex {
 			// intermittently, sleeping thread supply bytes to the urlConn 
 			// Stream at a rate that approaches the bitrate 
 			// ( =30K per sec. in this instance ).
-			System.out.println("Listening...");
+			// System.out.println("Listening...");
 			ais = new AudioInputStream(mtl);
 			
 			AudioSystem.write(ais, FLACFileWriter.FLAC, out);
