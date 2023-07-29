@@ -51,10 +51,10 @@
   </developers>
 
   <resources>
-     <resource>
-       <directory>src/main/resources</directory>
-     </resource>
-   </resources>
+    <resource>
+      <directory>src/main/resources</directory>
+    </resource>
+  </resources>
 
   <dependencies>
     <dependency>
@@ -104,6 +104,12 @@
       <artifactId>java-flac-encoder</artifactId>
       <version>0.3.7</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
+    <dependency>
+        <groupId>edu.stanford.nlp</groupId>
+        <artifactId>stanford-corenlp</artifactId>
+        <version>4.5.4</version>
+    </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>
       <artifactId>stanford-corenlp-4-models</artifactId>
@@ -113,18 +119,9 @@
       <classifier>models</classifier>   
     </dependency>
     <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>stanford-corenlp-4</artifactId>
-      <scope>system</scope>
-      <version>4.5.4</version>
-      <systemPath>${basedir}/external libraries/stanford-corenlp-4.5.4.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
+      <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/guava-22.0.jar</systemPath>   
+      <version>32.0.1-jre</version>
     </dependency>
     <dependency>
       <groupId>com.3rdparty</groupId>

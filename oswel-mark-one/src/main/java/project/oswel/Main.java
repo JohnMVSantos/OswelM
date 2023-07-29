@@ -9,6 +9,7 @@ import net.sourceforge.javaflacencoder.FLACFileWriter;
 import marytts.signalproc.effects.StadiumEffect;
 import project.oswel.speech.TextToSpeech;
 import project.oswel.utilities.Utils;
+import java.util.logging.Logger;
 import java.io.IOException;
 
 /**
@@ -19,6 +20,7 @@ import java.io.IOException;
  */
 public class Main {
 
+	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
 	private static TextToSpeech tts = new TextToSpeech();
 	private static Utils utils;
@@ -72,18 +74,18 @@ public class Main {
 				userInput = googleResponse.getResponse();
 				if (userInput != null) {
 					if (googleResponse.isFinalResponse()) {
-						System.out.println("User said: " + userInput);		
+						LOGGER.info("User said: " + userInput);	
 						try {
 							if (userInput != "") {
 								oswelOutput = utils.processResponse(userInput);
-								System.out.println("Oswel said: " + 
+								LOGGER.info("Oswel said: " + 
 														oswelOutput[1]);
 								speak(oswelOutput[1]);
 								if (oswelOutput[0].equalsIgnoreCase(
 												"departure")) {
 									System.exit(1);
 								}
-								System.out.println("Listening...");
+								LOGGER.info("Listening...");
 								
 							}		
 						} catch (Exception  e) {
@@ -91,7 +93,7 @@ public class Main {
 						}
 					}
 				} else {
-					System.out.println("Output was null");
+					LOGGER.severe("No speech was recognized...");
 				}
 			}
 		});
@@ -114,14 +116,14 @@ public class Main {
 		// Reading and validating the license containing API keys.
 		utils = new Utils("oswel.lic");
 		
-		System.out.println("Configuring Oswel voice...");
+		LOGGER.info("Configuring Oswel voice...");
 		// Set Oswel voice.
 		setVoiceAndEffect("cmu-bdl-hsmm", 5.0);
 		
 		//Start Voice Recognition
 		GSpeechDuplex duplex = setVoiceRecognition(
 			(String) utils.getLicense().get("googlespeech"));
-		System.out.println("Listening...");
+		LOGGER.info("Listening ...");
 		startProcess(duplex);
 
 		// Sample Getting ChatGPT response. 

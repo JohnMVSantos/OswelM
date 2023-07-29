@@ -1,8 +1,7 @@
 
 1) Need a lot of cleaning in the code, do we really need Month.java and WeekDay.java??
 1.2) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
-2) Is there no POM endpoints for MaryTTS and Guava?
-3) Logger in Java instead of print statements.
+2) Is there no POM endpoints for MaryTTS?
 4) Face Detection in JAVA
 The following can be handled by ChatGPT.
 6) Translate utility.
@@ -14,6 +13,7 @@ The following can be handled by ChatGPT.
 Also should have some confirmation responses. 
 11) For news updates maybe add an option to specify the country and also allow talking about the author and the title. 
 12) Make use of the settings.json
+13) Fix redundant imports.
 
 Overall functionality is to recognize speech and deliver meaningful responses...
 Next steps is to integrate to Raspberry PI and develop the OLED display and Firebeetle Microcontroller to output the Oswel Logo and information to be displayed. 

@@ -12,6 +12,7 @@ import org.json.simple.parser.JSONParser;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.nlp.ChatKeras;
 import org.json.simple.JSONObject;
+import java.util.logging.Logger;
 import project.oswel.nlp.NER;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Stack;
  */
 public class Utils {
 
+	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static JSONObject oswelLicense = new JSONObject();
     private static JSONParser parser = new JSONParser();
 	private static ChatKeras chatKeras;
@@ -48,14 +50,14 @@ public class Utils {
 	public Utils(String licenseFileName) 
 				throws InvalidAPIKeyException, WeatherFetchFailedException {
 
-		System.out.println("Reading and validating license file...");
+		LOGGER.info("Reading and validating license file...");
 		try {
 			this.validateLicenseContents(licenseFileName);
 		} catch (InvalidAPIKeyException e) {
 			throw new InvalidAPIKeyException(e.getMessage());
 		}
 
-		System.out.println("Loading model resources...");
+		LOGGER.info("Loading model resources...");
 		chatKeras =  new ChatKeras(
 							"oswel.h5",
 							"words.txt",
