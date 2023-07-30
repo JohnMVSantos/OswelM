@@ -63,3 +63,8 @@ pip install -r requirements.txt
 
 # Java Application
 *The following steps are guidelines to deploy the trained Keras models and uses external APIs to apply the concept of OswelM through the use of the Java language.*
+
+## Resources
+
+## License
+
