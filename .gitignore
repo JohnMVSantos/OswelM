@@ -2,7 +2,7 @@
 *.lic
 
 # Jar files
-# *.jar
+*.jar
 
 # GIF Files
 *.GIF
