@@ -99,6 +99,13 @@ public class Utils {
 		}
 	}
 
+	/**
+	 * This method reads the file settings.json to grab the user set 
+	 * information for the endpoints and resources file names. 
+	 * @param settingsFileName The file name containing the settings.
+	 * 						   It is usually settings.json under resources.
+	 * @return JSONObject containing the contents of the JSON file. 
+	 */
 	private JSONObject readSettings(String settingsFileName) { 
         JSONParser parser = new JSONParser();
 		JSONObject jsonObject = new JSONObject();

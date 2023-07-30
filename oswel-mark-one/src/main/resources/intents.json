@@ -1,8 +1,37 @@
 {
     "intents": [
         {
+            "tag": "status",
+            "patterns": [
+                        "Are you up",
+                        "You there",
+                        "Are you there",
+                        "Are you listening",
+                        "Can you hear me",
+                        "I need some help",
+                        "I need assistance",
+                        "I need you for something",
+                        "Are you awake",
+                        "Wake up",
+                        "Listen to me",
+                        "Are you ready",
+                        "Let's get started",
+                        "Are you available"
+                        ],
+            "responses": [
+                        "For you, always.",
+                        "At your service.",
+                        "I have indeed been uploaded. We're online and ready.",
+                        "I have been busy, but how can I help?",
+                        "What can I do for you?",
+                        "Anything, I am here to help.",
+                        "How may I be of service?"
+                        ]
+        },
+        {
             "tag": "greetings",
-            "patterns": ["Hello",
+            "patterns": [
+                        "Hello",
                         "Hi",
                         "Hey Oswel",
                         "Hi Oswel",
@@ -22,7 +51,8 @@
                         "It's nice to meet you",
                         "It's a pleasure to meet you"
                         ],
-            "responses": ["It's so nice to see you again!",
+            "responses": [
+                        "It's so nice to see you again!",
                         "It's great seeing you. I hope you're doing well.",
                         "Hello! How may I be of service?",
                         "Hi! How can I assist?",
@@ -58,7 +88,8 @@
                         "So long",
                         "I'm out of here"
                     ],
-            "responses": ["Until next time!",
+            "responses": [
+                        "Until next time!",
                         "Enjoy the rest of your day!",
                         "Please, take care!",
                         "I hope I was of good service! Powering down.",
@@ -84,7 +115,8 @@
         },
         {
             "tag": "feeling",
-            "patterns": ["How are you",
+            "patterns": [
+                        "How are you",
                         "How is it going",
                         "How are you feeling",
                         "How are you doing right now",
@@ -150,34 +182,73 @@
                     ]
         },
         {
-            "tag": "status",
-            "patterns": ["Are you up",
-                        "You there",
-                        "Are you there",
-                        "Are you listening",
-                        "Can you hear me",
-                        "I need some help",
-                        "I need assistance",
-                        "I need you for something",
-                        "Are you awake",
-                        "Wake up",
-                        "Listen to me",
-                        "Are you ready",
-                        "Let's get started",
-                        "Are you available"
-                        ],
-            "responses": ["For you, always.",
-                        "At your service.",
-                        "I have indeed been uploaded. We're online and ready.",
-                        "I have been busy, but how can I help?",
-                        "What can I do for you?",
-                        "Anything, I am here to help.",
-                        "How may I be of service?"
-                        ]
+            "tag": "affirmation",
+            "patterns": [
+                        "I'm doing great",
+                        "I am doing fine",
+                        "I'm doing alright",
+                        "I am doing well",
+                        "I am doing very well",
+                        "Not too bad",
+                        "Living the dream.",
+                        "Pretty peachy.",
+                        "Hanging in like a hair on a biscuit.",
+                        "As happy as a clam.",
+                        "Better than I deserve.",
+                        "Pretty well! Let's get started.",
+                        "I'm alive.",
+                        "Yeah, all right.",
+                        "I am doing good"
+                    ],
+            "responses": [
+                        "Glad to hear that!",
+                        "Pleased to hear that!",
+                        "Glad to hear that!",
+                        "Glad to hear it!",
+                        "Delighted to hear that!",
+                        "Amazing to hear that!",
+                        "That is good to know!",
+                        "That's fantastic!",
+                        "That is a pleasure to hear!",
+                        "Wonderful news!"
+                    ]
+
+        },
+        {
+            "tag": "appreciation",
+            "patterns": [
+                        "Everything is going fine, thank you for inquiring.",
+                        "I'm doing well, thank you for your concern.",
+                        "I am doing great, thanks for asking.",
+                        "I am doing well, thank you.",
+                        "Very well, thanks",
+                        "Happy and content, thank you."
+                    ],
+            "responses": [
+                        "Happy to!",
+                        "You are welcome!",
+                        "You're most welcome",
+                        "It was my pleasure",
+                        "Of course!",
+                        "Anytime!",
+                        "Not a problem!",
+                        "No worries!",
+                        "Don't mention it.",
+                        "Absolutely!",
+                        "Let me know anytime, I am here to help",
+                        "The pleasure is all mine!",
+                        "Don't give it a second thought.",
+                        "I am just returning the gesture, but thanks!",
+                        "I am returning the favor!",
+                        "Certainly!",
+                        "No thanks are necessary, but glad it was acknowledged!",
+                        "I aim to please!"
+                    ]
         },
         {
             "tag": "weather",
-            "patterns": ["What's the weather forecast", 
+            "patterns": [
+                        "What's the weather forecast", 
                         "What's the temperature", 
                         "How's the weather", 
                         "What is the weather",
@@ -199,7 +270,8 @@
                         "How's the weather in",
                         "What is the temperature at"
                     ],
-            "responses": ["the current weather outside is", 
+            "responses": [
+                        "the current weather outside is", 
                         "the current weather is",
                         "the current temperature outside is",
                         "the current temperature is",
@@ -208,7 +280,8 @@
         },
         {
             "tag": "time",
-            "patterns": ["What time is it",
+            "patterns": [
+                        "What time is it",
                         "Could you tell me what time it is",
                         "Could you tell me the time",
                         "Do you have the time",
@@ -218,14 +291,16 @@
                         "Do you know the time",
                         "Do you know the time at"
                     ],
-            "responses": ["it is",
+            "responses": [
+                        "it is",
                         "it is currently",
                         "the time is"
                     ]
         },
         {
             "tag": "date",
-            "patterns": ["What is the date today",
+            "patterns": [
+                        "What is the date today",
                         "What is the date",
                         "Do you know the date",
                         "Could you please tell me the date",
@@ -234,14 +309,16 @@
                         "Tell me the current date",
                         "What is the date in"
                     ],
-            "responses": ["The current date is",
+            "responses": [
+                        "The current date is",
                         "It is currently",
                         "The date is"
                     ]
         },
         {
             "tag": "events",
-            "patterns": ["get me news updates?", 
+            "patterns": [
+                        "get me news updates?", 
                         "todays news", 
                         "top headlines", 
                         "current news", 
@@ -249,6 +326,31 @@
                     ],
             "responses": ["Getting news ..."
                     ]
+        },
+        {
+            "tag": "confirmation",
+            "patterns": [
+                ""
+            ],
+            "responses": [
+                "Check!",
+                "Will do, sir!",
+                "As you wish!",
+                "Consider that done!",
+                "I will endeavor to that!",
+                "I will implement all necessary procedures to accomplish that.",
+                "Hoping this will be done in a manner that you will find entirely satisfactory.",
+                "I will see to it immediately.",
+                "I have every intention of integrating that into our work.",
+                "That is a manageable purpose as far as I can tell.",
+                "I see no barrier to accomplishing this.",
+                "All power has been directed towards the work prompted.",
+                "I see no current obstacles which will prohibit us from doing that.",
+                "I have regarded this task as having the highest of priorities.",
+                "Your wish is my command.",
+                "That should do the trick.",
+                "I am here to help out with whatever I can."
+            ]
         }
     ]
 }
