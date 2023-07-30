@@ -14,31 +14,29 @@ import java.io.IOException;
  * {@link https://github.com/viralvaghela/Jwiki} 
  */
 public class JWiki {
-    final String BASE_URL="https://en.wikipedia.org/api/rest_v1/page/summary/";
-    String subject=null;
+    private String endPoint;
     String displayTitle="";
     String imageURL="";
-    String extractText="";
 
     /**
      * This creates a new object with the subject to search for.
      * @param subject The subject to search for in wikipedia. 
      */
-    public JWiki(String subject)
+    public JWiki(String endPoint)
     {
-        this.subject=subject;
-        getData();
+        this.endPoint = endPoint;
     }
 
     /**
      * Communicates to the API to fetch the description of the topic passed. 
      */
-    private void getData() {
+    public String getData(String subject) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(BASE_URL+subject)
+                .url(this.endPoint+subject)
                 .get()
                 .build();
+        String extractText = "";
         try {
             Response response=client.newCall(request).execute();
             String data = response.body().string();
@@ -59,6 +57,7 @@ public class JWiki {
         catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+        return extractText;
     }
 
     /**
@@ -73,9 +72,4 @@ public class JWiki {
      */
     public String getImageURL() {return imageURL;}
 
-    /**
-     * Returns the extracted text based on the topic provided.
-     * @return The description of the topic provided (String).
-     */
-    public String getExtractText() {return extractText;}
 }

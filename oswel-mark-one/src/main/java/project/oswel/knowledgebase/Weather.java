@@ -28,7 +28,7 @@ import java.net.URLEncoder;
 */
 public class Weather {
 
-    private static final String APIENDPOINT = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
+    private String endPoint;
     private String unitGroup = "metric";
     private String apiKey;
     private String location;
@@ -41,8 +41,9 @@ public class Weather {
      * the API key. 
      * @param apiKey The api-key to access the API data.
      */
-    public Weather(String apiKey) { 
+    public Weather(String apiKey, String endPoint) { 
         this.apiKey = apiKey; 
+        this.endPoint = endPoint;
     }
 
     /**
@@ -50,6 +51,14 @@ public class Weather {
      * @return The city location (String).
      */
     public String getLocation() { return this.location; }
+
+    /**
+     * This method sets the unitGroup to return the weather information.
+     * @param unitGroup The unitGroup to set (String). 
+     */
+    public void setUnitGroup(String unitGroup) {
+        this.unitGroup = unitGroup;
+    }
 
     /**
      * This method requests weather information using the following API:
@@ -64,7 +73,7 @@ public class Weather {
     public void timelineRequestHttpClient(
             String startDate, String endDate, String location) 
                                         throws WeatherFetchFailedException{
-		StringBuilder requestBuilder = new StringBuilder(APIENDPOINT);
+		StringBuilder requestBuilder = new StringBuilder(this.endPoint);
         this.location = location;
         try {
 		    requestBuilder.append(

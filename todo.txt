@@ -12,7 +12,6 @@ The following can be handled by ChatGPT.
 10) Maybe retrain a better model, also should be able to handle responses to user responding to how they are feeling such as "I am doing well".
 Also should have some confirmation responses. 
 11) For news updates maybe add an option to specify the country and also allow talking about the author and the title. 
-12) Make use of the settings.json
 13) Fix redundant imports.
 
 Overall functionality is to recognize speech and deliver meaningful responses...

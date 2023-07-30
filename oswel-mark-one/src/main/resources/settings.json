@@ -3,7 +3,7 @@
         "currentEvents": "https://newsapi.org/v2/",
         "wikipedia": "https://en.wikipedia.org/api/rest_v1/page/summary/",
         "weather": "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/",
-        "ChatGPT": "https://api.deepai.org/api/text-generator",
+        "ChatGPT": "https://api.deepai.org/api/text-generator"
     },
     "resources": {
         "oswelNLPModel": "oswel.h5",

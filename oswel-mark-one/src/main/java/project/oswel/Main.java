@@ -7,6 +7,7 @@ import project.oswel.speechrecognition.microphone.Microphone;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
 import marytts.signalproc.effects.StadiumEffect;
+import project.oswel.objectdetection.FaceKeras;
 import project.oswel.speech.TextToSpeech;
 import project.oswel.utilities.Utils;
 import java.util.logging.Logger;

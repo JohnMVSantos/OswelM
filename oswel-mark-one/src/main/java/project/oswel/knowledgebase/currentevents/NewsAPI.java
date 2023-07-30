@@ -17,15 +17,16 @@ import java.io.IOException;
 public class NewsAPI {
     private static OkHttpClient client = new OkHttpClient();
     private static JSONParser parser = new JSONParser();
-    private String endPoint = "https://newsapi.org/v2/";
+    private String endPoint;
     private String apiKey;
     
     /**
      * Creates a new NewsAPI object given the api key.
      * @param apiKey This is the api key to allow data fetching from the API.
      */
-    public NewsAPI (String apiKey) {
+    public NewsAPI (String apiKey, String endPoint) {
         this.apiKey = apiKey; 
+        this.endPoint = endPoint;
     }
 
     /**

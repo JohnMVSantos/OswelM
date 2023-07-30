@@ -36,6 +36,7 @@ public class Utils {
 	private static ChatKeras chatKeras;
 	private static Weather weatherInfo;
 	private static NewsAPI newsAPI;
+	private static JWiki jwiki;
 	private static NER ner;
 
 	/**
@@ -57,31 +58,61 @@ public class Utils {
 			throw new InvalidAPIKeyException(e.getMessage());
 		}
 
+		LOGGER.info("Reading settings file...");
+		JSONObject settings = this.readSettings("settings.json");
+		JSONObject resources = (JSONObject) settings.get("resources");
+		JSONObject endpoints = (JSONObject) settings.get("endpoints");
+
+
 		LOGGER.info("Loading model resources...");
 		chatKeras =  new ChatKeras(
-							"oswel.h5",
-							"words.txt",
-							"classes.txt",
-							"intents.json"
-							);
+							(String) resources.get("oswelNLPModel"),
+							(String) resources.get("wordsFile"),
+							(String) resources.get("classesFile"),
+							(String) resources.get("intentsFile")
+						);
 
 		weatherInfo = new Weather(
-			(String) oswelLicense.get("visualcrossing"));
+			(String) oswelLicense.get("visualcrossing"),
+			(String) endpoints.get("weather")
+		);
 
 		ner = new NER(
-			"en-ner-location.bin", 
-			"en-pos-maxent.bin");
+			(String) resources.get("locationNER"), 
+			(String) resources.get("posNER")
+		);
 
-		newsAPI = new NewsAPI((String) oswelLicense.get("newsapi"));
+		newsAPI = new NewsAPI(
+			(String) oswelLicense.get("newsapi"),
+			(String) endpoints.get("currentEvents"));
+		
+		jwiki = new JWiki((String) endpoints.get("wikipedia"));
 		
 		String[] weekStartEndDates = DateTime.getStartEndWeekDates();
 		try {
 			weatherInfo.timelineRequestHttpClient(
-				weekStartEndDates[0], weekStartEndDates[1], "Calgary");
+				weekStartEndDates[0], weekStartEndDates[1], 
+				(String) settings.get("cityLocation")
+			);
 		} catch (WeatherFetchFailedException e) {
 			throw new WeatherFetchFailedException(e.getMessage());
 		}
 	}
+
+	private JSONObject readSettings(String settingsFileName) { 
+        JSONParser parser = new JSONParser();
+		JSONObject jsonObject = new JSONObject();
+        try {
+            String settingsPath = new ClassPathResource(settingsFileName)
+                                        .getFile()
+                                        .getPath();
+            jsonObject = (JSONObject) parser.parse(
+                                            new FileReader(settingsPath));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        } 
+		return jsonObject;
+    }
 
 	/**
 	 * Reads the license file to grab the associated key for the APIs.
@@ -297,8 +328,7 @@ public class Utils {
 		Stack<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
-			JWiki jwiki = new JWiki(topic);
-			description = jwiki.getExtractText();
+			description = jwiki.getData(topic);
 		} 
 		return description;
 	}
