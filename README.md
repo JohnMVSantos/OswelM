@@ -64,6 +64,29 @@ pip install -r requirements.txt
 # Java Application
 *The following steps are guidelines to deploy the trained Keras models and uses external APIs to apply the concept of OswelM through the use of the Java language.*
 
+Install Java SDK 11
+
+sudo apt update
+sudo apt upgrade
+sudo apt install 
+
+Clone the Repo...
+Clean the workspace 
+Cmd + Shift + P (Ctrl + Shift + P on Windows) to show the command palette
+Choose "Java: Clean the Java language server workspace"
+Restart and Delete
+Install redhat.fabric8-analytics vscode extension
+
+Cleaning and compiling
+`
+& mvn clean -f "c:\Users\johns\Documents\OswelM\oswel-mark-one\pom.xml" compile assembly:single
+`
+
+Running
+`
+java -jar .\oswel-mark-one\target\oswel-mark-one-1.0-jar-with-dependencies.jar   
+`
+
 ## Resources
 
 ## License

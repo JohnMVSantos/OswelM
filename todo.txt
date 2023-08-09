@@ -1,11 +1,10 @@
-0) POM.xml add developers section and URL and ensure copyrights in the code. 
-1) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
-2) Fix redundant imports.
-3) For news updates maybe add an option to specify the country and also allow talking about the author and the title. 
-4) Face Detection in JAVA
-5) Is there no POM endpoints for MaryTTS? 
-6) Speech recognition in Java is timed out?
-7) Stocks?? Optional...
+Change Repo to Public
+1) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
+2) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
+3) For news updates maybe add an option to specify the country. 
+4) Face Detection in Java
+5) Speech recognition in Java is timed out?
+6) Stocks?? Optional...
  
 Next steps is to integrate to Raspberry PI 
 and develop the OLED display and Firebeetle Microcontroller 

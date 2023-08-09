@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -7,54 +6,48 @@
   <groupId>project.oswel</groupId>
   <artifactId>oswel-mark-one</artifactId>
   <version>1.0</version>
-
   <name>oswel-mark-one</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/JohnMVSantos/OswelM</url>
+  <packaging>jar</packaging>
 
   <description>
-    Oswelm is designed to implement the theory behind "Ordinary Systems of a Well Established Language Model"
+    Oswelm is designed to implement the concept behind "Ordinary Systems of a Well Established Language Model"
     which utilizes machine learning models where each are specified to perform a unique task to form a system of functionalities
     that are geared towards establishing a useful unified application that can handle several tasks. 
   </description> 
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <jackson.version>2.14.2</jackson.version>
-  </properties>
-
   <scm>
-    <connection></connection>
-    <developerConnection></developerConnection>
-    <url></url>
+    <url>https://github.com/JohnMVSantos/OswelM</url>
+    <connection>scm:git:https://github.com/JohnMVSantos/OswelM.git</connection>
+    <developerConnection>scm:git:https://github.com/JohnMVSantos/OswelM.git</developerConnection>
   </scm>
 
   <licenses>
     <license>
-      <name></name>
-      <url></url>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
   
   <issueManagement>
     <system>GitHub</system>
-    <url></url>
+    <url>https://github.com/JohnMVSantos/OswelM/issues</url>
   </issueManagement>
 
   <developers>
     <developer>
-      <id></id>
-      <name></name>
+      <id>JohnMVSantos</id>
+      <name>John Santos</name>
+      <email>johnmarivsantos@gmail.com</email>
+      <timezone>-7</timezone>
     </developer>
   </developers>
 
-  <resources>
-    <resource>
-      <directory>src/main/resources</directory>
-    </resource>
-  </resources>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -72,27 +65,37 @@
       <artifactId>deeplearning4j-modelimport</artifactId>
       <version>1.0.0-M2.1</version> 
     </dependency>
+    <!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>4.5.4</version>
+    </dependency>
+    <dependency>
+      <groupId>edu.stanford.nlp</groupId>
+      <artifactId>stanford-corenlp</artifactId>
+      <version>4.5.4</version>
+      <classifier>models</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>1.8.2</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.14</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.squareup.okhttp/okhttp -->
     <dependency>
-        <groupId>com.squareup.okhttp</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>2.7.5</version>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.9.3</version>
     </dependency>
     <dependency>
-        <groupId>com.squareup.okio</groupId>
-        <artifactId>okio</artifactId>
-        <version>3.4.0</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
-    <dependency>
-        <groupId>com.googlecode.json-simple</groupId>
-        <artifactId>json-simple</artifactId>
-        <version>1.1.1</version>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio</artifactId>
+      <version>3.4.0</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
@@ -104,81 +107,15 @@
       <artifactId>java-flac-encoder</artifactId>
       <version>0.3.7</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
     <dependency>
-        <groupId>edu.stanford.nlp</groupId>
-        <artifactId>stanford-corenlp</artifactId>
-        <version>4.5.4</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.11</version>
     </dependency>
     <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>stanford-corenlp-4-models</artifactId>
-      <scope>system</scope>
-      <version>4.5.4</version>
-      <systemPath>${basedir}/external libraries/stanford-corenlp-4.5.4-models.jar</systemPath>
-      <classifier>models</classifier>   
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>32.0.1-jre</version>
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>marytts-lang-en</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/marytts-lang-en-5.2.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>marytts-builder</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/marytts-builder-5.2-jar-with-dependencies.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>voice-dfki-spike-hsmm</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/voices/voice-dfki-spike-hsmm-5.2.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>voice-dfki-obadiah-hsmm</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/voices/voice-dfki-obadiah-hsmm-5.2.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>voice-cmu-bdl-hsmm-5</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/voices/voice-cmu-bdl-hsmm-5.2.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.3rdparty</groupId>
-      <artifactId>voice-cmu-rms-hsmm-5</artifactId>
-      <scope>system</scope>
-      <version>5.2.1</version>
-      <systemPath>${basedir}/external libraries/voices/voice-cmu-rms-hsmm-5.2.jar</systemPath>   
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
+      <groupId>com.googlecode.soundlibs</groupId>
+      <artifactId>mp3spi</artifactId>
+      <version>1.9.5.4</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -187,8 +124,12 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -203,15 +144,49 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.3</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
+          <configuration>  
+            <archive>  
+              <manifest>  
+                <mainClass>project.oswel.Main</mainClass>  
+              </manifest>
+              <manifestEntries>
+                <Build-Jdk>${jdk.version}</Build-Jdk>
+                <Implementation-Title>${project.name}</Implementation-Title>
+                <Implementation-Version>${project.version}</Implementation-Version>
+                <Specification-Title>${project.name} Library</Specification-Title>
+                <Specification-Version>${project.version}</Specification-Version>
+              </manifestEntries>
+            </archive>  
+          </configuration>  
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>2.5.1</version>
+        </plugin>
+        <!-- Add the assemble plugin with standard configuration -->
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+              <archive>
+              <manifest>
+                  <mainClass>project.oswel.Main</mainClass>
+              </manifest>
+              </archive>
+              <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>

@@ -1,13 +1,11 @@
 package project.oswel.knowledgebase.currentevents;
 
-import org.json.simple.parser.ParseException;
-import org.json.simple.parser.JSONParser;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.Request;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
+import okhttp3.OkHttpClient;
 import java.io.IOException;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import okhttp3.Response;
+import okhttp3.Request;
 
 /**
  * This class allows connection to newsapi.org to parse news information
@@ -16,7 +14,6 @@ import java.io.IOException;
  */
 public class NewsAPI {
     private static OkHttpClient client = new OkHttpClient();
-    private static JSONParser parser = new JSONParser();
     private String endPoint;
     private String apiKey;
     
@@ -34,71 +31,71 @@ public class NewsAPI {
      * @param topic The topic to search for the current events.
      * @return The news description related to the topic passed (String).
      */
-    public String getNewsByTopic(String topic) {
+    public String[] getNewsByTopic(String topic) {
 
         String finalEndpoint = this.endPoint + 
                             String.format("everything?q=%s", topic) + 
                             String.format("&apiKey=%s", this.apiKey);
 
-        String description = "[ERROR] Failed To Get Data";
         Request request = new Request.Builder()
                 .url(finalEndpoint)
                 .get()
                 .build();   
 
+        String[] summary = new String[3];
+
         try {
             Response response = client.newCall(request).execute();
             String data = response.body().string();
-            JSONObject jsonObject = (JSONObject) parser.parse(data);
-            if (jsonObject.get("status")
-                        .toString()
-                        .equalsIgnoreCase("ok")) {
-                JSONArray articles = (JSONArray) jsonObject.get("articles");
-                JSONObject article = (JSONObject) articles.get(0);
-                String author = (String) article.get("author");
-                String title = (String) article.get("title");
-                description = (String) article.get("description");
+            JSONObject jsonObject = new JSONObject(data);
+            if (jsonObject.getString("status")
+                    .equalsIgnoreCase("ok")) {
+                JSONArray articles = jsonObject.getJSONArray("articles");
+                JSONObject article = articles.getJSONObject(0);
+                summary[0] = article.getString("author");
+                summary[1] = article.getString("title");
+                summary[2] = article.getString("description");
             }
         }
-        catch (IOException | ParseException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
-        return description;
+        return summary;
     }
 
     /**
      * Returns the news topheadline description in the US.
      * @return The description of the news headline (String).
      */
-    public String getNewsTopHeadline() {
+    public String[] getNewsTopHeadline() {
 
         String finalEndpoint = this.endPoint + 
                             "top-headlines?country=us" + 
                             String.format("&apiKey=%s", this.apiKey);
 
-        String description = "[ERROR] Failed To Get Data";
         Request request = new Request.Builder()
                 .url(finalEndpoint)
                 .get()
                 .build();   
 
+        String[] summary = new String[3];
+
         try {
             Response response = client.newCall(request).execute();
             String data = response.body().string();
-            JSONObject jsonObject = (JSONObject) parser.parse(data);
-            if (jsonObject.get("status")
-                        .toString()
-                        .equalsIgnoreCase("ok")) {
-                JSONArray articles = (JSONArray) jsonObject.get("articles");
-                JSONObject article = (JSONObject) articles.get(0);
-                String author = (String) article.get("author");
-                String title = (String) article.get("title");
-                description = (String) article.get("description");
+            JSONObject jsonObject = new JSONObject(data);
+            if (jsonObject.getString("status")
+                    .equalsIgnoreCase("ok")) {
+                JSONArray articles = jsonObject.getJSONArray("articles");
+                JSONObject article = articles.getJSONObject(0);
+                summary[0] = article.getString("author");
+                summary[1] = article.getString("title");
+                summary[2] = article.getString("description");
             }
         }
-        catch (IOException | ParseException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
-        return description;
+        return summary;
     }
 }

@@ -1,11 +1,18 @@
 package project.oswel.speechrecognition.recognizer;
 
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.io.FileInputStream;
 import java.net.URLConnection;
+import java.io.BufferedReader;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.io.IOException;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import java.util.List;
+import java.io.File;
 import java.net.URL;
-import java.util.*;
-import org.json.*;
-import java.io.*;
 
 /*******************************************************************************
  * Class that submits FLAC audio and retrieves recognized text

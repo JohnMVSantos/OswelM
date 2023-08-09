@@ -8,22 +8,24 @@ import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import org.json.simple.parser.ParseException;
 import edu.stanford.nlp.pipeline.Annotation;
 import org.nd4j.common.io.ClassPathResource;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.json.simple.parser.JSONParser;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.util.CoreMap;
 import org.nd4j.linalg.factory.Nd4j;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.json.JSONArray;
 import java.io.FileReader;
 import java.util.Random;
 import java.util.List;
@@ -110,15 +112,21 @@ public class ChatKeras {
      *                        default it is called intents.json.
      */
     private void readIntents(String intentsFileName) { 
-        JSONParser parser = new JSONParser();
         try {
             String intentsPath = new ClassPathResource(intentsFileName)
                                         .getFile()
                                         .getPath();
-            JSONObject jsonObject = (JSONObject) parser.parse(
-                                            new FileReader(intentsPath));
-            this.intents = (JSONArray) jsonObject.get("intents");
-        } catch (IOException | ParseException e) {
+            InputStream is = new FileInputStream(intentsPath);
+			if (is == null) {
+				throw new NullPointerException(
+					"Cannot find resource file " + intentsPath);
+			} else {
+				BufferedReader in = new BufferedReader(new InputStreamReader(is));
+				JSONTokener tokener = new JSONTokener(in);
+				JSONObject jsonObject = new JSONObject(tokener);
+                this.intents = jsonObject.getJSONArray("intents");
+			}		
+        } catch (IOException e) {
             e.printStackTrace();
         } 
     }
@@ -263,12 +271,12 @@ public class ChatKeras {
         response.put("score", score);
 
         Random rand = new Random();
-        for (int i=0; i<intents.size(); i++) {
-            JSONObject intent = (JSONObject) intents.get(i);
+        for (int i=0; i<intents.length(); i++) {
+            JSONObject intent = intents.getJSONObject(i);
             if (category.equals(intent.get("tag"))) {
-                JSONArray responses = (JSONArray) intent.get("responses");
-                int index = rand.nextInt(responses.size());
-                response.put("response", (String) responses.get(index));
+                JSONArray responses = intent.getJSONArray("responses");
+                int index = rand.nextInt(responses.length());
+                response.put("response", responses.getString(index));
                 return response;
             }
         }

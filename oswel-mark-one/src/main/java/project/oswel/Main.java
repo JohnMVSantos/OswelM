@@ -6,10 +6,12 @@ import project.oswel.speechrecognition.recognizer.GSpeechDuplex;
 import project.oswel.speechrecognition.microphone.Microphone;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
-import marytts.signalproc.effects.StadiumEffect;
-import project.oswel.objectdetection.FaceKeras;
-import project.oswel.speech.TextToSpeech;
+import project.oswel.speech.constant.TtsStyleEnum;
+import project.oswel.speech.constant.VoiceEnum;
+import project.oswel.speech.service.TTSService;
+import project.oswel.speech.model.SSML;
 import project.oswel.utilities.Utils;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.io.IOException;
 
@@ -23,30 +25,22 @@ public class Main {
 
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
-	private static TextToSpeech tts = new TextToSpeech();
 	private static Utils utils;
-	
-	/**
-	 * Sets the voice of the application and any other effects. 
-	 * @param voice The name of the voice to use in the application. 
-	 * @param d The amount to set the stadium effect (float).
-	 */
-	private static void setVoiceAndEffect(String voice, double d) {
-		// Setting the Current Voice.
-		// Options are dfki-spike-hsmm, dfki-obadiah-hsmm, cmu-bdl-hsmm, cmu-rms-hsmm
-		tts.setVoice(voice);	
-		StadiumEffect stadiumEffect = new StadiumEffect();
-		stadiumEffect.setParams("amount:" + d);
-		// Apply the effects.
-		tts.getMarytts().setAudioEffects(stadiumEffect.getFullEffectAsString());
-	}
+	private static TTSService ts = TTSService.builder()
+										.usePlayer(true)
+										.build();
 
 	/**
 	 * Provides speaking capabilities in the application. 
 	 * @param prompt The string to speak.
 	 */
 	private static void speak(String prompt) {
-		tts.speak(prompt, 2.0f, false, true);
+		SSML ssml = SSML.builder()
+                .synthesisText(prompt)
+                .voice(VoiceEnum.en_US_GuyNeural)
+                .style(TtsStyleEnum.fearful)
+				.build();
+        ts.sendText(ssml);
 	}
 
 	/**
@@ -84,6 +78,7 @@ public class Main {
 								speak(oswelOutput[1]);
 								if (oswelOutput[0].equalsIgnoreCase(
 												"departure")) {
+									TimeUnit.SECONDS.sleep(3);
 									System.exit(1);
 								}
 								LOGGER.info("Listening...");
@@ -116,20 +111,11 @@ public class Main {
 		
 		// Reading and validating the license containing API keys.
 		utils = new Utils("oswel.lic");
-		
-		LOGGER.info("Configuring Oswel voice...");
-		// Set Oswel voice.
-		setVoiceAndEffect("cmu-bdl-hsmm", 5.0);
-		
+
 		//Start Voice Recognition
 		GSpeechDuplex duplex = setVoiceRecognition(
 			(String) utils.getLicense().get("googlespeech"));
 		LOGGER.info("Listening ...");
 		startProcess(duplex);
-
-		// Sample Getting ChatGPT response. 
-		// ChatGPT chatGPT = new ChatGPT("quickstart-QUdJIGlzIGNvbWluZy4uLi4K");
-		// String description = chatGPT.getGPTResponse("It is higher than 30 degrees celsius outside.");
-		// System.out.println(description);
     };    
 }

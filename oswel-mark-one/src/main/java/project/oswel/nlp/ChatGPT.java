@@ -1,14 +1,11 @@
 package project.oswel.nlp;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import org.json.simple.parser.ParseException;
-import org.json.simple.parser.JSONParser;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.Request;
-import org.json.simple.JSONObject;
+import okhttp3.OkHttpClient;
 import java.io.IOException;
+import org.json.JSONObject;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.Request;
 
 /**
  * This class communicates to the endpoint api.deepai.org which runs 
@@ -19,7 +16,6 @@ public class ChatGPT {
 
     private String endPoint = "https://api.deepai.org/api/text-generator";
     private OkHttpClient client = new OkHttpClient();
-    private JSONParser parser = new JSONParser();
     private String apiKey;
 
     /**
@@ -56,9 +52,12 @@ public class ChatGPT {
      */
     public String getGPTResponse(String prompt) {
 
-        RequestBody formBody = new FormEncodingBuilder()
-            .add("text", prompt)
-            .build();
+        RequestBody formBody = null;
+        // = new RequestBody() {
+            
+        // }
+        //     .add("text", prompt)
+        //     .build();
 
         String description = "[ERROR] Failed To Get Data";
         Request request = new Request.Builder()
@@ -70,10 +69,10 @@ public class ChatGPT {
         try {
             Response response = this.client.newCall(request).execute();
             String data = response.body().string();
-            JSONObject jsonObject = (JSONObject) this.parser.parse(data);
-            description = (String) jsonObject.get("output");
+            JSONObject jsonObject = new JSONObject(data);
+            description = jsonObject.getString("output");
         }
-        catch (IOException | ParseException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return description;

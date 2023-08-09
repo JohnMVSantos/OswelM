@@ -7,19 +7,17 @@ import project.oswel.knowledgebase.schedule.WeekDay;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.client.methods.HttpGet;
-import org.json.simple.parser.ParseException;
 import java.io.UnsupportedEncodingException;
-import org.json.simple.parser.JSONParser;
 import java.nio.charset.StandardCharsets;
 import org.apache.http.util.EntityUtils;
 import java.net.URISyntaxException;
-import org.json.simple.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
-import org.json.simple.JSONArray;
 import java.nio.charset.Charset;
 import java.io.IOException;
 import java.net.URLEncoder;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 /**
  * Class that contains methods fetch current or historical weather information.
@@ -148,15 +146,8 @@ public class Weather {
 			System.out.printf("No raw data%n");
 			return;
 		}
-
-        JSONParser parser = new JSONParser();  
-        JSONObject timelineResponse;
-        try {
-            timelineResponse = (JSONObject) parser.parse(rawResult);
-            this.weatherInformation = (JSONArray) timelineResponse.get("days");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }  
+        JSONObject timelineResponse = new JSONObject(rawResult);
+        this.weatherInformation = timelineResponse.getJSONArray("days");  
 	}
 
     /**
@@ -167,7 +158,7 @@ public class Weather {
      */
     public JSONObject getWeatherInfoDay(String name) {
         int index = WeekDay.getWeekDayFromString(name.toLowerCase()).getIndex();
-        JSONObject weatherInfo = (JSONObject) this.weatherInformation.get(index);
+        JSONObject weatherInfo = this.weatherInformation.getJSONObject(index);
         return weatherInfo;
     }
 }

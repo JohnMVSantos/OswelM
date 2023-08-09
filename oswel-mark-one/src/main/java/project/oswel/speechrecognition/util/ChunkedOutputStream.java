@@ -24,8 +24,12 @@ package project.oswel.speechrecognition.util;
 // Visit the ACME Labs Java page for up-to-date versions of this and other
 // fine Java utilities: http://www.acme.com/java/
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /// An OutputStream that implements HTTP/1.1 chunking.
 //<P>

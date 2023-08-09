@@ -5,17 +5,21 @@ import project.oswel.knowledgebase.currentevents.NewsAPI;
 import project.oswel.exceptions.InvalidAPIKeyException;
 import project.oswel.knowledgebase.schedule.DateTime;
 import project.oswel.knowledgebase.schedule.WeekDay;
-import org.json.simple.parser.ParseException;
 import org.nd4j.common.io.ClassPathResource;
 import project.oswel.knowledgebase.Weather;
-import org.json.simple.parser.JSONParser;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.nlp.ChatKeras;
-import org.json.simple.JSONObject;
 import java.util.logging.Logger;
 import project.oswel.nlp.NER;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Stack;
@@ -32,7 +36,6 @@ public class Utils {
 
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static JSONObject oswelLicense = new JSONObject();
-    private static JSONParser parser = new JSONParser();
 	private static ChatKeras chatKeras;
 	private static Weather weatherInfo;
 	private static NewsAPI newsAPI;
@@ -60,43 +63,40 @@ public class Utils {
 
 		LOGGER.info("Reading settings file...");
 		JSONObject settings = this.readSettings("settings.json");
-		JSONObject resources = (JSONObject) settings.get("resources");
-		JSONObject endpoints = (JSONObject) settings.get("endpoints");
+		JSONObject resources = settings.getJSONObject("resources");
+		JSONObject endpoints = settings.getJSONObject("endpoints");
 
 
 		LOGGER.info("Loading model resources...");
 		chatKeras =  new ChatKeras(
-							(String) resources.get("oswelNLPModel"),
-							(String) resources.get("wordsFile"),
-							(String) resources.get("classesFile"),
-							(String) resources.get("intentsFile")
-						);
+							resources.getString("oswelNLPModel"),
+							resources.getString("wordsFile"),
+							resources.getString("classesFile"),
+							resources.getString("intentsFile"));
 
 		weatherInfo = new Weather(
-			(String) oswelLicense.get("visualcrossing"),
-			(String) endpoints.get("weather")
-		);
+			oswelLicense.getString("visualcrossing"),
+			endpoints.getString("weather"));
 
 		ner = new NER(
-			(String) resources.get("locationNER"), 
-			(String) resources.get("posNER")
-		);
+			resources.getString("locationNER"), 
+			resources.getString("posNER"));
 
 		newsAPI = new NewsAPI(
-			(String) oswelLicense.get("newsapi"),
-			(String) endpoints.get("currentEvents"));
+			oswelLicense.getString("newsapi"),
+			endpoints.getString("currentEvents"));
 		
-		jwiki = new JWiki((String) endpoints.get("wikipedia"));
+		jwiki = new JWiki(endpoints.getString("wikipedia"));
 		
-		String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-		try {
-			weatherInfo.timelineRequestHttpClient(
-				weekStartEndDates[0], weekStartEndDates[1], 
-				(String) settings.get("cityLocation")
-			);
-		} catch (WeatherFetchFailedException e) {
-			throw new WeatherFetchFailedException(e.getMessage());
-		}
+		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
+		// try {
+		// 	weatherInfo.timelineRequestHttpClient(
+		// 		weekStartEndDates[0], weekStartEndDates[1], 
+		// 		(String) settings.get("cityLocation")
+		// 	);
+		// } catch (WeatherFetchFailedException e) {
+		// 	throw new WeatherFetchFailedException(e.getMessage());
+		// }
 	}
 
 	/**
@@ -107,15 +107,21 @@ public class Utils {
 	 * @return JSONObject containing the contents of the JSON file. 
 	 */
 	private JSONObject readSettings(String settingsFileName) { 
-        JSONParser parser = new JSONParser();
 		JSONObject jsonObject = new JSONObject();
         try {
             String settingsPath = new ClassPathResource(settingsFileName)
                                         .getFile()
                                         .getPath();
-            jsonObject = (JSONObject) parser.parse(
-                                            new FileReader(settingsPath));
-        } catch (IOException | ParseException e) {
+			InputStream is = new FileInputStream(settingsPath);
+			if (is == null) {
+				throw new NullPointerException(
+					"Cannot find resource file " + settingsPath);
+			} else {
+				BufferedReader in = new BufferedReader(new InputStreamReader(is));
+				JSONTokener tokener = new JSONTokener(in);
+				jsonObject = new JSONObject(tokener);
+			}		
+        } catch (IOException e) {
             e.printStackTrace();
         } 
 		return jsonObject;
@@ -130,9 +136,17 @@ public class Utils {
 			String licensePath = new ClassPathResource(licenseFileName)
 										.getFile()
 										.getPath();
-			oswelLicense = (JSONObject) parser.parse(
-				new FileReader(licensePath));
-		} catch (IOException | ParseException e) {
+		
+			InputStream is = new FileInputStream(licensePath);
+			if (is == null) {
+				throw new NullPointerException(
+					"Cannot find resource file " + licensePath);
+			} else {
+				BufferedReader in = new BufferedReader(new InputStreamReader(is));
+				JSONTokener tokener = new JSONTokener(in);
+				oswelLicense = new JSONObject(tokener);
+			}		
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -147,11 +161,10 @@ public class Utils {
 	private void validateLicenseContents(String licenseFileName) 
 												throws InvalidAPIKeyException {
 		this.readOswelLicense(licenseFileName);
-		String googleSpeechKey = (String) oswelLicense.get("googlespeech");
-		String weatherKey = (String) oswelLicense.get("visualcrossing");
-		String openAIKey = (String) oswelLicense.get("openai");
-		String deepAIKey = (String) oswelLicense.get("deepai");
-		String palmAIKey = (String) oswelLicense.get("palm");
+		String googleSpeechKey = oswelLicense.getString("googlespeech");
+		String weatherKey = oswelLicense.getString("visualcrossing");
+		String openAIKey = oswelLicense.getString("openai");
+		String deepAIKey = oswelLicense.getString("deepai");
 
 		if (googleSpeechKey.equals("None")) {
 			throw new InvalidAPIKeyException("A proper Google Speech " +
@@ -246,11 +259,11 @@ public class Utils {
 		}
 		
 		String location = weatherInfo.getLocation();
-		double maxTemp = (double) dayValue.get("tempmax");
-		double minTemp = (double) dayValue.get("tempmin");
-		double temp = (double) dayValue.get("temp");
-		double precip = (double) dayValue.get("precipprob");
-		String description = (String) dayValue.get("description");
+		double maxTemp = dayValue.getDouble("tempmax");
+		double minTemp = dayValue.getDouble("tempmin");
+		double temp = dayValue.getDouble("temp");
+		double precip = dayValue.getDouble("precipprob");
+		String description = dayValue.getString("description");
 
 		return "In " + location + " %s "
 				+ String.format("on %s %.1f degrees celsius with %s. ", 
@@ -309,15 +322,15 @@ public class Utils {
 	 */
 	private String processNewsResponse(String userResponse) {
 		String[] words = userResponse.split(" ");
-		String description = "";
+		String[] summary = new String[3];
 		Stack<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
-			description = newsAPI.getNewsByTopic(topic);
+			summary = newsAPI.getNewsByTopic(topic);
 		} else {
-			description = newsAPI.getNewsTopHeadline();
+			summary = newsAPI.getNewsTopHeadline();
 		}
-		return "%s " + description;
+		return "%s " + summary[0] + summary[1] + summary[2];
 	}
 
 	/**
@@ -352,9 +365,9 @@ public class Utils {
 	public String[] processResponse(String userResponse) 
 									throws WeatherFetchFailedException {
 		JSONObject oswelResponse = chatKeras.getRandomResponse(userResponse);
-		String category = (String) oswelResponse.get("category");
-		double score = (double) oswelResponse.get("score");
-		String oswelMessage = (String) oswelResponse.get("response");
+		String category = oswelResponse.getString("category");
+		double score = oswelResponse.getDouble("score");
+		String oswelMessage = oswelResponse.getString("response");
 		String[] finalResponse = new String[2];
 
 		if (score >= 0.50) {

@@ -1,12 +1,10 @@
 package project.oswel.knowledgebase;
 
-import org.json.simple.parser.ParseException;
-import org.json.simple.parser.JSONParser;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.Request;
-import org.json.simple.JSONObject;
+import okhttp3.OkHttpClient;
 import java.io.IOException;
+import org.json.JSONObject;
+import okhttp3.Response;
+import okhttp3.Request;
 
 /**
  * JWiki provides summary gathered from wikipedia for a certain topic 
@@ -40,21 +38,19 @@ public class JWiki {
         try {
             Response response=client.newCall(request).execute();
             String data = response.body().string();
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject)parser.parse(data);
+            JSONObject jsonObject = new JSONObject(data);
 
             //get title from JSON response
-            displayTitle= (String) jsonObject.get("displaytitle");
+            displayTitle= jsonObject.getString("displaytitle");
 
             //first create a image object and then get image URL
-            JSONObject jsonObjectOriginalImage = 
-                            (JSONObject) jsonObject.get("originalimage");
-            imageURL= (String) jsonObjectOriginalImage.get("source");
+            JSONObject jsonObjectOriginalImage = jsonObject.getJSONObject("originalimage");
+            imageURL= jsonObjectOriginalImage.getString("source");
 
             //get text
-            extractText = (String)jsonObject.get("extract");
+            extractText = jsonObject.getString("extract");
         }
-        catch (IOException | ParseException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return extractText;
