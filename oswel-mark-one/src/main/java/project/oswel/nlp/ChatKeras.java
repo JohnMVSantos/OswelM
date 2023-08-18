@@ -265,7 +265,11 @@ public class ChatKeras {
         INDArray scores = this.predictScores(sentence);
         int maxIndex = Nd4j.argMax(scores,1).getInt(0);
         double score = scores.getDouble(maxIndex);
-        String category = this.getClass(maxIndex);
+        String category = "confirmation";
+
+        if (score >= 0.50)  {
+            category = this.getClass(maxIndex);
+        } 
 
         response.put("category", category);
         response.put("score", score);
@@ -273,7 +277,7 @@ public class ChatKeras {
         Random rand = new Random();
         for (int i=0; i<intents.length(); i++) {
             JSONObject intent = intents.getJSONObject(i);
-            if (category.equals(intent.get("tag"))) {
+            if (category.equalsIgnoreCase((String) intent.get("tag"))) {
                 JSONArray responses = intent.getJSONArray("responses");
                 int index = rand.nextInt(responses.length());
                 response.put("response", responses.getString(index));

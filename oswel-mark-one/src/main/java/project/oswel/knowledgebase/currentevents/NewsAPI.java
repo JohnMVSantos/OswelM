@@ -1,5 +1,6 @@
 package project.oswel.knowledgebase.currentevents;
 
+import org.json.JSONException;
 import okhttp3.OkHttpClient;
 import java.io.IOException;
 import org.json.JSONObject;
@@ -67,10 +68,10 @@ public class NewsAPI {
      * Returns the news topheadline description in the US.
      * @return The description of the news headline (String).
      */
-    public String[] getNewsTopHeadline() {
+    public String[] getNewsTopHeadline(String countryCode) {
 
         String finalEndpoint = this.endPoint + 
-                            "top-headlines?country=us" + 
+                            "top-headlines?country=" + countryCode + 
                             String.format("&apiKey=%s", this.apiKey);
 
         Request request = new Request.Builder()
@@ -88,9 +89,14 @@ public class NewsAPI {
                     .equalsIgnoreCase("ok")) {
                 JSONArray articles = jsonObject.getJSONArray("articles");
                 JSONObject article = articles.getJSONObject(0);
-                summary[0] = article.getString("author");
-                summary[1] = article.getString("title");
-                summary[2] = article.getString("description");
+
+                try {
+                    summary[0] = article.getString("author");
+                    summary[1] = article.getString("title");
+                    summary[2] = article.getString("description");
+                } catch(JSONException e) {
+                    summary[2] = "Could not find a description for this article";
+                }
             }
         }
         catch (IOException e) {

@@ -1,17 +1,23 @@
-Change Repo to Public
-1) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
-2) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
-3) For news updates maybe add an option to specify the country. 
-4) Face Detection in Java
-5) Speech recognition in Java is timed out?
-6) Stocks?? Optional...
- 
-Next steps is to integrate to Raspberry PI 
-and develop the OLED display and Firebeetle Microcontroller 
-to output the Oswel Logo and information to be displayed. 
 
-The following can be handled by ChatGPT.
-6) Translate utility.
-7) Alternative to free ChatGPT..Explore PALM API.
+Language Processing and Software
+--------------------------------
+4) Change Repo to Public
+----Checkpoint----
+6) Speech recognition in Java is timed out?
+7) Stocks?? Optional...
+8) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
+9) The following can be handled by ChatGPT, PalM or IBM Watson Large Text Generative Models.
+    * Translate utility.
+    * Alternative to free ChatGPT..Explore PALM API.
+10) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
 
-Overall functionality is to recognize speech and deliver meaningful response...
+Hardware and Face Detection
+---------------------------
+1) Integrate software to Raspberry PI. 
+2) Develop the OLED display and Firebeetle Microcontroller to output the Oswel face and information to be displayed. 
+3) Face Detection to control the face. 
+
+Documentation
+-------------
+1) Write a paper on the concept of Oswel and how different systems are managed and distributed to form the overall design. 
+2) Complete Readme.md

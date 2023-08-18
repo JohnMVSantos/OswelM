@@ -9,19 +9,18 @@ import org.nd4j.common.io.ClassPathResource;
 import project.oswel.knowledgebase.Weather;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.nlp.ChatKeras;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
 import project.oswel.nlp.NER;
+import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -36,6 +35,7 @@ public class Utils {
 
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static JSONObject oswelLicense = new JSONObject();
+	private static HashMap<String, String> countriesMapping;
 	private static ChatKeras chatKeras;
 	private static Weather weatherInfo;
 	private static NewsAPI newsAPI;
@@ -68,6 +68,8 @@ public class Utils {
 
 
 		LOGGER.info("Loading model resources...");
+		countriesMapping = DateTime.getCountryCodes();
+
 		chatKeras =  new ChatKeras(
 							resources.getString("oswelNLPModel"),
 							resources.getString("wordsFile"),
@@ -88,15 +90,15 @@ public class Utils {
 		
 		jwiki = new JWiki(endpoints.getString("wikipedia"));
 		
-		// String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-		// try {
-		// 	weatherInfo.timelineRequestHttpClient(
-		// 		weekStartEndDates[0], weekStartEndDates[1], 
-		// 		(String) settings.get("cityLocation")
-		// 	);
-		// } catch (WeatherFetchFailedException e) {
-		// 	throw new WeatherFetchFailedException(e.getMessage());
-		// }
+		String[] weekStartEndDates = DateTime.getStartEndWeekDates();
+		try {
+			weatherInfo.timelineRequestHttpClient(
+				weekStartEndDates[0], weekStartEndDates[1], 
+				(String) settings.get("cityLocation")
+			);
+		} catch (WeatherFetchFailedException e) {
+			throw new WeatherFetchFailedException(e.getMessage());
+		}
 	}
 
 	/**
@@ -328,9 +330,18 @@ public class Utils {
 			String topic = words[nouns.pop()];
 			summary = newsAPI.getNewsByTopic(topic);
 		} else {
-			summary = newsAPI.getNewsTopHeadline();
+
+			String[] locations = ner.findLocation(userResponse);
+			String countryCode = "us";
+			if (locations.length > 0) {
+				String location = locations[0].toLowerCase();
+				if (countriesMapping.containsKey(location)) {
+					countryCode = countriesMapping.get(location);
+				}
+			}
+			summary = newsAPI.getNewsTopHeadline(countryCode);
 		}
-		return "%s " + summary[0] + summary[1] + summary[2];
+		return "%s " + summary[0] + " " + summary[1] + " " + summary[2];
 	}
 
 	/**
@@ -366,36 +377,37 @@ public class Utils {
 									throws WeatherFetchFailedException {
 		JSONObject oswelResponse = chatKeras.getRandomResponse(userResponse);
 		String category = oswelResponse.getString("category");
-		double score = oswelResponse.getDouble("score");
 		String oswelMessage = oswelResponse.getString("response");
 		String[] finalResponse = new String[2];
 
-		if (score >= 0.50) {
-			if (category.equalsIgnoreCase("weather")) {
-				oswelMessage = String.format(
-									this.processWeatherResponse(userResponse), 
-									oswelMessage);
-			} else if (category.equalsIgnoreCase("time")) {
-				oswelMessage = String.format(
-									this.processTimeResponse(userResponse), 
-									oswelMessage);
-			} else if (category.equalsIgnoreCase("date")) {
-				oswelMessage = String.format(
-									this.processDateResponse(userResponse), 
-									oswelMessage);
-			} else if (category.equalsIgnoreCase("events")) {
-				oswelMessage = String.format(
-									this.processNewsResponse(userResponse), 
-									oswelMessage);
+		if (category.equalsIgnoreCase("weather")) {
+			oswelMessage = String.format(
+								this.processWeatherResponse(userResponse), 
+								oswelMessage);
+		} else if (category.equalsIgnoreCase("time")) {
+			oswelMessage = String.format(
+								this.processTimeResponse(userResponse), 
+								oswelMessage);
+		} else if (category.equalsIgnoreCase("date")) {
+			oswelMessage = String.format(
+								this.processDateResponse(userResponse), 
+								oswelMessage);
+		} else if (category.equalsIgnoreCase("events")) {
+			oswelMessage = String.format(
+								this.processNewsResponse(userResponse), 
+								oswelMessage);
+		} else if (category.equalsIgnoreCase("confirmation")) {
+			String wikiMessage = this.processWikipediaResponse(userResponse);
+			if (wikiMessage != "") {
+				category = "general";
+				oswelMessage = wikiMessage;
+				// TODO: ChatGPT response needs to be implemented here.
 			}
-			finalResponse[0] = category;
-			finalResponse[1] = oswelMessage;
 		} else {
-			String wikiMessage = "";
-			wikiMessage = this.processWikipediaResponse(userResponse);
-			finalResponse[0] = "general";
-			finalResponse[1] = wikiMessage;
+			;
 		}
+		finalResponse[0] = category;
+		finalResponse[1] = oswelMessage;
 		return finalResponse;
 	}
 }

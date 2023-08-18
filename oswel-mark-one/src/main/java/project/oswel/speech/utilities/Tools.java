@@ -1,4 +1,4 @@
-package project.oswel.speech.util;
+package project.oswel.speech.utilities;
 
 import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
@@ -15,6 +15,9 @@ import java.util.UUID;
 
 /**
  * @author zh-hq
+ * 
+ * Modified by John Santos
+ * @date 2023/8/17
  */
 public class Tools {
     public static final Pattern NO_VOICE_PATTERN = Pattern.compile("[\\s\\p{C}\\p{P}\\p{Z}\\p{S}]");
@@ -29,8 +32,8 @@ public class Tools {
                     .url(url)
                     .build();
             Response response = client.newCall(request).execute();
-            log.info("response.toString():{}", response.toString());
-            log.info("response.isSuccessful():{}", response.isSuccessful());
+            //log.info("response.toString():{}", response.toString());
+            //log.info("response.isSuccessful():{}", response.isSuccessful());
             if (response.isSuccessful()) {
                 String body = response.body().string();
                 // log.info("response.body:{}", body);

@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.HashMap;
 import java.time.ZoneId;
+import java.util.Locale;
 import java.util.List;
 import java.util.Set;
 
@@ -74,6 +76,23 @@ public class DateTime {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         return formatTime(hour, minute);
+    }
+
+    /**
+     * This method returns a HashMap where the country name is the key and 
+     * the value is the 2 letter country code.
+     * @return HashMap<Country, Country Code>
+     */
+    public static HashMap<String, String> getCountryCodes() {
+        String[] isoCountries = Locale.getISOCountries();
+        HashMap<String, String> countriesMapping = new HashMap<String, String>();
+        for (String country : isoCountries) {
+            Locale locale = new Locale("en", country);
+            String code = locale.getCountry();
+            String name = locale.getDisplayCountry();
+            countriesMapping.put(name.toLowerCase(), code.toLowerCase());
+        }
+        return countriesMapping;
     }
 
     /**

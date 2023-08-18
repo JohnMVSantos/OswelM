@@ -80,6 +80,8 @@ Install redhat.fabric8-analytics vscode extension
 Cleaning and compiling
 `
 & mvn clean -f "c:\Users\johns\Documents\OswelM\oswel-mark-one\pom.xml" compile assembly:single
+or
+mvn clean -Djavacpp.platform=linux-arm64 -f "./oswel-mark-one/pom.xml" compile assembly:single
 `
 
 Running

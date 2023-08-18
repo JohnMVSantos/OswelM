@@ -6,10 +6,10 @@ import project.oswel.speech.constant.OutputFormat;
 import project.oswel.speech.constant.TtsConstants;
 import project.oswel.speech.model.SpeechConfig;
 import project.oswel.speech.player.MyPlayer;
+import project.oswel.speech.utilities.Tools;
 import java.nio.charset.StandardCharsets;
 import org.jetbrains.annotations.NotNull;
 import project.oswel.speech.model.SSML;
-import project.oswel.speech.util.Tools;
 import java.util.concurrent.TimeUnit;
 import okhttp3.WebSocketListener;
 import java.io.FileOutputStream;
@@ -29,6 +29,9 @@ import okio.Buffer;
 /**
  * @author zh-hq
  * @date 2023/3/27
+ * 
+ * Modified by John Santos
+ * @date 2023/8/17
  */
 
 public class TTSService {
@@ -107,13 +110,14 @@ public class TTSService {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             super.onMessage(webSocket, text);
-            log.debug("onMessage text\r\n:{}", text);
+            //log.debug("onMessage text\r\n:{}", text);
             if (text.contains(TtsConstants.TURN_START)) {
                 // （新的）音频流开始传输开始，清空重置buffer
                 audioBuffer.clear();
             } else if (text.contains(TtsConstants.TURN_END)) {
                 // 音频流结束，写为文件
-                String fileName = (currentText.length() < 6 ? currentText : currentText.substring(0, 5)).replaceAll("[</|*。?\" >\\\\]","") + Tools.localDateTime();
+                //String fileName = (currentText.length() < 6 ? currentText : currentText.substring(0, 5)).replaceAll("[</|*。?\" >\\\\]","") + Tools.localDateTime();
+                String fileName = "oswelAudio";
                 String absolutePath = writeAudio(outputFormat, audioBuffer.readByteString(), fileName);
                 if (usePlayer) {
                     try {
@@ -129,7 +133,7 @@ public class TTSService {
         @Override
         public void onMessage(@NotNull WebSocket webSocket, @NotNull ByteString bytes) {
             super.onMessage(webSocket, bytes);
-            log.debug("onMessage bytes\r\n:{}", bytes.utf8());
+            //log.debug("onMessage bytes\r\n:{}", bytes.utf8());
             int audioIndex = bytes
                                 .lastIndexOf(
                                     TtsConstants.AUDIO_START
@@ -172,7 +176,7 @@ public class TTSService {
      */
     public void sendText(SSML ssml) {
         while (synthesising) {
-            log.info("空转等待上一个语音合成");
+            //log.info("空转等待上一个语音合成");
             Tools.sleep(1);
         }
         synthesising = true;
@@ -183,7 +187,7 @@ public class TTSService {
         if (Objects.nonNull(ssml.getOutputFormat()) && !outputFormat.equals(ssml.getOutputFormat())) {
             sendConfig(ssml.getOutputFormat());
         }
-        log.info("ssml:{}", ssml);
+        //log.info("ssml:{}", ssml);
         if (!getOrCreateWs().send(ssml.toString())) {
             throw TtsException.of("语音合成请求发送失败...");
         }
@@ -235,7 +239,7 @@ public class TTSService {
      */
     private void sendConfig(OutputFormat outputFormat) {
         SpeechConfig speechConfig = SpeechConfig.of(outputFormat);
-        log.info("audio config:{}", speechConfig);
+        //log.info("audio config:{}", speechConfig);
         if (!getOrCreateWs().send(speechConfig.toString())) {
             throw TtsException.of("语音输出格式配置失败...");
         }
@@ -259,6 +263,7 @@ public class TTSService {
             byte[] audioBuffer = data.toByteArray();
             String[] split = format.getValue().split("-");
             String suffix = split[split.length - 1];
+            
             // write  file
             String outputFileName = Optional
                                         .ofNullable(baseSavePath)

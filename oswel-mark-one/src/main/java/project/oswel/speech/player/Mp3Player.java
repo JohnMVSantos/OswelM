@@ -12,6 +12,9 @@ import java.io.File;
 /**
  * @author zh-hq
  * @date 2023/3/30
+ * 
+ * Modified by John Santos
+ * @date 2023/8/17
  */
 public class Mp3Player extends PcmPlayer {
     @Override
@@ -36,8 +39,11 @@ public class Mp3Player extends PcmPlayer {
             baseFormat.getSampleRate(), 
             false
         );
+
         // 输出到音频
         stream = AudioSystem.getAudioInputStream(format, stream);
         playPcm(stream);
+        // This is added to delete the saved files. 
+        file.delete();
     }
 }

@@ -26,7 +26,8 @@ public class Main {
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
 	private static Utils utils;
-	private static TTSService ts = TTSService.builder()
+	private static TTSService ts = TTSService
+										.builder()
 										.usePlayer(true)
 										.build();
 
@@ -37,8 +38,8 @@ public class Main {
 	private static void speak(String prompt) {
 		SSML ssml = SSML.builder()
                 .synthesisText(prompt)
-                .voice(VoiceEnum.en_US_GuyNeural)
-                .style(TtsStyleEnum.fearful)
+                .voice(VoiceEnum.en_GB_RyanNeural)
+                .style(TtsStyleEnum.friendly)
 				.build();
         ts.sendText(ssml);
 	}
@@ -73,16 +74,20 @@ public class Main {
 						try {
 							if (userInput != "") {
 								oswelOutput = utils.processResponse(userInput);
-								LOGGER.info("Oswel said: " + 
-														oswelOutput[1]);
+								LOGGER.info(
+										"Oswel said [" + 
+										oswelOutput[0] + 
+										"]: " + 
+										oswelOutput[1]
+								);
 								speak(oswelOutput[1]);
 								if (oswelOutput[0].equalsIgnoreCase(
 												"departure")) {
-									TimeUnit.SECONDS.sleep(3);
+									TimeUnit.SECONDS.sleep(4);
 									System.exit(1);
 								}
+								TimeUnit.SECONDS.sleep(1);
 								LOGGER.info("Listening...");
-								
 							}		
 						} catch (Exception  e) {
 							e.printStackTrace();

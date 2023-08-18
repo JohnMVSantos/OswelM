@@ -1,7 +1,7 @@
 package project.oswel.speech.model;
 
 import project.oswel.speech.constant.OutputFormat;
-import project.oswel.speech.util.Tools;
+import project.oswel.speech.utilities.Tools;
 import java.io.Serializable;
 import java.util.Optional;
 
