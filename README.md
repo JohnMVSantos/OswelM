@@ -163,17 +163,17 @@ Once the workspace has been cleaned, compile the Maven project using one of the 
 
 The following command is for default system architecture such as x86_64 processors.
 ```shell
-& mvn clean -f "c:\Users\johns\Documents\OswelM\oswel-mark-one\pom.xml" compile assembly:single
+mvn clean -f "path to the pom.xml" compile assembly:single
 ```
 
 To run the JAR file in a Raspberry PI 4 requires a linux operating system on an ARM64 processor which can be specified in the command line below.
 ```shell
-mvn clean -Djavacpp.platform=linux-arm64 -f "./oswel-mark-one/pom.xml" compile assembly:single
+mvn clean -Djavacpp.platform=linux-arm64 -f "path to the pom.xml" compile assembly:single
 ```
 
 Depending on the system architecture, the JAR file can be run using the command below:
 ```shell
-java -jar .\oswel-mark-one\target\oswel-mark-one-1.0-jar-with-dependencies.jar   
+java -jar oswel-mark-one-1.0-jar-with-dependencies.jar   
 ```
 
 ## License
