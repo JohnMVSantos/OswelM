@@ -33,6 +33,18 @@ public enum Month {
     }
 
     /**
+     * Returns the name of the designated Month.
+     * @return The month (String).
+     */
+    public String getMonthName() { return this.monthName; }
+
+    /**
+     * Returns the number corresponding to the month.
+     * @return The month number (int).
+     */
+    public int getMonthNumber() { return this.monthNumber; }
+
+    /**
      * Checks if the given name string exists in the Month enum.
      * It will only match if the name is in all lower case.
      * @param name The string to be checked.

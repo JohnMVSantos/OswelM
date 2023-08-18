@@ -271,11 +271,11 @@
                         "What is the temperature at"
                     ],
             "responses": [
-                        "the current weather outside is", 
-                        "the current weather is",
-                        "the current temperature outside is",
-                        "the current temperature is",
-                        "it looks like it is"
+                        "the current weather outside", 
+                        "the current weather",
+                        "the current temperature outside",
+                        "the current temperature",
+                        "it looks like"
                     ]
         },
         {

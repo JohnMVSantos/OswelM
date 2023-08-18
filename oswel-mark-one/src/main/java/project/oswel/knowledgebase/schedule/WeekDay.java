@@ -35,7 +35,8 @@ public enum WeekDay {
                             "Tuesday", 
                             "Wednesday", 
                             "Thursday", 
-                            "Friday"
+                            "Friday",
+                            "Saturday"
                         };
         return daysOfWeek;
     }

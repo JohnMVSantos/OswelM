@@ -78,6 +78,12 @@ public class TTSService {
     private OkHttpClient okHttpClient;
     private WebSocket ws;
 
+    /**
+     * Returns the current text being converted to speech.
+     * @return Text to be converted to audio (String).
+     */
+    public String getCurrentText() { return this.currentText; }
+
     protected WebSocketListener webSocketListener = new WebSocketListener() {
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {

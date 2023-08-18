@@ -117,15 +117,10 @@ public class ChatKeras {
                                         .getFile()
                                         .getPath();
             InputStream is = new FileInputStream(intentsPath);
-			if (is == null) {
-				throw new NullPointerException(
-					"Cannot find resource file " + intentsPath);
-			} else {
-				BufferedReader in = new BufferedReader(new InputStreamReader(is));
-				JSONTokener tokener = new JSONTokener(in);
-				JSONObject jsonObject = new JSONObject(tokener);
-                this.intents = jsonObject.getJSONArray("intents");
-			}		
+            BufferedReader in = new BufferedReader(new InputStreamReader(is));
+            JSONTokener tokener = new JSONTokener(in);
+            JSONObject jsonObject = new JSONObject(tokener);
+            this.intents = jsonObject.getJSONArray("intents");			
         } catch (IOException e) {
             e.printStackTrace();
         } 

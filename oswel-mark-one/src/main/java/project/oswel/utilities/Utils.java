@@ -115,14 +115,9 @@ public class Utils {
                                         .getFile()
                                         .getPath();
 			InputStream is = new FileInputStream(settingsPath);
-			if (is == null) {
-				throw new NullPointerException(
-					"Cannot find resource file " + settingsPath);
-			} else {
-				BufferedReader in = new BufferedReader(new InputStreamReader(is));
-				JSONTokener tokener = new JSONTokener(in);
-				jsonObject = new JSONObject(tokener);
-			}		
+			BufferedReader in = new BufferedReader(new InputStreamReader(is));
+			JSONTokener tokener = new JSONTokener(in);
+			jsonObject = new JSONObject(tokener);	
         } catch (IOException e) {
             e.printStackTrace();
         } 
@@ -140,14 +135,9 @@ public class Utils {
 										.getPath();
 		
 			InputStream is = new FileInputStream(licensePath);
-			if (is == null) {
-				throw new NullPointerException(
-					"Cannot find resource file " + licensePath);
-			} else {
-				BufferedReader in = new BufferedReader(new InputStreamReader(is));
-				JSONTokener tokener = new JSONTokener(in);
-				oswelLicense = new JSONObject(tokener);
-			}		
+			BufferedReader in = new BufferedReader(new InputStreamReader(is));
+			JSONTokener tokener = new JSONTokener(in);
+			oswelLicense = new JSONObject(tokener);		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -268,7 +258,7 @@ public class Utils {
 		String description = dayValue.getString("description");
 
 		return "In " + location + " %s "
-				+ String.format("on %s %.1f degrees celsius with %s. ", 
+				+ String.format("on %s is %.1f degrees celsius with %s. ", 
 							day, temp, description)
 				+ String.format(
 					"A high of %.1f degrees and ", 

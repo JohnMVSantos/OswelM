@@ -1,7 +1,6 @@
 
 Language Processing and Software
 --------------------------------
-4) Change Repo to Public
 ----Checkpoint----
 6) Speech recognition in Java is timed out?
 7) Stocks?? Optional...
