@@ -2,6 +2,7 @@
 Language Processing and Software
 --------------------------------
 ----Checkpoint----
+1) Listens too fast and the oswel output is captured as the user's input.
 6) Speech recognition in Java is timed out?
 7) Stocks?? Optional...
 8) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
@@ -15,6 +16,7 @@ Hardware and Face Detection
 1) Integrate software to Raspberry PI. 
 2) Develop the OLED display and Firebeetle Microcontroller to output the Oswel face and information to be displayed. 
 3) Face Detection to control the face. 
+4) Fix fan connections and placement, solder?
 
 Documentation
 -------------

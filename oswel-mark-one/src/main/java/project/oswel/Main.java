@@ -42,6 +42,7 @@ public class Main {
                 .style(TtsStyleEnum.friendly)
 				.build();
         ts.sendText(ssml);
+		
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class Main {
 									TimeUnit.SECONDS.sleep(4);
 									System.exit(1);
 								}
-								TimeUnit.SECONDS.sleep(1);
+								duplex.wait(3000);
 								LOGGER.info("Listening...");
 							}		
 						} catch (Exception  e) {

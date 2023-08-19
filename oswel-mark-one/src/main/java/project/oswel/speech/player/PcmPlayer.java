@@ -28,6 +28,8 @@ public class PcmPlayer implements MyPlayer {
         }
         AudioInputStream stream = AudioSystem.getAudioInputStream(file);
         playPcm(stream);
+        // This is added to delete the saved files. 
+        file.delete();
     }
 
     protected void playPcm(AudioInputStream stream) {
