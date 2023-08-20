@@ -17,6 +17,9 @@ import java.io.File;
  * @date 2023/8/17
  */
 public class Mp3Player extends PcmPlayer {
+
+    public static float recordedTimeInSec = 3;
+
     @Override
     public void play(String path) throws IOException, UnsupportedAudioFileException {
         File file = new File(path);
@@ -29,6 +32,9 @@ public class Mp3Player extends PcmPlayer {
         stream = mp.getAudioInputStream(file);
 
         AudioFormat baseFormat = stream.getFormat();
+        recordedTimeInSec = file.length() / 
+                (baseFormat.getFrameSize() * baseFormat.getFrameRate());
+        
         //设定输出格式为pcm格式的音频文件
         AudioFormat format = new AudioFormat(
             AudioFormat.Encoding.PCM_SIGNED, 

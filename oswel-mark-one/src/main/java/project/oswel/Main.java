@@ -9,6 +9,7 @@ import net.sourceforge.javaflacencoder.FLACFileWriter;
 import project.oswel.speech.constant.TtsStyleEnum;
 import project.oswel.speech.constant.VoiceEnum;
 import project.oswel.speech.service.TTSService;
+import project.oswel.speech.player.Mp3Player;
 import project.oswel.speech.model.SSML;
 import project.oswel.utilities.Utils;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +27,7 @@ public class Main {
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
 	private static Utils utils;
+	private static Thread recognizerThread;
 	private static TTSService ts = TTSService
 										.builder()
 										.usePlayer(true)
@@ -42,7 +44,6 @@ public class Main {
                 .style(TtsStyleEnum.friendly)
 				.build();
         ts.sendText(ssml);
-		
 	}
 
 	/**
@@ -84,10 +85,11 @@ public class Main {
 								speak(oswelOutput[1]);
 								if (oswelOutput[0].equalsIgnoreCase(
 												"departure")) {
-									TimeUnit.SECONDS.sleep(4);
-									System.exit(1);
+									duplex.wait(4000);
+									System.exit(1);	
 								}
-								duplex.wait(3000);
+								duplex.wait((int) Math.abs(
+									Mp3Player.recordedTimeInSec * 10));
 								LOGGER.info("Listening...");
 							}		
 						} catch (Exception  e) {
@@ -101,7 +103,7 @@ public class Main {
 		});
 
 		Recognize recognizer = new Recognize(duplex, mic);
-        Thread recognizerThread = new Thread(recognizer);
+        recognizerThread = new Thread(recognizer);
         recognizerThread.start();
 	}
 
