@@ -1,5 +1,6 @@
 package project.oswel.knowledgebase;
 
+import org.json.JSONException;
 import okhttp3.OkHttpClient;
 import java.io.IOException;
 import org.json.JSONObject;
@@ -13,17 +14,14 @@ import okhttp3.Request;
  */
 public class JWiki {
     private String endPoint;
-    String displayTitle="";
-    String imageURL="";
+    private String displayTitle="";
+    private String imageURL="";
 
     /**
      * This creates a new object with the subject to search for.
      * @param subject The subject to search for in wikipedia. 
      */
-    public JWiki(String endPoint)
-    {
-        this.endPoint = endPoint;
-    }
+    public JWiki(String endPoint) { this.endPoint = endPoint; }
 
     /**
      * Communicates to the API to fetch the description of the topic passed. 
@@ -35,6 +33,7 @@ public class JWiki {
                 .get()
                 .build();
         String extractText = "";
+        
         try {
             Response response=client.newCall(request).execute();
             String data = response.body().string();
@@ -44,9 +43,15 @@ public class JWiki {
             displayTitle= jsonObject.getString("displaytitle");
 
             //first create a image object and then get image URL
-            JSONObject jsonObjectOriginalImage = jsonObject.getJSONObject("originalimage");
-            imageURL= jsonObjectOriginalImage.getString("source");
-
+            try {
+                JSONObject jsonObjectOriginalImage = jsonObject
+                                            .getJSONObject("originalimage");
+                imageURL= jsonObjectOriginalImage
+                                            .getString("source");
+            } catch (JSONException e) {
+                imageURL = "None";
+            }
+            
             //get text
             extractText = jsonObject.getString("extract");
         }
@@ -67,5 +72,4 @@ public class JWiki {
      * @return The URL (String).
      */
     public String getImageURL() {return imageURL;}
-
 }

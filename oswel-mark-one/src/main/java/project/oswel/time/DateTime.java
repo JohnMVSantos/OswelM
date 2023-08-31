@@ -1,4 +1,4 @@
-package project.oswel.knowledgebase.schedule;
+package project.oswel.time;
 
 import java.util.GregorianCalendar;
 import java.util.stream.Collectors;

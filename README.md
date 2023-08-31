@@ -1,9 +1,8 @@
-# OswelM
+# Oswell
  
-*Ordinary Systems of a Well Established Language Model* is the concept that a language model
-should not be limited to one system of a specific functionality (Natural Language Processing), it should link multiple systems 
-such as Generative Pretrained Transformers and Vision Models to gather and process information to effectively communicate to the user the appropriate response based on their demands. 
-
+*Ordinary Systems of a Well Established Language Library* is the concept of integrating machine learning models, generative transformers, and APIs providing 
+specific functionalities or information to form one unified application that can handle several tasks that effectively 
+communicate to the user the appropriate response based on their demands. 
 
 # Python Training and Deployment
 *The following steps are guidelines to train and test Keras NLP or object recognition models in Python which will be deployed in the Java application.*

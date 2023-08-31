@@ -108,7 +108,7 @@ public class TTSService {
             Response response
         ) {
             super.onFailure(webSocket, t, response);
-            log.debug("onFailure" + t.getMessage(), t);
+            log.debug("onFailure" + t.getMessage());
             TTSService.this.ws = null;
             synthesising = false;
         }

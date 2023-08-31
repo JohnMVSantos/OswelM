@@ -44,7 +44,7 @@ public class Recognize implements Runnable {
      */
     public void run() {
         try {
-            duplex.recognize(mic.getTargetDataLine(), mic.getAudioFormat());
+            duplex.recognize(mic.getTargetDataLine(), mic.getAudioFormat());                           
         } catch (LineUnavailableException | InterruptedException e) {
             e.printStackTrace();
         }

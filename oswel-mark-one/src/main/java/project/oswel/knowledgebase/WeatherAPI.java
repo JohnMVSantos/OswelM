@@ -1,9 +1,7 @@
 package project.oswel.knowledgebase;
 
-import project.oswel.exceptions.WeatherFetchFailedException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
-import project.oswel.knowledgebase.schedule.WeekDay;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.client.methods.HttpGet;
@@ -13,6 +11,8 @@ import org.apache.http.util.EntityUtils;
 import java.net.URISyntaxException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
+import project.oswel.time.WeekDay;
+import java.util.logging.Logger;
 import java.nio.charset.Charset;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -24,8 +24,12 @@ import org.json.JSONArray;
  * {@link https://github.com/visualcrossing/WeatherApi/blob/master/Java/com/
  * visualcrossing/weather/samples/TimelineApiForecastSample.java} 
 */
-public class Weather {
+public class WeatherAPI {
 
+    private static final Logger LOGGER = Logger
+                                            .getLogger(
+                                                WeatherAPI.class
+                                                            .getName());
     private String endPoint;
     private String unitGroup = "metric";
     private String apiKey;
@@ -39,7 +43,7 @@ public class Weather {
      * the API key. 
      * @param apiKey The api-key to access the API data.
      */
-    public Weather(String apiKey, String endPoint) { 
+    public WeatherAPI(String apiKey, String endPoint) { 
         this.apiKey = apiKey; 
         this.endPoint = endPoint;
     }
@@ -64,13 +68,10 @@ public class Weather {
      * Dates should be in YYYY-MM-DD format.
      * @param startDate The start date to recieve weather information.
      * @param endDate The end date to recieve weather information.
-     * @throws WeatherFetchFailedException This exception is thrown when the 
-     *            following exceptions are thrown: 
-     *            UnsupportedEncodingException,URISyntaxException, IOException.
      */
     public void timelineRequestHttpClient(
-            String startDate, String endDate, String location) 
-                                        throws WeatherFetchFailedException{
+            String startDate, String endDate, String location
+    ) {
 		StringBuilder requestBuilder = new StringBuilder(this.endPoint);
         this.location = location;
         try {
@@ -79,9 +80,10 @@ public class Weather {
                     location, 
                     StandardCharsets.UTF_8.toString()));
         } catch(UnsupportedEncodingException e) {
-            throw new WeatherFetchFailedException(
+            LOGGER.severe( 
                 "Encountered an UnsupportedEncodingException " +
                 "when encoding the specified location.");
+            System.exit(1);
         }
 		
 		if (startDate!=null && !startDate.isEmpty()) {
@@ -123,15 +125,17 @@ public class Weather {
                 parseTimelineJson(rawResult);   
 
             } catch(IOException e) {
-                throw new WeatherFetchFailedException(
+                LOGGER.severe(
                     "Encountered an IOException when trying " + 
                     "to recieve a response from the HTTP client.");
+                System.exit(1);
             }
 
         } catch(URISyntaxException e) {
-            throw new WeatherFetchFailedException(
+            LOGGER.severe( 
                 "Encountered URISyntaxException when " + 
                 "instantiating a new URIBuilder");
+            System.exit(1);
         }
 	}
 
@@ -141,7 +145,6 @@ public class Weather {
      * @param rawResult This is the unparsed weather result. 
      */
 	private void parseTimelineJson(String rawResult) {
-		
 		if (rawResult==null || rawResult.isEmpty()) {
 			System.out.printf("No raw data%n");
 			return;

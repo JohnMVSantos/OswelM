@@ -1,7 +1,7 @@
 package project.oswel.speechrecognition.microphone;
 
-import project.oswel.speechrecognition.util.Complex;
-import project.oswel.speechrecognition.util.FFT;
+import project.oswel.speechrecognition.utilities.Complex;
+import project.oswel.speechrecognition.utilities.FFT;
 import javax.sound.sampled.AudioFileFormat;
 
 /*******************************************************************************

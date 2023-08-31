@@ -13,5 +13,7 @@
         "locationNER": "en-ner-location.bin",
         "posNER": "en-pos-maxent.bin"
     },
-    "cityLocation": "Calgary"
+    "cityLocation": "Calgary",
+    "linuxSerial": "/dev/ttyAMA0",
+    "windowsSerial": "COM6"
 }

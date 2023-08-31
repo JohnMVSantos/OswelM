@@ -11,8 +11,9 @@
   <packaging>jar</packaging>
 
   <description>
-    Oswelm is designed to implement the concept behind "Ordinary Systems of a Well Established Language Model"
-    which utilizes machine learning models where each are specified to perform a unique task to form a system of functionalities
+    Oswell is designed to implement the concept behind "Ordinary Systems of a Well Established Language Library"
+    which utilizes machine learning models, generative transformers, and APIs where each are specified to perform a 
+    unique task or provide unique information are now integrated to form a system of functionalities
     that are geared towards establishing a useful unified application that can handle several tasks. 
   </description> 
 
@@ -50,6 +51,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.fazecast</groupId>
+      <artifactId>jSerialComm</artifactId>
+      <version>2.10.3</version>
+    </dependency>
     <dependency>
       <groupId>org.deeplearning4j</groupId>
       <artifactId>deeplearning4j-core</artifactId>

@@ -1,4 +1,4 @@
-package project.oswel.speechrecognition.util;
+package project.oswel.speechrecognition.utilities;
 
 // ChunkedOutputStream - an OutputStream that implements HTTP/1.1 chunking
 // Copyright (C) 1996 by Jef Poskanzer <jef@acme.com>.  All rights reserved.

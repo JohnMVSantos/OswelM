@@ -1,4 +1,4 @@
-package project.oswel.knowledgebase.schedule;
+package project.oswel.time;
 
 /**
  * Months encapsulates information on different ways of representing the

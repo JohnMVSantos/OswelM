@@ -1,4 +1,4 @@
-package project.oswel.speechrecognition.util;
+package project.oswel.speechrecognition.utilities;
 
 /**
  * A string utility class for commonly used methods. 

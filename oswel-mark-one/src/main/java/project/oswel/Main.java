@@ -1,19 +1,24 @@
 package project.oswel;
 
+import project.oswel.speechrecognition.recognizer.GSpeechDuplex.CaptureState;
 import project.oswel.speechrecognition.recognizer.GSpeechResponseListener;
 import project.oswel.speechrecognition.recognizer.GoogleResponse;
 import project.oswel.speechrecognition.recognizer.GSpeechDuplex;
 import project.oswel.speechrecognition.microphone.Microphone;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
+import project.oswel.connections.SerialConnection;
 import project.oswel.speech.constant.TtsStyleEnum;
 import project.oswel.speech.constant.VoiceEnum;
 import project.oswel.speech.service.TTSService;
+import project.oswel.utilities.Initialization;
 import project.oswel.speech.player.Mp3Player;
+import project.oswel.nlp.SpeechProcess;
 import project.oswel.speech.model.SSML;
-import project.oswel.utilities.Utils;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+
+import org.bytedeco.librealsense.device;
+import org.json.JSONObject;
 import java.io.IOException;
 
 /**
@@ -24,15 +29,17 @@ import java.io.IOException;
  */
 public class Main {
 
-	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
-	private static Utils utils;
+	private static TTSService ts = TTSService.builder()
+											 .usePlayer(true)
+											 .build();				
+	private static SpeechProcess speechInterpreter;
 	private static Thread recognizerThread;
-	private static TTSService ts = TTSService
-										.builder()
-										.usePlayer(true)
-										.build();
-
+	private static Recognize recognizer;
+	private static SerialConnection serialConnect;
+	private static boolean connect = false;
+	
 	/**
 	 * Provides speaking capabilities in the application. 
 	 * @param prompt The string to speak.
@@ -74,35 +81,52 @@ public class Main {
 					if (googleResponse.isFinalResponse()) {
 						LOGGER.info("User said: " + userInput);	
 						try {
-							if (userInput != "") {
-								oswelOutput = utils.processResponse(userInput);
-								LOGGER.info(
-										"Oswel said [" + 
-										oswelOutput[0] + 
-										"]: " + 
-										oswelOutput[1]
-								);
-								speak(oswelOutput[1]);
-								if (oswelOutput[0].equalsIgnoreCase(
-												"departure")) {
-									duplex.wait(4000);
-									System.exit(1);	
-								}
+							oswelOutput = speechInterpreter
+												.processResponse(userInput);
+							LOGGER.info(
+								"Oswel said [" + oswelOutput[0] + "]: " + 
+								oswelOutput[1]
+							);
+							duplex.setRecognitionState(CaptureState.STOP);
+							speak(oswelOutput[1]);
+
+							if (connect) {
+								serialConnect.writeBytes(
+									oswelOutput[1].getBytes(), 1000);
+							}
+							// Wait to complete computing the length of speech.
+							duplex.wait(2000);
+							
+							if (oswelOutput[0].equalsIgnoreCase(
+											"departure")) {
 								duplex.wait((int) Math.abs(
-									Mp3Player.recordedTimeInSec * 10));
-								LOGGER.info("Listening...");
-							}		
-						} catch (Exception  e) {
-							e.printStackTrace();
+								Mp3Player.recordedTimeInSec * 10));
+								if (connect) {
+									serialConnect.closeConnection();
+								}
+								System.exit(1);	
+							}
+
+							// Wait for Oswell to complete speaking.
+							int delay = (int) Math.abs(
+								Mp3Player.recordedTimeInSec * 10);
+							if (delay > 0) duplex.wait(delay);
+							LOGGER.info("Listening...");
+							duplex.setRecognitionState(CaptureState.CONTINUE);
+									
+						} catch (InterruptedException e) {
+							LOGGER.severe(
+								"The recognition process was interrupted.");
+								System.exit(1);
 						}
 					}
 				} else {
-					LOGGER.severe("No speech was recognized...");
+					LOGGER.severe("speech was not recognized.");
+					System.exit(1);
 				}
 			}
 		});
-
-		Recognize recognizer = new Recognize(duplex, mic);
+		recognizer = new Recognize(duplex, mic);
         recognizerThread = new Thread(recognizer);
         recognizerThread.start();
 	}
@@ -117,13 +141,44 @@ public class Main {
     public static void main(String[] args) 
 						throws IOException, InterruptedException, Exception{
 		
-		// Reading and validating the license containing API keys.
-		utils = new Utils("oswel.lic");
+		String device = "linuxSerial";
+		if (args.length >= 2) {
+			if (args[0].equalsIgnoreCase("connect")) {
+				connect = true;
+				if (args[1].equalsIgnoreCase("linuxSerial")) {
+					device = "linuxSerial";
+				} else if (
+					args[1].equalsIgnoreCase("windowsSerial")) {
+					device = "windowsSerial";
+				} else {
+					LOGGER.severe(
+						"Choices for the connection are linuxSerial or WindowsSerial");
+				}
+			}	
+		}
+		
+		LOGGER.info("Reading license file...");
+		JSONObject oswelLicense = Initialization
+									.readJSONFile("oswel.lic");
+		LOGGER.info("Reading settings file...");
+		JSONObject settings = Initialization
+									.readJSONFile("settings.json");
+		JSONObject resources = settings.getJSONObject("resources");
+		JSONObject endpoints = settings.getJSONObject("endpoints");
+		speechInterpreter = new SpeechProcess(
+										oswelLicense, 
+										resources, 
+										endpoints, 
+										settings.getString("cityLocation"));
+		if (connect) {
+			serialConnect = new SerialConnection(
+				settings.getString(device));
+		}
 
 		//Start Voice Recognition
 		GSpeechDuplex duplex = setVoiceRecognition(
-			(String) utils.getLicense().get("googlespeech"));
+								oswelLicense.getString("googlespeech"));
 		LOGGER.info("Listening ...");
-		startProcess(duplex);
+		startProcess(duplex);  
     };    
 }

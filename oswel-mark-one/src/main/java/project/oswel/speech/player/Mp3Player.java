@@ -18,7 +18,7 @@ import java.io.File;
  */
 public class Mp3Player extends PcmPlayer {
 
-    public static float recordedTimeInSec = 3;
+    public static float recordedTimeInSec;
 
     @Override
     public void play(String path) throws IOException, UnsupportedAudioFileException {

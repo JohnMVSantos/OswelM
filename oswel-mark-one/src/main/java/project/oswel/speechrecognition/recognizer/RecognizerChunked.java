@@ -1,6 +1,6 @@
 package project.oswel.speechrecognition.recognizer;
 
-import project.oswel.speechrecognition.util.StringUtil;
+import project.oswel.speechrecognition.utilities.StringUtil;
 import javax.net.ssl.HttpsURLConnection;
 import java.net.MalformedURLException;
 import java.nio.channels.FileChannel;

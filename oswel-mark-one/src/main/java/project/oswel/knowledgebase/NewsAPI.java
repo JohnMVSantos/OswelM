@@ -1,4 +1,4 @@
-package project.oswel.knowledgebase.currentevents;
+package project.oswel.knowledgebase;
 
 import org.json.JSONException;
 import okhttp3.OkHttpClient;
@@ -30,57 +30,38 @@ public class NewsAPI {
     /**
      * Returns the topheadline description for the specific topic set.
      * @param topic The topic to search for the current events.
-     * @return The news description related to the topic passed (String).
+     * @return An array of strings containing author, title, and description.
      */
     public String[] getNewsByTopic(String topic) {
-
         String finalEndpoint = this.endPoint + 
                             String.format("everything?q=%s", topic) + 
                             String.format("&apiKey=%s", this.apiKey);
-
-        Request request = new Request.Builder()
-                .url(finalEndpoint)
-                .get()
-                .build();   
-
-        String[] summary = new String[3];
-
-        try {
-            Response response = client.newCall(request).execute();
-            String data = response.body().string();
-            JSONObject jsonObject = new JSONObject(data);
-            if (jsonObject.getString("status")
-                    .equalsIgnoreCase("ok")) {
-                JSONArray articles = jsonObject.getJSONArray("articles");
-                JSONObject article = articles.getJSONObject(0);
-                summary[0] = article.getString("author");
-                summary[1] = article.getString("title");
-                summary[2] = article.getString("description");
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        return summary;
+        return this.initiateRequest(finalEndpoint);
     }
 
     /**
      * Returns the news topheadline description in the US.
-     * @return The description of the news headline (String).
+     * @return An array of strings containing author, title, and description.
      */
     public String[] getNewsTopHeadline(String countryCode) {
-
         String finalEndpoint = this.endPoint + 
                             "top-headlines?country=" + countryCode + 
                             String.format("&apiKey=%s", this.apiKey);
+        return this.initiateRequest(finalEndpoint);
+    }
 
+    /**
+     * Performs the request based on the finalEndpoint of the API.
+     * @param finalEndpoint The endpoint to access in the API.
+     * @return An array of strings containing author, title, and description.
+     */
+    private String[] initiateRequest(String finalEndpoint) {
         Request request = new Request.Builder()
-                .url(finalEndpoint)
-                .get()
-                .build();   
+                                    .url(finalEndpoint)
+                                    .get()
+                                    .build();   
 
         String[] summary = new String[3];
-
         try {
             Response response = client.newCall(request).execute();
             String data = response.body().string();

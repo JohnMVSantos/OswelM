@@ -2,23 +2,27 @@
 Language Processing and Software
 --------------------------------
 ----Checkpoint----
-6) Speech recognition in Java is timed out?
-7) Stocks?? Optional...
-8) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
-9) The following can be handled by ChatGPT, PalM or IBM Watson Large Text Generative Transformers.
+2) Set a longer timeout to write for Raspberry PI to handle fix this issue?
+3) The following can be handled by ChatGPT, PalM or IBM Watson Large Text Generative Transformers.
     * Translate utility.
     * Alternative to free ChatGPT..Explore PALM API.
-10) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
+4) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
+5) Speech recognition in Java is timed out?
+6) Havent been testing :( Needs to be done ASAP!
+7) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
+8) Stocks and Finance?? Optional...
+9) Push updates.
 
 Hardware and Face Detection
 ---------------------------
-1) Integrate software to Raspberry PI. 
-2) Develop the OLED display and Firebeetle Microcontroller to output the Oswel face and information to be displayed. 
-3) Face Detection to control the face. 
-4) Fix fan connections and placement, solder/crimp?
-5) ESP32 Startup message and Logo
+1) Integrate software to Raspberry PI. ESP32 connection via raspberry pi port.
+2) Need a better method to parse the string via Serial such as detecting input, repetition of strings, and for departure to reset input to None.
+3) ESP32 Startup message and Logo
+4) Face Detection to control the face. 
+5) Start Up Keyword maybe in python using edgetts
 
 Documentation
 -------------
 1) Write a paper on the concept of Oswel and how different systems are managed and distributed to form the overall design. 
 2) Complete Readme.md, add hardware instructions and setup
+3) Research ECAs

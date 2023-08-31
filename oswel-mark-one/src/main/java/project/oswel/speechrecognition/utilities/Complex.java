@@ -1,4 +1,4 @@
-package project.oswel.speechrecognition.util;
+package project.oswel.speechrecognition.utilities;
 
 /*******************************************************************************
  *  Compilation:  javac Complex.java

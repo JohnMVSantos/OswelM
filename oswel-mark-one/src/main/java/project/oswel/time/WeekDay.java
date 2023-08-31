@@ -1,4 +1,4 @@
-package project.oswel.knowledgebase.schedule;
+package project.oswel.time;
 
 /**
  * WeekDays provides information for different ways of representing the days
