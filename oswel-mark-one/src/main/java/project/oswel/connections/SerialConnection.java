@@ -13,6 +13,8 @@ public class SerialConnection {
     private boolean connection = false;
     private SerialPort sp;	
 
+    public SerialConnection() { }
+
     public SerialConnection(String comPort) {
 		this.sp = SerialPort.getCommPort(comPort); 
 		this.setConnectionParameters(

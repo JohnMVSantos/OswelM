@@ -11,7 +11,6 @@ Language Processing and Software
 6) Havent been testing :( Needs to be done ASAP!
 7) Refactor Speech implementation to remove saving MP3 files and directly speaking the audio. 
 8) Stocks and Finance?? Optional...
-9) Push updates.
 
 Hardware and Face Detection
 ---------------------------
