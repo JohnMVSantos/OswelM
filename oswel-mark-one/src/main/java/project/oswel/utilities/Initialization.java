@@ -1,6 +1,5 @@
 package project.oswel.utilities;
 
-import project.oswel.speechrecognition.recognizer.GSpeechDuplex.CaptureState;
 import project.oswel.speechrecognition.recognizer.GSpeechResponseListener;
 import project.oswel.speechrecognition.recognizer.GoogleResponse;
 import project.oswel.speechrecognition.recognizer.GSpeechDuplex;
@@ -23,7 +22,10 @@ import java.io.BufferedReader;
 import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.Random;
+
 
 /**
  * This class performs initialization process prior to starting the main
@@ -79,6 +81,20 @@ public abstract class Initialization {
         tts.sendText(ssml);
 	}
 
+	public static void startConfirmation(SpeechProcess speechInterpreter) {
+		Random rand = new Random();
+		int[] possibleIndices = new int[]{1,2,4,6};
+		JSONObject intent = speechInterpreter
+								.getChatKeras()
+								.getIntents()
+								.getJSONObject(0);
+		if ("status".equalsIgnoreCase((String) intent.get("tag"))) {
+			JSONArray responses = intent.getJSONArray("responses");
+			int index = rand.nextInt(possibleIndices.length);
+			speak(responses.getString(possibleIndices[index]));
+		}
+	}
+
 	/**
 	 * Sets the voice recognition language and intializes the resources
 	 * needed for voice recognition in the application if provided with
@@ -115,37 +131,28 @@ public abstract class Initialization {
 						try {
 							oswelOutput = speechInterpreter
 												.processResponse(userInput);
+							speak(oswelOutput[1]);
+
 							LOGGER.info(
 								"Oswel said [" + oswelOutput[0] + "]: " + 
 								oswelOutput[1]
 							);
-							duplex.setRecognitionState(CaptureState.STOP);
-							speak(oswelOutput[1]);
-
 							if (serialConnect.checkConnection()) {
 								serialConnect.writeBytes(
 									oswelOutput[1].getBytes(), 1000);
 							}
-							// Wait to complete computing the length of speech.
-							duplex.wait(2000);
+							// Wait to complete writing the audio file.
+							duplex.wait(1500);
 							
 							if (oswelOutput[0].equalsIgnoreCase(
-											"departure")) {
-								duplex.wait((int) Math.abs(
-								Mp3Player.recordedTimeInSec * 10));
+											"departure")) {								
 								if (serialConnect.checkConnection()) {
 									serialConnect.closeConnection();
 								}
+								duplex.wait(Mp3Player.recordedTimeInSec + 4000);
 								System.exit(1);	
 							}
-
-							// Wait for Oswell to complete speaking.
-							int delay = (int) Math.abs(
-								Mp3Player.recordedTimeInSec * 10);
-							if (delay > 0) duplex.wait(delay);
 							LOGGER.info("Listening...");
-							duplex.setRecognitionState(CaptureState.CONTINUE);
-									
 						} catch (InterruptedException e) {
 							LOGGER.severe(
 								"The recognition process was interrupted.");

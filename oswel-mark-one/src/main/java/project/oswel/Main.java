@@ -52,6 +52,7 @@ public class Main {
 										resources, 
 										endpoints, 
 										settings.getString("cityLocation"));
+		Initialization.startConfirmation(speechInterpreter);
 		
 		//Start Voice Recognition
 		GSpeechDuplex duplex = Initialization.setVoiceRecognition(

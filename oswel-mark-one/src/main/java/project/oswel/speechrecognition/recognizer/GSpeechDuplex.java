@@ -80,18 +80,6 @@ public class GSpeechDuplex {
 	 * The AudioInputStream used in Upstream Thread
 	 */
 	private AudioInputStream ais;
-
-	/**
-	 * Enum for current recognition state
-	 */
-	public enum CaptureState {
-		CONTINUE, STOP;
-	}
-	
-	/**
-	 * Variable for enum
-	 */
-	CaptureState state;
 	
 	/**
 	 * Constructor
@@ -120,23 +108,6 @@ public class GSpeechDuplex {
 	 * 		The language code
 	 */
 	public void setLanguage(String language) { this.language = language; }
-
-	/**
-	 * Gets the current state of Microphone
-	 *
-	 * @return CONTINUE is returned when the Thread is recognizing 
-	 * 		   Audio and/or saving it to a file<br> STOP is 
-	 * 		   returned if the Thread is not recognizing audio
-	 */
-	public CaptureState getRecognitionState() { return state; }
-	
-	/**
-	 * Sets the current state of recognition
-	 *
-	 * @param state
-	 *            State from enum
-	 */
-	public void setRecognitionState(CaptureState state) { this.state = state; }
 	
 	/**
 	 * Send a FLAC file with the specified sampleRate to the Duplex API
@@ -164,7 +135,6 @@ public class GSpeechDuplex {
 	 *      The sample rate of aforementioned byte array.
 	 */
 	public void recognize(byte[] data , int sampleRate) {
-		setRecognitionState(CaptureState.CONTINUE);
 		if (data.length >= MAX_SIZE) {
 			//Temporary Chunking. Does not allow for Google to gather context.
 			byte[][] dataArray = chunkAudio(data);
@@ -209,8 +179,6 @@ public class GSpeechDuplex {
 	 */
 	public void recognize(TargetDataLine tl , AudioFormat af) throws 
 		LineUnavailableException , InterruptedException {
-		
-		setRecognitionState(CaptureState.CONTINUE);
 		//Generates a unique ID for the response. 
 		final long PAIR = MIN + 
 					(long) ( Math.random() * ( ( MAX - MIN ) + 1L ) );
@@ -278,17 +246,20 @@ public class GSpeechDuplex {
 				while (
 					inStream.hasNext() && 
 					( response = inStream.nextLine() ) != null) {
-					if (getRecognitionState() == CaptureState.CONTINUE) {
+					
+					File outputAudioFile = new File("oswelAudio.mp3");
+					if (!outputAudioFile.exists()) {
 						if (response.length() > 17) {
 							//Prevents blank responses from Firing
 							GoogleResponse gr = new GoogleResponse();
 							parseResponse(response, gr);
 							fireResponseEvent(gr);
 						}
-					}
+					} 
 				}
 				inStream.close();
 				System.out.println("Finished write on down stream...");
+				System.exit(1);
 			}
 		};
 		downChannelThread.start();

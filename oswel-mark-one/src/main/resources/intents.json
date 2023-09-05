@@ -29,6 +29,23 @@
                         ]
         },
         {
+            "tag": "initialization",
+            "patterns": [
+                "Can you begin initialization",
+                "Can you start the process",
+                "Initiate start up protocols",
+                "Run start up protocols"
+            ],
+            "responses": [
+                "Hold on. Beginning to run initializations.",
+                "I am being uploaded. I will be online soon. Hold on one moment.",
+                "Give me a moment, I am implementing all necessary procedures.",
+                "I am starting my processes and I will see to it immediately.",
+                "Stand by sir, I am being initialized. I have regarded this task as having the highest of priorities.",
+                "Just a moment, all power has been directed towards my start up process."
+            ]
+        },
+        {
             "tag": "greetings",
             "patterns": [
                         "Hello",
@@ -213,7 +230,6 @@
                         "That is a pleasure to hear!",
                         "Wonderful news!"
                     ]
-
         },
         {
             "tag": "appreciation",

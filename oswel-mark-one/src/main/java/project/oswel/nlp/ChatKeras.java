@@ -14,17 +14,17 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.util.CoreMap;
 import org.nd4j.linalg.factory.Nd4j;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.Properties;
+import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.json.JSONArray;
 import java.io.FileReader;
 import java.util.Random;
@@ -241,6 +241,14 @@ public class ChatKeras {
      */
     private String getClass(int maxIndex) {
         return classes.get(maxIndex);
+    }
+
+    /**
+     * Retrieves the intents array.
+     * @return JSONArray contains the contents of the intents.json
+     */
+    public JSONArray getIntents() {
+        return this.intents;
     }
 
     /**

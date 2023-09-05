@@ -68,14 +68,18 @@ public class DateTime {
         List<String> possibleTimeZones = zids.stream()
                 .filter(zid -> zid.endsWith("/" + tzCityName))
                 .collect(Collectors.toList());
-        TimeZone chosenTimeZone = TimeZone.getTimeZone(
+        try {
+            TimeZone chosenTimeZone = TimeZone.getTimeZone(
                                         possibleTimeZones.get(0));
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(chosenTimeZone);
-        
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        return formatTime(hour, minute);
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTimeZone(chosenTimeZone);
+            
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            return formatTime(hour, minute);
+        } catch (IndexOutOfBoundsException e) {
+            return "I could not find the time for this location";
+        }
     }
 
     /**

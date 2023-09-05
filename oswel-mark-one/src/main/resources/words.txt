@@ -22,6 +22,7 @@ awake
 ayo
 bad
 be
+begin
 better
 biscuit
 bye
@@ -75,6 +76,8 @@ how
 howdy
 i
 in
+initialization
+initiate
 inquiring
 is
 it
@@ -102,6 +105,7 @@ now
 of
 off
 ok
+okay
 on
 or
 oswel
@@ -112,9 +116,12 @@ peachy
 please
 pleasure
 pretty
+process
+protocol
 raining
 ready
 right
+run
 see
 show
 snowing
@@ -122,6 +129,7 @@ so
 some
 something
 soon
+start
 started
 sunny
 take

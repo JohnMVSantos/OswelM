@@ -81,7 +81,7 @@ To train the model, an intents.json file is required under `/OswelM/oswel-mark-o
 
     *Coming soon*
 
-# Java Application
+# Building the Java Application
 *The following steps are guidelines to deploy the trained Keras models and uses external APIs to apply the concept of OswelM through the use of the Java language.*
 
 ## Step 1: Install Java SDK 11.
@@ -174,6 +174,21 @@ Depending on the system architecture, the JAR file can be run using the command 
 ```shell
 java -jar oswel-mark-one-1.0-jar-with-dependencies.jar   
 ```
+
+## Python Main Application
+The python application runs the main Java jar application, but also
+provides functionalities to recognize the user's voice and speak its response.
+The purpose of this application is to provide a much more stable and indefinite
+recognition process and can potentially be used to deploy an object 
+detection model for face tracking.
+
+To run the main application, run the following shell commands.
+ ```shell
+    cd oswel-mark-one
+    python -m src.main.python.project.oswel
+```
+
+*Note: Pleasure ensure that the python virtual environment is set up and the required dependencies are installed under requirements.txt*
 
 ## License
 

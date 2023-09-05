@@ -48,7 +48,6 @@ class DeployOswelNLP:
         intents_path=INTENTS_PATH,
         score_threshold=0.25
         ):
-        
         self.model = self.load_model(model_path)
         self.words, self.classes, self.intents = self.load_resources(
             words_path, class_path, intents_path)
@@ -216,7 +215,8 @@ class DeployOswelNLP:
         results.sort(key=lambda x:x[1], reverse=True)
         return_list = list()
         for r in results:
-            return_list.append({"intent": self.classes[r[0]], "probability": str(r[1])})
+            return_list.append(
+                {"intent": self.classes[r[0]], "probability": str(r[1])})
         return return_list
 
     def get_response(self, intents_list):
@@ -240,13 +240,32 @@ class DeployOswelNLP:
             None
         """
         tag = intents_list[0]["intent"]
+        return self.get_response_by_tag(tag)
+    
+    def get_response_by_tag(self, tag):
+        """
+        Gets a random response based on the given tag.
+
+        Parameters
+        ----------
+            tag: str
+                The category from which to get the response.
+
+        Returns
+        -------
+            result: str
+                The random response from the given tag.
+
+        Raises
+        ------
+            None
+        """
         list_of_intents = self.intents["intents"]
         for i in list_of_intents:
             if i["tag"] == tag:
                 result = random.choice(i["responses"])
                 break
         return result
-
 
 if __name__ == '__main__':
 

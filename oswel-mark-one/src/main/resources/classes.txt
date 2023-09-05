@@ -6,6 +6,7 @@ departure
 events
 feeling
 greetings
+initialization
 status
 time
 weather

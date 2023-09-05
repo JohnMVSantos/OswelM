@@ -1,7 +1,7 @@
 package project.oswel.nlp;
 
-import project.oswel.knowledgebase.NewsAPI;
 import project.oswel.knowledgebase.WeatherAPI;
+import project.oswel.knowledgebase.NewsAPI;
 import project.oswel.knowledgebase.JWiki;
 import project.oswel.time.DateTime;
 import project.oswel.time.WeekDay;
@@ -34,6 +34,14 @@ public class SpeechProcess {
     private NewsAPI newsAPI;
     private JWiki jwiki;
     private NER ner;
+
+	/**
+	 * Retrieves the chatKeras object.
+	 * @return ChatKeras object that handles categorizing speech.
+	 */
+	public ChatKeras getChatKeras() {
+		return this.chatKeras;
+	}
     
     /**
 	 * Creates the speech interpreter object but requires the 
@@ -89,7 +97,6 @@ public class SpeechProcess {
 		}
 		return nouns;
 	}
-
     
     /**
      * Checks if a day is present in the user prompt. For example "Tuesday".
