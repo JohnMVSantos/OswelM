@@ -5,3 +5,5 @@ SpeechRecognition~=3.10.0
 pyaudio~=0.2.11
 edge-tts~=6.1.8
 pygame~=2.5.1
+PIL~=10.0.0
+opencv-python~=4.8.0

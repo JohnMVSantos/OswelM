@@ -95,5 +95,39 @@ def main():
         start = StartApp(deploy)
         start.start_process(voice=args.voice, file=args.file_path)
 
+        # This code is under development of tracking the face using a Keras Model
+
+        # from src.main.python.project.oswel.objectdetection.settings import FACE_PATH
+        # from src.main.python.project.oswel.objectdetection.facedetection.deploy import DeployOswelFaceDetection
+        # import cv2
+        
+        # video = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        # model = DeployOswelFaceDetection(
+        #     model_path=FACE_PATH)
+
+        # if video.isOpened():
+        #     # Capture the video frame
+        #     while True:
+        #         ret, frame = video.read()
+        #         if ret:
+        #             detection = model.run_single_instance(frame)
+        #             boxes, labels, scores = detection
+        #             if len(boxes):
+        #                 height, width = frame.shape[:2]
+        #                 xmin, ymin, xmax, ymax = boxes[0]
+        #                 frame = cv2.rectangle(
+        #                         frame, 
+        #                         (int(xmin*width), int(ymin*height)), 
+        #                         (int(xmax*width), int(ymax*height)), 
+        #                         (0, 255, 255), 
+        #                         2)
+        #             cv2.imshow('frame', frame)
+        #             if cv2.waitKey(1) == ord('q'):
+        #                 break
+        #         else:
+        #             raise RuntimeError("Reading frame is unsuccesful.")
+        # else:
+        #     raise RuntimeError("Camera is not opened.")
+
 if __name__ == '__main__':
     main()

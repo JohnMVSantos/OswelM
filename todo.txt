@@ -1,25 +1,23 @@
 
 Language Processing and Software
 --------------------------------
-----Checkpoint----
+1) For the python recognizer needs a stricter confidence for start command.
 2) Might need to remove connection because it disturbs flow of application.
 2.1) Exit the application for downstreams and allow the python app to start again upon user's request.  (JUST NEED TO TEST)
 3) The following can be handled by ChatGPT, PalM or IBM Watson Large Text Generative Transformers.
     * Translate utility.
     * Alternative to free ChatGPT..Explore PALM API.
 4) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
-5) Speech recognition in Java is timed out?
-6) Havent been testing :( Needs to be done ASAP! 
-8) Stocks and Finance?? Optional...
+5) Havent been testing :( Needs to be done ASAP! 
+6) Stocks and Finance?? Optional...
 
 Hardware and Face Detection
 ---------------------------
-1) Integrate software to Raspberry PI. ESP32 connection via raspberry pi port.
-2) Need a better method to parse the string via Serial such as detecting input, repetition of strings, and for departure to reset input to None.
-3) ESP32 Startup message and Logo
-4) Face Detection to control the face. 
-5) Python Object Detection and displaying output and information on LCD
-6) Might be a better design on the LCD.
+1) Javascript and HTML to show the face and tracking **
+2) Face Detection to control the face. 
+3) Startup message and Logo. Also display information for user input and oswel output.
+4) Integrate software to Raspberry PI.
+5) LCD for the raspberry pi.
 
 Documentation
 -------------
