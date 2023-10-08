@@ -36,10 +36,11 @@
 
             const livePoints={
                 A:{x:0, y:-0.040, xRange:[0,0.2], yRange:[-0.040,0.1]},
-                B:{x:0, y:-0.8, xRange:[0,0.05], yRange:[-0.8,-0.8]}
+                B:{x:0, y:-0.80, xRange:[0,0.03], yRange:[-0.80,-0.785]},
+                C:{x:0, y:0.60, xRange:[0,0.075], yRange:[0.60,0.580], yNegRange:[0.60,0.565]}
             }
 
-            const {A,B} = livePoints;
+            const {A,B,C} = livePoints;
 
             img.onload=function(){
                 animate();
@@ -70,16 +71,17 @@
                 drawAxis();
                 drawHead();
                 drawBody();
-                drawPoint(A, "A");
-                drawPoint(B, "B");
+                // drawPoint(A, "A");
+                // drawPoint(B, "B");
+                // drawPoint(C, "C");
             }
 
             function drawAxis() {
                 // Draw the Axis References.
                 ctx.beginPath();
                 // Vertical Line
-                ctx.moveTo(0,-0.8);
-                ctx.quadraticCurveTo(A.x,A.y,0,0.6);
+                ctx.moveTo(B.x, B.y);
+                ctx.quadraticCurveTo(A.x,A.y,C.x,C.y);
                 // Horizontal Line
                 ctx.moveTo(-0.25,-0.040);
                 ctx.quadraticCurveTo(A.x,A.y,0.25,-0.040);
@@ -102,14 +104,14 @@
                 ctx.quadraticCurveTo(0.28,-0.41,0.23, -0.040);
 
                 // Drawing Bottom Left Boundary
-                ctx.moveTo(0,0.6);
+                ctx.moveTo(C.x, C.y);
                 ctx.quadraticCurveTo(-0.07,0.58,-0.10,0.49);
                 ctx.quadraticCurveTo(-0.14,0.40,-0.15,0.30);
                 ctx.quadraticCurveTo(-0.21,0.18,-0.23,0.06);
                 ctx.lineTo(-0.23,-0.040);
 
                 // Drawing Bottom Right Boundary
-                ctx.moveTo(0,0.6);
+                ctx.moveTo(C.x, C.y);
                 ctx.quadraticCurveTo(0.07,0.58,0.10,0.49);
                 ctx.quadraticCurveTo(0.14,0.40,0.15,0.30);
                 ctx.quadraticCurveTo(0.21,0.18,0.23,0.06);
@@ -201,12 +203,18 @@
                 
                 for(let pID in livePoints){
                     const p = livePoints[pID];
+                    let yRange = p.yRange;
+                    let value = info.value;
+                    if(p.yNegRange) {
+                        yRange = info.value<0?p.yNegRange:p.yRange;
+                        value = Math.abs(value);
+                    }
                     switch(attr){
                         case "x":
                             p.x=lerp(p.xRange[0], p.xRange[1],info.value);
                             break;
                         case "y":
-                            p.y=lerp(p.yRange[0], p.yRange[1],info.value);
+                            p.y=lerp(yRange[0], yRange[1],value);
                             break;
                     }
                 }
