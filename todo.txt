@@ -21,6 +21,7 @@ Hardware and Face Detection
 
 Documentation
 -------------
+0) Provide examples in the ReadMe of what it can do, what you can ask, etc.
 1) Write a paper on the concept of Oswel and how different systems are managed and distributed to form the overall design. 
 2) Complete Readme.md, add hardware instructions and setup
 3) PDF to show instructions and system design. 
