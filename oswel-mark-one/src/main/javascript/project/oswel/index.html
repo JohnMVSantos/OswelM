@@ -22,6 +22,8 @@
             <br>
             y: <input type="range" min="-0.35" max="0.65" step="0.05" onChange="updatePoints(this, 'y')"/>
         </div>
+        <script src="math.js"></script>
+        <script src="reference.js"></script>
         <script src="head.js"></script>
         <script src="body.js"></script>
         <script>
@@ -30,6 +32,8 @@
             canvas.height=500; 
             
             const ctx=canvas.getContext("2d");
+
+            // Transform canvas into coordinate system between [-1, 1].
             ctx.translate(canvas.width/2, canvas.height/2);
             ctx.scale(canvas.width*0.5, canvas.height*0.5);
             ctx.lineWidth=0.005;
@@ -51,70 +55,56 @@
                 animate();
             }
 
+            // TODO: Remove this at the end of the project.
             canvas.addEventListener("click", getCoords);
-
-            function animate(){
-                ctx.clearRect(-1,-1,2,2);
-                ctx.globalAlpha=0.2;
-                ctx.drawImage(img,-1,-1,2,2);
-                ctx.globalAlpha=1;
-                drawMe();
-                requestAnimationFrame(animate);
-            }
-
             function getCoords(evt) {
                 const x = (evt.x-canvas.width/2)/(canvas.width/2);
                 const y = (evt.y-canvas.height/2)/(canvas.height/2)
+
+                /*const offset = {
+                    x:x,
+                    y;y,
+                }
+                */
+                
                 const offset = {
                     x:x-A.x,
                     y:y-A.y
                 }
                 console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
             }
+            // END TODO
 
-            function drawAxis() {
-                ctx.beginPath();
+            function animate(){
 
-                // Draw the Axis References.
-                ctx.strokeStyle = "lightgray";
-                // Vertical Line
-                ctx.moveTo(B.x, B.y);
-                ctx.quadraticCurveTo(A.x,A.y,C.x,C.y);
-                // Horizontal Line
-                ctx.moveTo(-0.25,-0.040);
-                ctx.quadraticCurveTo(A.x,A.y,0.25,-0.040);
+                // TODO: Remove this at the end of the project.
+                ctx.clearRect(-1,-1,2,2);
+                ctx.globalAlpha=0.2;
+                ctx.drawImage(img,-1,-1,2,2);
+                ctx.globalAlpha=1;
+                // END TODO
 
-                ctx.stroke();
+                drawOswel();
+                requestAnimationFrame(animate);
             }
 
-            function drawPoint(loc,label,rad=0.04){
-                ctx.beginPath();
-
-                // Visualize the control points.
-                ctx.arc(loc.x,loc.y,rad,0,Math.PI*2);
-                ctx.stroke();
-                ctx.fillStyle="green";
-                ctx.fill();
-                ctx.fillStyle="white";
-                ctx.font=(rad*1.6)+"px Arial";
-                ctx.textAlign="center";
-                ctx.textBaseline="middle";
-                ctx.fillText(label, loc.x, loc.y+rad*0.15);
-
-                ctx.stroke();
-            }
-
-            function drawMe() {
-
+            function drawOswel() {
                 drawAxis();
                 ctx.strokeStyle = "rgb(76,78,80)";
                 drawHead();
+
+                ctx.save();
+                ctx.translate(A.xOffset*0.005,0);
+                ctx.scale(1-Math.abs(A.xOffset)*0.04,1);
                 drawBody();
+                ctx.restore();
+
                 //drawPoint(A, "A");
                 //drawPoint(B, "B");
                 //drawPoint(C, "C");
             }
             
+            // Called when changing the sliders
             function updatePoints(info, attr){   
                 for(let pID in livePoints){
                     const p = livePoints[pID];
@@ -135,11 +125,6 @@
                             break;
                     }
                 }
-            }
-
-            function lerp(start, end, percentage){
-                // Linear Interpolation
-                return start+(end-start)*percentage;
             }
 
         </script>
