@@ -13,6 +13,9 @@
                 top:550;
                 left:10;
             }
+            #camCanvas{
+                max-width: 173px;
+            }
         </style>
     </head>
     <body>
@@ -21,17 +24,21 @@
             x: <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updatePoints(this, 'x')"/>
             <br>
             y: <input type="range" min="-0.35" max="0.65" step="0.05" onChange="updatePoints(this, 'y')"/>
+            <br>
+            <canvas id="camCanvas"></canvas>
         </div>
         <script src="math.js"></script>
         <script src="reference.js"></script>
         <script src="head.js"></script>
         <script src="body.js"></script>
+        <script src="camera.js"></script>
         <script>
             const canvas=document.getElementById("myCanvas");
             canvas.width=800;
             canvas.height=500; 
             
             const ctx=canvas.getContext("2d");
+            const camCtx=camCanvas.getContext("2d");
 
             // Transform canvas into coordinate system between [-1, 1].
             ctx.translate(canvas.width/2, canvas.height/2);
@@ -83,6 +90,23 @@
                 ctx.drawImage(img,-1,-1,2,2);
                 ctx.globalAlpha=1;
                 // END TODO
+                
+                if(video) {
+                    camCtx.drawImage(video,0,0);
+                    const imgData=camCtx.getImageData(0,0,camCanvas.width, camCanvas.height);
+                    const locs=getMarkedLocations(imgData);
+                    if(locs.length>0){
+                        const avg=average(locs);
+
+                        const x = (avg.x-imgData.width/2)/imgData.width;
+                        const y = (avg.y-imgData.height/2)/imgData.height;
+                        console.log({x,y});
+
+                        updatePoints({value:x}, 'x');
+                        updatePoints({value:y}, 'y');
+                    }
+
+                }
 
                 drawOswel();
                 requestAnimationFrame(animate);
