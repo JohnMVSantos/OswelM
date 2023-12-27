@@ -14,9 +14,7 @@ class Avatar{
         ctx.restore();
 
         //this.#drawAxis();
-        //drawPoint(A, "A");
-        //drawPoint(B, "B");
-        //drawPoint(C, "C");
+        drawPoint(A, "A");
     }
 
     #drawBody(ctx) {
@@ -33,9 +31,20 @@ class Avatar{
 
     #drawHead(ctx) {
         ctx.save();
-        this.#drawBoundary(B.x,B.y,C.x,C.y,ctx);
+
+        const topPoint={
+            x:Math.min(0.030, A.x),
+            y:Math.min(-0.785, A.y-0.730)
+        }
+        const verticalSquish=1-Math.abs(A.yOffset*0.2);
+        const bottomPoint={
+            x:Math.min(0.075, A.x),
+            y:A.y+(0.625-Math.min(0,A.yOffset)*0.28)*verticalSquish,
+        }
+
+        this.#drawBoundary(topPoint.x,topPoint.y,bottomPoint.x,bottomPoint.y,ctx);
         ctx.scale(-1,1);
-        this.#drawBoundary(-B.x,B.y,-C.x,C.y,ctx);
+        this.#drawBoundary(-topPoint.x,topPoint.y,-bottomPoint.x,bottomPoint.y,ctx);
         ctx.restore();
 
         this.#drawEyes(A,ctx);
@@ -43,11 +52,11 @@ class Avatar{
         this.#drawNose(A,ctx);
     }
 
-    #drawBoundary(bx,by,cx,cy,ctx) {
+    #drawBoundary(topX,topY,bottomX,bottomY,ctx) {
         ctx.beginPath();
 
         // Draw top portion
-        ctx.moveTo(bx,by);
+        ctx.moveTo(topX,topY);
         ctx.quadraticCurveTo(0.09,-0.77,0.15,-0.70);
         ctx.lineTo(0.15,-0.63);
         ctx.quadraticCurveTo(0.28,-0.41,0.23,-0.040);
@@ -55,7 +64,7 @@ class Avatar{
         ctx.lineTo(0.23,0.06);
         ctx.quadraticCurveTo(0.21,0.18,0.15,0.30);
         ctx.quadraticCurveTo(0.14,0.40,0.10,0.49);
-        ctx.quadraticCurveTo(0.07,0.58,cx,cy);
+        ctx.quadraticCurveTo(0.07,0.58,bottomX,bottomY);
 
         ctx.stroke();
         ctx.closePath();
@@ -65,7 +74,7 @@ class Avatar{
         ctx.beginPath();
 
         ctx.moveTo(0.15,0.30);
-        ctx.lineTo(0.08+cx*0.15,0.50);  
+        ctx.lineTo(0.08+bottomX*0.15,0.50);  
 
         ctx.stroke();
     }
