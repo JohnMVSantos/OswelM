@@ -14,7 +14,7 @@
                 left:10;
             }
             #camCanvas{
-                max-width: 173px;
+                max-width:173px;
             }
         </style>
     </head>
@@ -29,8 +29,7 @@
         </div>
         <script src="math.js"></script>
         <script src="reference.js"></script>
-        <script src="head.js"></script>
-        <script src="body.js"></script>
+        <script src="avatar.js"></script>
         <script src="camera.js"></script>
         <script>
             const canvas=document.getElementById("myCanvas");
@@ -41,8 +40,8 @@
             const camCtx=camCanvas.getContext("2d");
 
             // Transform canvas into coordinate system between [-1, 1].
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.scale(canvas.width*0.5, canvas.height*0.5);
+            ctx.translate(canvas.width/2,canvas.height/2);
+            ctx.scale(canvas.width*0.5,canvas.height*0.5);
             ctx.lineWidth=0.005;
 
             const img=new Image();
@@ -50,23 +49,25 @@
 
             const skinTone="rgba(219,221,225,0.8)";
 
+            const avatar=new Avatar();
+
             const livePoints={
-                A:{x:0, y:-0.040, xRange:[0,0.090], yRange:[-0.040,0.1], xOffset:0, yOffset:0},
-                B:{x:0, y:-0.80, xRange:[0,0.03], yRange:[-0.80,-0.785], xOffset:0, yOffset:0},
-                C:{x:0, y:0.60, xRange:[0,0.075], yRange:[0.60,0.580], yNegRange:[0.60,0.565], xOffset:0, yOffset:0}
+                A:{x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0},
+                B:{x:0,y:-0.80,xRange:[0,0.03],yRange:[-0.80,-0.785],xOffset:0,yOffset:0},
+                C:{x:0,y:0.60,xRange:[0,0.075],yRange:[0.60,0.580],yNegRange:[0.60,0.565],xOffset:0,yOffset:0}
             }
 
-            const {A,B,C} = livePoints;
+            const {A,B,C}=livePoints;
 
             img.onload=function(){
                 animate();
             }
 
             // TODO: Remove this at the end of the project.
-            canvas.addEventListener("click", getCoords);
+            canvas.addEventListener("click",getCoords);
             function getCoords(evt) {
-                const x = (evt.x-canvas.width/2)/(canvas.width/2);
-                const y = (evt.y-canvas.height/2)/(canvas.height/2)
+                const x=(evt.x-canvas.width/2)/(canvas.width/2);
+                const y=(evt.y-canvas.height/2)/(canvas.height/2)
 
                 /*const offset = {
                     x:x,
@@ -74,7 +75,7 @@
                 }
                 */
                 
-                const offset = {
+                const offset={
                     x:x-A.x,
                     y:y-A.y
                 }
@@ -91,61 +92,45 @@
                 ctx.globalAlpha=1;
                 // END TODO
                 
-                if(video) {
+                if(video){
                     camCtx.drawImage(video,0,0);
-                    const imgData=camCtx.getImageData(0,0,camCanvas.width, camCanvas.height);
+                    const imgData=camCtx.getImageData(0,0,camCanvas.width,camCanvas.height);
                     const locs=getMarkedLocations(imgData);
                     if(locs.length>0){
                         const avg=average(locs);
 
-                        const x = (avg.x-imgData.width/2)/imgData.width;
-                        const y = (avg.y-imgData.height/2)/imgData.height;
+                        const x=(avg.x-imgData.width/2)/imgData.width;
+                        const y=(avg.y-imgData.height/2)/imgData.height;
                         console.log({x,y});
 
-                        updatePoints({value:x}, 'x');
-                        updatePoints({value:y}, 'y');
+                        updatePoints({value:-x},'x');
+                        updatePoints({value:y},'y');
                     }
 
                 }
-
-                drawOswel();
+                
+                avatar.draw(ctx);
                 requestAnimationFrame(animate);
-            }
-
-            function drawOswel() {
-                drawAxis();
-                ctx.strokeStyle = "rgb(76,78,80)";
-                drawHead();
-
-                ctx.save();
-                ctx.translate(A.xOffset*0.005,0);
-                ctx.scale(1-Math.abs(A.xOffset)*0.04,1);
-                drawBody();
-                ctx.restore();
-
-                //drawPoint(A, "A");
-                //drawPoint(B, "B");
-                //drawPoint(C, "C");
             }
             
             // Called when changing the sliders
-            function updatePoints(info, attr){   
+            function updatePoints(info,attr){   
                 for(let pID in livePoints){
-                    const p = livePoints[pID];
-                    let yRange = p.yRange;
-                    let value = info.value;
-                    if(p.yNegRange) {
-                        yRange = info.value<0?p.yNegRange:p.yRange;
-                        value = Math.abs(value);
+                    const p=livePoints[pID];
+                    let yRange=p.yRange;
+                    let value=info.value;
+                    if(p.yNegRange){
+                        yRange=info.value<0?p.yNegRange:p.yRange;
+                        value=Math.abs(value);
                     }
                     switch(attr){
                         case "x":
                             p.xOffset=value;
-                            p.x=lerp(p.xRange[0], p.xRange[1],info.value);
+                            p.x=lerp(p.xRange[0],p.xRange[1],info.value);
                             break;
                         case "y":
                             p.yOffset=value;
-                            p.y=lerp(yRange[0], yRange[1],value);
+                            p.y=lerp(yRange[0],yRange[1],value);
                             break;
                     }
                 }
