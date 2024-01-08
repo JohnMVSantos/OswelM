@@ -2,6 +2,7 @@ class Eye{
     constructor() {
 
     }
+    
     draw(ref,ctx) {
         ctx.save();
         ctx.translate(ref.x,ref.y);

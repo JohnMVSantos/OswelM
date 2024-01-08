@@ -1,34 +1,57 @@
 class Avatar{
-    constructor(){
+    constructor(lookAt){
         this.complexions=new Complexions();
         this.eye=new Eye();
         this.nose=new Nose();
+        this.lookAt=lookAt;
+        this.particles=[
+            new Particle([this.lookAt.x,this.lookAt.y],true),
+            new Particle([this.lookAt.x,this.lookAt.y+0.3])
+        ];
     }
+
+    updateParticles(){
+        this.particles.forEach(p=>{
+            p.update();
+        });
+    }
+
+    drawParticles(ctx){
+        this.particles.forEach(p=>{
+            p.draw(ctx);
+        });
+    }
+
     draw(ctx){
         ctx.strokeStyle="rgb(76,78,80)";
         this.#drawHead(ctx);
 
         ctx.save();
-        ctx.translate(A.xOffset*0.005,0);
-        ctx.scale(1-Math.abs(A.xOffset)*0.04,1);
+        ctx.translate(this.lookAt.xOffset*0.005,0);
+        ctx.scale(1-Math.abs(this.lookAt.xOffset)*0.04,1);
         this.#drawBody(ctx);
         ctx.restore();
+        
+        this.updateParticles();
+        this.drawParticles(ctx);
 
-        //this.#drawAxis();
-        drawPoint(A, "A");
+        if(DEBUG){
+            drawAxis(lookAt);
+            drawPoint(this.lookAt, "A");
+        }
     }
 
     #drawHead(ctx) {
         ctx.save();
 
         const topPoint={
-            x:Math.min(0.030, A.x),
-            y:Math.min(-0.785, A.y-0.730)
+            x:Math.min(0.030, this.lookAt.x),
+            y:Math.min(-0.785, this.lookAt.y-0.730)
         }
-        const verticalSquish=1-Math.abs(A.yOffset*0.2);
+        const verticalSquish=1-Math.abs(this.lookAt.yOffset*0.2);
         const bottomPoint={
-            x:Math.min(0.075, A.x),
-            y:A.y+(0.625-Math.min(0,A.yOffset)*0.28)*verticalSquish,
+            x:Math.min(0.075, this.lookAt.x),
+            y:this.lookAt.y+(0.625-Math.min(0,this.lookAt.yOffset)*0.28)*verticalSquish,
         }
 
         this.#drawBoundary(topPoint.x,topPoint.y,bottomPoint.x,bottomPoint.y,ctx);
@@ -36,9 +59,9 @@ class Avatar{
         this.#drawBoundary(-topPoint.x,topPoint.y,-bottomPoint.x,bottomPoint.y,ctx);
         ctx.restore();
 
-        this.eye.draw(A,ctx);
-        this.complexions.drawFaceDetails(A,ctx);
-        this.nose.draw(A,ctx);
+        this.eye.draw(this.lookAt,ctx);
+        this.complexions.drawFaceDetails(this.lookAt,ctx);
+        this.nose.draw(this.lookAt,ctx);
     }
 
     #drawBoundary(topX,topY,bottomX,bottomY,ctx) {
@@ -72,9 +95,9 @@ class Avatar{
         ctx.beginPath();
 
         // Drawing Neck
-        ctx.moveTo(-0.07+A.xOffset*0.01,0.55+A.yOffset*0.01);
+        ctx.moveTo(-0.07+this.lookAt.xOffset*0.01,0.55+this.lookAt.yOffset*0.01);
         ctx.quadraticCurveTo(-0.05,0.70,-0.06,0.80);
-        ctx.moveTo(0.07+A.xOffset*0.01,0.55+A.yOffset*0.01);
+        ctx.moveTo(0.07+this.lookAt.xOffset*0.01,0.55+this.lookAt.yOffset*0.01);
         ctx.quadraticCurveTo(0.05,0.70,0.06,0.80);
         
         ctx.stroke();

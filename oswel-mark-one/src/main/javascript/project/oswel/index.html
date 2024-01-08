@@ -21,9 +21,9 @@
     <body>
         <canvas id="myCanvas"></canvas>
         <div id="sliders">
-            x: <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updatePoints(this, 'x')"/>
+            x: <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
             <br>
-            y: <input type="range" min="-0.35" max="0.65" step="0.05" onChange="updatePoints(this, 'y')"/>
+            y: <input type="range" min="-0.35" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
             <br>
             <canvas id="camCanvas"></canvas>
         </div>
@@ -33,8 +33,10 @@
         <script src="eye.js"></script>
         <script src="nose.js"></script>
         <script src="math.js"></script>
+        <script src="physics.js"></script>
         <script src="reference.js"></script>
         <script>
+            const DEBUG=false;
             const canvas=document.getElementById("myCanvas");
             canvas.width=800;
             canvas.height=500; 
@@ -51,14 +53,9 @@
             img.src="oswel.avif";
 
             const skinTone="rgba(219,221,225,0.8)";
-
-            const avatar=new Avatar();
-
-            const livePoints={
-                A:{x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0},
-            }
-
-            const {A}=livePoints;
+            // point A
+            const lookAt={x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
+            const avatar=new Avatar(lookAt);
 
             img.onload=function(){
                 animate();
@@ -77,8 +74,8 @@
                 */
                 
                 const offset={
-                    x:x-A.x,
-                    y:y-A.y
+                    x:x-lookAt.x,
+                    y:y-lookAt.y
                 }
                 console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
             }
@@ -99,42 +96,36 @@
                     const locs=getMarkedLocations(imgData);
                     if(locs.length>0){
                         const avg=average(locs);
-
-                        const x=(avg.x-imgData.width/2)/imgData.width;
-                        const y=(avg.y-imgData.height/2)/imgData.height;
-                        console.log({x,y});
-
-                        updatePoints({value:-x},'x');
-                        updatePoints({value:y},'y');
+                        const x=(avg[0]-imgData.width/2)/imgData.width;
+                        const y=(avg[1]-imgData.height/2)/imgData.height;
+                        updateLookAt({value:-x},'x');
+                        updateLookAt({value:y},'y');
                     }
 
                 }
-                
                 avatar.draw(ctx);
                 requestAnimationFrame(animate);
             }
             
             // Called when changing the sliders
-            function updatePoints(info,attr){   
-                for(let pID in livePoints){
-                    const p=livePoints[pID];
-                    let yRange=p.yRange;
-                    let value=info.value;
-                    if(p.yNegRange){
-                        yRange=info.value<0?p.yNegRange:p.yRange;
-                        value=Math.abs(value);
-                    }
-                    switch(attr){
-                        case "x":
-                            p.xOffset=value;
-                            p.x=lerp(p.xRange[0],p.xRange[1],info.value);
-                            break;
-                        case "y":
-                            p.yOffset=value;
-                            p.y=lerp(yRange[0],yRange[1],value);
-                            break;
-                    }
+            function updateLookAt(info,attr){   
+                const p=lookAt;
+                let yRange=p.yRange;
+                let value=info.value;
+                if(p.yNegRange){
+                    yRange=info.value<0?p.yNegRange:p.yRange;
+                    value=Math.abs(value);
                 }
+                switch(attr){
+                    case "x":
+                        p.xOffset=value;
+                        p.x=lerp(p.xRange[0],p.xRange[1],info.value);
+                        break;
+                    case "y":
+                        p.yOffset=value;
+                        p.y=lerp(yRange[0],yRange[1],value);
+                        break;
+                } 
             }
 
         </script>

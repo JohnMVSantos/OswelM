@@ -2,6 +2,7 @@ class Complexions{
     constructor(){
 
     }
+    
     drawFaceDetails(ref,ctx) {
         ctx.save();
         ctx.translate(ref.x,ref.y+0.040);

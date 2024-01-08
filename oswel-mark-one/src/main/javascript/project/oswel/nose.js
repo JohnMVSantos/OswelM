@@ -2,6 +2,7 @@ class Nose{
     constructor(){
 
     }
+    
     draw(ref,ctx) {
         ctx.save();
         ctx.scale(1-Math.abs(ref.xOffset)*0.34,1-Math.abs(ref.yOffset*0.20));

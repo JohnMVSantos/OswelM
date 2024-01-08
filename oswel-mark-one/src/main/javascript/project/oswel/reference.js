@@ -1,16 +1,16 @@
 
-
-function drawAxis() {
+// Drawing MISC
+function drawAxis(lookAt) {
     ctx.beginPath();
 
     // Draw the Axis References.
     ctx.strokeStyle = "lightgray";
     // Vertical Line
-    ctx.moveTo(B.x, B.y);
-    ctx.quadraticCurveTo(A.x,A.y,C.x,C.y);
+    ctx.moveTo(0.0, -0.80);
+    ctx.quadraticCurveTo(lookAt.x,lookAt.y,0.0,0.60);
     // Horizontal Line
-    ctx.moveTo(-0.25,-0.040);
-    ctx.quadraticCurveTo(A.x,A.y,0.25,-0.040);
+    ctx.moveTo(-0.25,0.0);
+    ctx.quadraticCurveTo(lookAt.x,lookAt.y,0.25,0.0);
 
     ctx.stroke();
 }
@@ -32,6 +32,7 @@ function drawPoint(loc,label,rad=0.04){
     ctx.stroke();
 }
 
+// Image Processing
 function getMarkedLocations(imgData, color=[0,0,255], threshold=150) {
     const locs=[];
     const data=imgData.data;
@@ -43,31 +44,8 @@ function getMarkedLocations(imgData, color=[0,0,255], threshold=150) {
             const pIndex=i/4;
             const y=Math.floor(pIndex/imgData.width);
             const x=pIndex%imgData.width;
-            locs.push({x,y});
+            locs.push([x,y]);
         }
     }
     return locs;
-}
-
-function match(c1,c2,thr) {
-    return distance(c1,c2)<=thr;
-}
-
-function distance(p1,p2) {
-    let dist=0;
-    for(let i=0;i<p1.length;i++) {
-        dist+=(p1[i]-p2[i])*(p1[i]-p2[i]);
-    }
-    return Math.sqrt(dist);
-}
-
-function average(locs) {
-    const avg={x:0, y:0};
-    for(let i=0;i<locs.length;i++){
-        avg.x+=locs[i].x;
-        avg.y+=locs[i].y;
-    }
-    avg.x/=locs.length;
-    avg.y/=locs.length;
-    return avg;
 }
