@@ -1,6 +1,9 @@
 
 Language Processing and Software
 --------------------------------
+Equipment definitions: Base equipment should be provided such as speech recognition and base voice.
+APIs should also be equipements but not provided by default unless added by the user. 
+Also Django to run the application and allow a login page and settings page for configuration avatar layouts and page appearances.
 1) For the python recognizer needs a stricter confidence for start command.
 2) Might need to remove connection because it disturbs flow of application.
 2.1) Exit the application for downstreams and allow the python app to start again upon user's request.  (JUST NEED TO TEST)
