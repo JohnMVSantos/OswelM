@@ -30,6 +30,7 @@
         <script src="camera.js"></script>
         <script src="avatar.js"></script>
         <script src="complexions.js"></script>
+        <script src="body.js"></script>
         <script src="eye.js"></script>
         <script src="nose.js"></script>
         <script src="math.js"></script>
@@ -55,7 +56,7 @@
             const skinTone="rgba(219,221,225,0.8)";
             // point A
             const lookAt={x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
-            const avatar=new Avatar(lookAt);
+            const avatar=new Avatar(lookAt,skinTone);
 
             img.onload=function(){
                 animate();

@@ -1,25 +1,18 @@
 class Avatar{
-    constructor(lookAt){
+    constructor(lookAt,skinTone){
         this.complexions=new Complexions();
         this.eye=new Eye();
         this.nose=new Nose();
+        this.body=new Body();
         this.lookAt=lookAt;
+
         this.particles=[
             new Particle([this.lookAt.x,this.lookAt.y],true),
             new Particle([this.lookAt.x,this.lookAt.y+0.3])
         ];
-    }
-
-    updateParticles(){
-        this.particles.forEach(p=>{
-            p.update();
-        });
-    }
-
-    drawParticles(ctx){
-        this.particles.forEach(p=>{
-            p.draw(ctx);
-        });
+        this.segments=[
+            new Segment(this.particles[0], this.particles[1])
+        ]
     }
 
     draw(ctx){
@@ -29,11 +22,16 @@ class Avatar{
         ctx.save();
         ctx.translate(this.lookAt.xOffset*0.005,0);
         ctx.scale(1-Math.abs(this.lookAt.xOffset)*0.04,1);
-        this.#drawBody(ctx);
+        this.body.draw(this.lookAt,ctx);
         ctx.restore();
-        
-        this.updateParticles();
-        this.drawParticles(ctx);
+
+        // Drawing particles.
+        this.particles[0].location=[lookAt.x,lookAt.y];
+        Physics.updatePhysicsItem(this.particles);
+        Physics.drawPhysicsItem(this.particles,ctx);
+
+        Physics.updatePhysicsItem(this.segments);
+        Physics.drawPhysicsItem(this.segments,ctx);
 
         if(DEBUG){
             drawAxis(lookAt);
@@ -88,18 +86,6 @@ class Avatar{
         ctx.moveTo(0.15,0.30);
         ctx.lineTo(0.08+bottomX*0.15,0.50);  
 
-        ctx.stroke();
-    }
-
-    #drawBody(ctx) {
-        ctx.beginPath();
-
-        // Drawing Neck
-        ctx.moveTo(-0.07+this.lookAt.xOffset*0.01,0.55+this.lookAt.yOffset*0.01);
-        ctx.quadraticCurveTo(-0.05,0.70,-0.06,0.80);
-        ctx.moveTo(0.07+this.lookAt.xOffset*0.01,0.55+this.lookAt.yOffset*0.01);
-        ctx.quadraticCurveTo(0.05,0.70,0.06,0.80);
-        
         ctx.stroke();
     }
 }
