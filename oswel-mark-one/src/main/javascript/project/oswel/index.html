@@ -33,6 +33,7 @@
         <script src="body.js"></script>
         <script src="eye.js"></script>
         <script src="nose.js"></script>
+        <script src="mouth.js"></script>
         <script src="math.js"></script>
         <script src="physics.js"></script>
         <script src="reference.js"></script>
@@ -52,6 +53,9 @@
 
             const img=new Image();
             img.src="oswel.avif";
+            
+            const img_neck=new Image();
+            img_neck.src="robot_neck.jpg"
 
             const skinTone="rgba(219,221,225,0.8)";
             // point A
@@ -86,8 +90,9 @@
 
                 // TODO: Remove this at the end of the project.
                 ctx.clearRect(-1,-1,2,2);
-                ctx.globalAlpha=0.2;
+                //ctx.globalAlpha=0.2;
                 ctx.drawImage(img,-1,-1,2,2);
+                ctx.drawImage(img_neck, -0.25,0.45,0.50,0.50);
                 ctx.globalAlpha=1;
                 // END TODO
                 
