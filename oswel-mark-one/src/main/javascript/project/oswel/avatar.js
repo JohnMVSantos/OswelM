@@ -4,7 +4,7 @@ class Avatar{
         this.eye=new Eye();
         this.nose=new Nose();
         this.mouth=new Mouth();
-        this.body=new Body();
+        this.neck=new Neck();
         this.lookAt=lookAt;
 
         this.particles=[
@@ -20,11 +20,11 @@ class Avatar{
         ctx.strokeStyle="rgb(76,78,80)";
         this.#drawHead(ctx);
 
-        ctx.save();
-        ctx.translate(this.lookAt.xOffset*0.005,0);
-        ctx.scale(1-Math.abs(this.lookAt.xOffset)*0.04,1);
-        this.body.draw(this.lookAt,ctx);
-        ctx.restore();
+        // ctx.save();
+        // ctx.translate(this.lookAt.xOffset*0.005,0);
+        // ctx.scale(1-Math.abs(this.lookAt.xOffset)*0.04,1);
+        // this.body.draw(this.lookAt,ctx);
+        //ctx.restore();
 
         // Drawing particles.
         this.particles[0].location=[lookAt.x,lookAt.y];
@@ -53,6 +53,7 @@ class Avatar{
             y:this.lookAt.y+(0.625-Math.min(0,this.lookAt.yOffset)*0.28)*verticalSquish,
         }
 
+        this.neck.draw(bottomPoint,ctx);
         this.#drawBoundary(topPoint.x,topPoint.y,bottomPoint.x,bottomPoint.y,ctx);
         ctx.scale(-1,1);
         this.#drawBoundary(-topPoint.x,topPoint.y,-bottomPoint.x,bottomPoint.y,ctx);
@@ -80,6 +81,7 @@ class Avatar{
 
         ctx.stroke();
         ctx.closePath();
+
         ctx.fillStyle=skinTone;
         ctx.fill();
 

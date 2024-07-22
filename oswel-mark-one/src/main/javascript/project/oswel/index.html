@@ -31,6 +31,7 @@
         <script src="avatar.js"></script>
         <script src="complexions.js"></script>
         <script src="body.js"></script>
+        <script src="neck.js"></script>
         <script src="eye.js"></script>
         <script src="nose.js"></script>
         <script src="mouth.js"></script>
@@ -57,7 +58,7 @@
             const img_neck=new Image();
             img_neck.src="robot_neck.jpg"
 
-            const skinTone="rgba(219,221,225,0.8)";
+            const skinTone="rgba(219,221,225,0.9)";
             // point A
             const lookAt={x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
             const avatar=new Avatar(lookAt,skinTone);
@@ -72,16 +73,16 @@
                 const x=(evt.x-canvas.width/2)/(canvas.width/2);
                 const y=(evt.y-canvas.height/2)/(canvas.height/2)
 
-                /*const offset = {
+                const offset = {
                     x:x,
-                    y;y,
+                    y:y,
                 }
-                */
                 
-                const offset={
-                    x:x-lookAt.x,
-                    y:y-lookAt.y
-                }
+                
+                // const offset={
+                //     x:x-lookAt.x,
+                //     y:y-lookAt.y
+                // }
                 console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
             }
             // END TODO
@@ -90,9 +91,10 @@
 
                 // TODO: Remove this at the end of the project.
                 ctx.clearRect(-1,-1,2,2);
-                //ctx.globalAlpha=0.2;
+                ctx.globalAlpha=0.3;
                 ctx.drawImage(img,-1,-1,2,2);
-                ctx.drawImage(img_neck, -0.25,0.45,0.50,0.50);
+                // ctx.globalAlpha=0.5;
+                // ctx.drawImage(img_neck, -0.25,0.45,0.50,0.50);
                 ctx.globalAlpha=1;
                 // END TODO
                 
