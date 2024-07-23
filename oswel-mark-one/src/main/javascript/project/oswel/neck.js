@@ -49,6 +49,12 @@ class Neck{
         ctx.quadraticCurveTo(0.05,0.70,0.09,0.80);
         ctx.moveTo(0.06+xOffset,0.55+yOffset);
         ctx.quadraticCurveTo(0.04,0.70,0.08,0.82);
+        
+        ctx.moveTo(0.11+xOffset,0.47+yOffset*0.009);
+        ctx.quadraticCurveTo(0.10,0.67,0.14,0.78);
+
+        ctx.moveTo(0.09+xOffset,0.52+yOffset*0.009);
+        ctx.quadraticCurveTo(0.09,0.66,0.13,0.80);
 
         // Metal Brackets Right
         ctx.moveTo(0.04,0.94);

@@ -5,6 +5,7 @@ class Avatar{
         this.nose=new Nose();
         this.mouth=new Mouth();
         this.neck=new Neck();
+        this.body=new Body();
         this.lookAt=lookAt;
 
         this.particles=[
@@ -63,6 +64,7 @@ class Avatar{
         this.complexions.drawFaceDetails(this.lookAt,ctx);
         this.nose.draw(this.lookAt,ctx);
         this.mouth.draw(this.lookAt,ctx);
+        this.body.draw(ctx);
     }
 
     #drawBoundary(topX,topY,bottomX,bottomY,ctx) {
