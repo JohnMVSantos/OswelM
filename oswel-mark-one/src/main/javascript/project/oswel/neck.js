@@ -60,6 +60,29 @@ class Neck{
         ctx.moveTo(0.04,0.94);
         ctx.quadraticCurveTo(0.01,0.88,0.06,0.81);
         ctx.lineTo(0.08,0.85);
+        ctx.quadraticCurveTo(0.06,0.89,0.07,0.94);
+        ctx.lineTo(0.04,0.94);
+        
+        ctx.moveTo(0.08,0.85);
+        ctx.quadraticCurveTo(0.09,0.84,0.10,0.89);
+        ctx.moveTo(0.07,0.84);
+        ctx.quadraticCurveTo(0.10,0.80,0.11,0.86);
+
+        ctx.moveTo(0.09,0.82);
+        ctx.lineTo(0.09,0.80);
+        ctx.lineTo(0.08,0.82);
+        ctx.lineTo(0.08,0.83);
+
+        ctx.moveTo(0.09,0.79);
+        ctx.lineTo(0.09,0.63);
+        ctx.quadraticCurveTo(0.08,0.64,0.07,0.63);
+        ctx.lineTo(0.07,0.74);
+
+        ctx.moveTo(0.085,0.64);
+        ctx.lineTo(0.085,0.53);
+        ctx.moveTo(0.075,0.64);
+        ctx.lineTo(0.075,0.53);
+
         ctx.stroke();
 
         this.#drawBolt(0.06,0.85,0.008,"silver",ctx);
