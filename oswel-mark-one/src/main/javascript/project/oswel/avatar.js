@@ -8,33 +8,28 @@ class Avatar{
         this.body=new Body();
         this.lookAt=lookAt;
 
-        this.particles=[
-            new Particle([this.lookAt.x,this.lookAt.y],true),
-            new Particle([this.lookAt.x,this.lookAt.y+0.3])
-        ];
-        this.segments=[
-            new Segment(this.particles[0], this.particles[1])
-        ]
+        this.leftWire=new Pendulum({x:-0.37, y:0.83});
+        this.rightWire=new Pendulum({x:+0.37, y:0.83});   
     }
 
     draw(ctx){
         ctx.strokeStyle="rgb(76,78,80)";
         this.#drawHead(ctx);
 
-        // ctx.save();
-        // ctx.translate(this.lookAt.xOffset*0.005,0);
-        // ctx.scale(1-Math.abs(this.lookAt.xOffset)*0.04,1);
-        // this.body.draw(this.lookAt,ctx);
-        //ctx.restore();
+        // Slight movements to the body left/right.
+        ctx.save();
+        const xTranslate=this.lookAt.xOffset*0.005;
+        const xScale=1-Math.abs(this.lookAt.xOffset)*0.04
+        ctx.translate(xTranslate,0);
+        ctx.scale(xScale,1);
+        this.body.draw(ctx);
+        ctx.restore();
 
-        // Drawing particles.
-        this.particles[0].location=[lookAt.x,lookAt.y];
-        Physics.updatePhysicsItem(this.particles);
-        Physics.drawPhysicsItem(this.particles,ctx);
-
-        Physics.updatePhysicsItem(this.segments);
-        Physics.drawPhysicsItem(this.segments,ctx);
-
+        this.leftWire.update(xTranslate,xScale);
+        this.leftWire.draw(ctx);
+        this.rightWire.update(xTranslate,xScale);
+        this.rightWire.draw(ctx);
+        
         if(DEBUG){
             drawAxis(lookAt);
             drawPoint(this.lookAt, "A");
@@ -64,7 +59,6 @@ class Avatar{
         this.complexions.drawFaceDetails(this.lookAt,ctx);
         this.nose.draw(this.lookAt,ctx);
         this.mouth.draw(this.lookAt,ctx);
-        this.body.draw(ctx);
     }
 
     #drawBoundary(topX,topY,bottomX,bottomY,ctx) {

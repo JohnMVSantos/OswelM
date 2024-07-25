@@ -1,4 +1,3 @@
-
 class Physics{
     static G=[0,0.01];
 
