@@ -1,3 +1,8 @@
+/* Oswell backend Java Application.
+ * 
+ * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
+ */
+
 package project.oswel.nlp;
 
 import opennlp.tools.namefind.TokenNameFinderModel;
