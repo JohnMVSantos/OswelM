@@ -1,3 +1,7 @@
+/* Oswell Application Front-End Avatar.
+ * 
+ * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
+ */
 
 const camCanvas=document.getElementById("camCanvas");
 let video=null;

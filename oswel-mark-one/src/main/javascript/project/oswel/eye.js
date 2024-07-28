@@ -1,3 +1,8 @@
+/* Oswell Application Front-End Avatar.
+ * 
+ * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
+ */
+
 class Eye{
     constructor() {
         this.pupilColor = "rgba(211,246,252,0.3)";
