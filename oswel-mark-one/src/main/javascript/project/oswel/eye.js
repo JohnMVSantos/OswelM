@@ -4,9 +4,10 @@
  */
 
 class Eye{
-    constructor() {
-        this.pupilColor = "rgba(211,246,252,0.3)";
-        this.irisColor = "rgba(40,147,181,0.3)";
+    constructor(skinTone) {
+        this.skinTone=skinTone;
+        this.pupilColor="rgba(211,246,252,0.3)";
+        this.irisColor="rgba(40,147,181,0.3)";
     }
     
     draw(ref,ctx) {
@@ -21,15 +22,20 @@ class Eye{
     #drawEye(scaleX,scaleY,ctx) {
         ctx.save();
         ctx.scale(1-scaleX*0.34,1-Math.abs(scaleY*0.20));
+
+        // Eye sockets.
         ctx.beginPath();
 
+        ctx.fillStyle=this.skinTone;
         ctx.moveTo(0.05,0.08);
         ctx.quadraticCurveTo(0.17,0.15,0.20,0.01);
         ctx.quadraticCurveTo(0.13,-0.04,0.05,0.06);
         ctx.lineTo(0.05,0.08);
 
         ctx.stroke();
+        ctx.fill();
         
+        // Iris.
         ctx.beginPath();
 
         ctx.fillStyle=this.irisColor;
@@ -39,12 +45,15 @@ class Eye{
         ctx.stroke();
         ctx.fill();
         
+        // Pupil.
         ctx.beginPath();
 
         ctx.arc(0.12,0.04,0.015,0,Math.PI*2);
         ctx.fillStyle=this.pupilColor;
 
+        ctx.stroke();
         ctx.fill();
+
         ctx.restore();
     }
 }

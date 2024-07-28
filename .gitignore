@@ -162,11 +162,12 @@ cython_debug/
 #.idea/
 
 ### VisualStudioCode ###
-.vscode/    # Maybe .vscode/**/* instead - see comments
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+#.vscode/    # Maybe .vscode/**/* instead - see comments
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+**/.vscode/
 
 # Model extensions
 *.h5

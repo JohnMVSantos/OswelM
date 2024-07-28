@@ -21,7 +21,7 @@ class Neck{
         ctx.quadraticCurveTo(-0.02,0.61,-0.01,0.64);
         ctx.lineTo(0.01,0.64);
         ctx.quadraticCurveTo(0.02,0.61,0.04+xOffset*2.0,0.57+yOffset+xOffset*adj*0.35);
-        ctx.quadraticCurveTo(0.00,0.58,-0.04+xOffset*2.0,0.57+yOffset-xOffset*adj*0.35);
+        ctx.quadraticCurveTo(0.00,0.58+yOffset,-0.04+xOffset*2.0,0.57+yOffset-xOffset*adj*0.35);
         
         ctx.stroke();
         ctx.fill();
@@ -106,8 +106,8 @@ class Neck{
 
         ctx.fillStyle="rgba(192,192,192,0.3)";
         ctx.moveTo(0.085,0.64);
-        ctx.lineTo(0.085,0.53);
-        ctx.lineTo(0.075,0.53);
+        ctx.lineTo(0.085,0.52+yOffset);
+        ctx.lineTo(0.075,0.53+yOffset);
         ctx.lineTo(0.075,0.64);
         ctx.quadraticCurveTo(0.080,0.63,0.085,0.64);
 
@@ -118,11 +118,11 @@ class Neck{
         ctx.beginPath();
         
         ctx.fillStyle="rgba(166,49,30,0.8)";
-        ctx.moveTo(0.07+xOffset,0.55+yOffset);
+        ctx.moveTo(0.07+xOffset,0.54+yOffset);
         ctx.quadraticCurveTo(0.05,0.70,0.09,0.825);
         ctx.lineTo(0.08,0.83);
         ctx.quadraticCurveTo(0.04,0.70,0.06+xOffset,0.55+yOffset);
-        ctx.lineTo(0.07+xOffset,0.55+yOffset);
+        ctx.quadraticCurveTo(0.065,0.545,0.07+xOffset,0.54+yOffset);
 
         ctx.stroke();
         ctx.fill();

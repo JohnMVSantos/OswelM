@@ -284,8 +284,9 @@ class Body{
         ctx.lineTo(-0.25,0.70);
         ctx.quadraticCurveTo(-0.18,0.67,-0.11,0.59);
         ctx.quadraticCurveTo(-0.11,0.51,-0.11,0.47);
-
-        ctx.quadraticCurveTo(bottomPoint.x,bottomPoint.y+0.11,0.11,0.47);
+        
+        const yOffset = 1.225 + Math.log(bottomPoint.y);
+        ctx.quadraticCurveTo(bottomPoint.x,yOffset,0.11,0.47);
         
         ctx.stroke();
         ctx.fill();
