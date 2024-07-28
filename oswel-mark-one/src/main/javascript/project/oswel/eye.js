@@ -1,6 +1,7 @@
 class Eye{
     constructor() {
-
+        this.pupilColor = "rgba(211,246,252,0.3)";
+        this.irisColor = "rgba(40,147,181,0.3)";
     }
     
     draw(ref,ctx) {
@@ -26,7 +27,7 @@ class Eye{
         
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(40,147,181,0.3)";
+        ctx.fillStyle=this.irisColor;
         ctx.moveTo(0.09,0.02);
         ctx.bezierCurveTo(0.08,0.13,0.175,0.10,0.14,-0.005);
 
@@ -36,7 +37,7 @@ class Eye{
         ctx.beginPath();
 
         ctx.arc(0.12,0.04,0.015,0,Math.PI*2);
-        ctx.fillStyle="rgba(211,246,252,0.3)";
+        ctx.fillStyle=this.pupilColor;
 
         ctx.fill();
         ctx.restore();

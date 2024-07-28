@@ -5,8 +5,9 @@ class Avatar{
         this.nose=new Nose();
         this.mouth=new Mouth();
         this.neck=new Neck();
-        this.body=new Body();
+        this.body=new Body(skinTone);
         this.lookAt=lookAt;
+        this.skinTone=skinTone;
 
         this.leftWire=new Pendulum({x:-0.37, y:0.83});
         this.rightWire=new Pendulum({x:+0.37, y:0.83});   
@@ -78,7 +79,7 @@ class Avatar{
         ctx.stroke();
         ctx.closePath();
 
-        ctx.fillStyle=skinTone;
+        ctx.fillStyle=this.skinTone;
         ctx.fill();
 
         ctx.beginPath();

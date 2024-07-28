@@ -23,6 +23,8 @@ class Neck{
         ctx.quadraticCurveTo(0.01,0.85,0.01,0.88+yOffset);
         ctx.rect(-0.02,0.88+yOffset,0.04,0.06);
 
+        ctx.stroke();
+
         ctx.save();
         this.#drawDetails(xOffset,yOffset+xOffset*adj,ctx);
         ctx.scale(-1, 1);
@@ -33,6 +35,8 @@ class Neck{
 
     #drawDetails(xOffset,yOffset,ctx){
         ctx.save();
+
+        ctx.beginPath();
         // Cylinders Right
         ctx.moveTo(0.02+xOffset,0.62+yOffset*0.2);
         ctx.quadraticCurveTo(0.015,0.86,0.03,0.87);
@@ -44,17 +48,40 @@ class Neck{
         ctx.moveTo(0.030,0.74);
         ctx.lineTo(0.045+xOffset,0.57+yOffset);
 
-        // Right Boundary
+        // Inner boundary.
         ctx.moveTo(0.07+xOffset,0.55+yOffset);
         ctx.quadraticCurveTo(0.05,0.70,0.09,0.80);
+
         ctx.moveTo(0.06+xOffset,0.55+yOffset);
         ctx.quadraticCurveTo(0.04,0.70,0.08,0.82);
+
+        ctx.stroke();
         
+        // Outer boundary.
+        ctx.beginPath();
         ctx.moveTo(0.11+xOffset,0.47+yOffset*0.009);
+        // Connection of top boundaries to head.
+        ctx.quadraticCurveTo(0.105,0.45,0.09+xOffset,0.52+yOffset*0.009);
+
+        ctx.moveTo(0.11+xOffset,0.47+yOffset*0.009)
         ctx.quadraticCurveTo(0.10,0.67,0.14,0.78);
 
         ctx.moveTo(0.09+xOffset,0.52+yOffset*0.009);
         ctx.quadraticCurveTo(0.09,0.66,0.13,0.80);
+        ctx.stroke();
+
+        // Outer boundary bottom connection.
+        ctx.beginPath();
+        ctx.moveTo(0.15,0.81);
+        ctx.lineTo(0.145,0.76);
+        ctx.quadraticCurveTo(0.14,0.80,0.125,0.80);
+        ctx.lineTo(0.13,0.835);
+
+        ctx.stroke();
+        ctx.closePath();
+        
+
+        ctx.beginPath();
 
         // Metal Brackets Right
         ctx.moveTo(0.04,0.94);
