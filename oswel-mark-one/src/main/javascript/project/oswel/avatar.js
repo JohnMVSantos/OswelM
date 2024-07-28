@@ -9,7 +9,7 @@ class Avatar{
         this.eye=new Eye();
         this.nose=new Nose();
         this.mouth=new Mouth();
-        this.neck=new Neck();
+        this.neck=new Neck(skinTone);
         this.body=new Body(skinTone);
         this.lookAt=lookAt;
         this.skinTone=skinTone;
@@ -20,7 +20,16 @@ class Avatar{
 
     draw(ctx){
         ctx.strokeStyle="rgb(76,78,80)";
-        this.#drawHead(ctx);
+
+        const topPoint={
+            x:Math.min(0.030, this.lookAt.x),
+            y:Math.min(-0.785, this.lookAt.y-0.730)
+        }
+        const verticalSquish=1-Math.abs(this.lookAt.yOffset*0.2);
+        const bottomPoint={
+            x:Math.min(0.075, this.lookAt.x),
+            y:this.lookAt.y+(0.625-Math.min(0,this.lookAt.yOffset)*0.28)*verticalSquish,
+        }
 
         // Slight movements to the body left/right.
         ctx.save();
@@ -28,8 +37,10 @@ class Avatar{
         const xScale=1-Math.abs(this.lookAt.xOffset)*0.04
         ctx.translate(xTranslate,0);
         ctx.scale(xScale,1);
-        this.body.draw(ctx);
+        this.body.draw(ctx,bottomPoint);
         ctx.restore();
+
+        this.#drawHead(ctx,topPoint,bottomPoint);
 
         this.leftWire.update(xTranslate,xScale);
         this.leftWire.draw(ctx);
@@ -42,18 +53,8 @@ class Avatar{
         }
     }
 
-    #drawHead(ctx) {
+    #drawHead(ctx,topPoint,bottomPoint) {
         ctx.save();
-
-        const topPoint={
-            x:Math.min(0.030, this.lookAt.x),
-            y:Math.min(-0.785, this.lookAt.y-0.730)
-        }
-        const verticalSquish=1-Math.abs(this.lookAt.yOffset*0.2);
-        const bottomPoint={
-            x:Math.min(0.075, this.lookAt.x),
-            y:this.lookAt.y+(0.625-Math.min(0,this.lookAt.yOffset)*0.28)*verticalSquish,
-        }
 
         this.neck.draw(bottomPoint,ctx);
         this.#drawBoundary(topPoint.x,topPoint.y,bottomPoint.x,bottomPoint.y,ctx);

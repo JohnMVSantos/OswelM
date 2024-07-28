@@ -7,8 +7,11 @@ class Body{
     constructor(skinTone){
         this.skinTone=skinTone;
     }
-    draw(ctx){
-        //ctx.beginPath();
+    draw(ctx,bottomPoint){
+        ctx.save();
+        this.#drawBackground(ctx,bottomPoint);
+        ctx.restore();
+
         ctx.save();
         this.#drawDetails(ctx);
         ctx.scale(-1, 1);
@@ -18,7 +21,7 @@ class Body{
 
     #drawDetails(ctx){
         ctx.save();
-
+    
         // Chest plate (main).
         ctx.beginPath();
 
@@ -194,6 +197,7 @@ class Body{
         // Collar bone 2 (middle).
         ctx.beginPath();
 
+        ctx.fillStyle="rgba(128,128,128,0.8)";
         ctx.moveTo(0.25,0.75);
         ctx.lineTo(0.23,0.725);
         ctx.quadraticCurveTo(0.18,0.73,0.14,0.70);
@@ -211,6 +215,7 @@ class Body{
         // Collar bone 3 (smallest).
         ctx.beginPath();
 
+        ctx.fillStyle="rgba(128,128,128,0.4)";
         ctx.moveTo(0.19,0.77);
         ctx.quadraticCurveTo(0.15,0.75,0.14,0.72);
         ctx.lineTo(0.123,0.70);
@@ -220,6 +225,79 @@ class Body{
         ctx.stroke();
         ctx.fill();
 
+        // Metal bracket.
+        ctx.beginPath();
+
+        ctx.fillStyle=this.skinTone;
+        ctx.moveTo(0.04,0.94);
+        ctx.quadraticCurveTo(0.01,0.88,0.06,0.81);
+        ctx.lineTo(0.08,0.85);
+        ctx.quadraticCurveTo(0.06,0.89,0.07,0.94);
+        ctx.lineTo(0.04,0.94);
+
+        ctx.stroke();
+        ctx.fill();
+        
+        ctx.beginPath();
+
+        ctx.fillStyle="rgba(11,9,43,0.5)";
+        ctx.moveTo(0.085,0.85);
+        ctx.quadraticCurveTo(0.09,0.84,0.10,0.89);
+        ctx.lineTo(0.11,0.86);
+        ctx.quadraticCurveTo(0.10,0.80,0.075,0.84);
+        ctx.lineTo(0.085,0.85);
+
+        ctx.stroke();
+        ctx.fill();
+
+        this.#drawBolt(0.06,0.85,0.008,"silver",ctx);
+        this.#drawBolt(0.05,0.88,0.008,"silver",ctx);
+        this.#drawBolt(0.05,0.91,0.008,"silver",ctx);
+
         ctx.restore();
+    }
+
+    #drawBackground(ctx,bottomPoint){
+        ctx.beginPath();
+
+        ctx.fillStyle="rgba(13,9,54,0.2)";
+        ctx.moveTo(0.11,0.47);
+        ctx.quadraticCurveTo(0.11,0.51,0.11,0.59);
+        ctx.quadraticCurveTo(0.18,0.67,0.25,0.70);
+        ctx.lineTo(0.265,0.73);
+        ctx.lineTo(0.28,0.68);
+        ctx.lineTo(0.29,0.68);
+        ctx.quadraticCurveTo(0.305,0.71,0.30,0.74);
+        ctx.lineTo(0.33,0.77);
+        ctx.quadraticCurveTo(0.34,0.78,0.36,0.76);
+        ctx.quadraticCurveTo(0.38,0.79,0.38,0.81);
+        ctx.quadraticCurveTo(0.35,0.88,0.31,0.95);
+
+        ctx.lineTo(-0.31,0.95);
+        ctx.quadraticCurveTo(-0.35,0.88,-0.38,0.81);
+        ctx.quadraticCurveTo(-0.38,0.79,-0.36,0.76);
+        ctx.quadraticCurveTo(-0.34,0.78,-0.33,0.77);
+        ctx.lineTo(-0.30,0.74);
+        ctx.quadraticCurveTo(-0.305,0.71,-0.29,0.68);
+        ctx.lineTo(-0.28,0.68);
+        ctx.lineTo(-0.265,0.73);
+        ctx.lineTo(-0.25,0.70);
+        ctx.quadraticCurveTo(-0.18,0.67,-0.11,0.59);
+        ctx.quadraticCurveTo(-0.11,0.51,-0.11,0.47);
+
+        ctx.quadraticCurveTo(bottomPoint.x,bottomPoint.y+0.11,0.11,0.47);
+        
+        ctx.stroke();
+        ctx.fill();
+    }
+
+    #drawBolt(centerX,centerY,radius,fill,ctx){
+        ctx.beginPath();
+        
+        ctx.fillStyle=fill;
+        ctx.arc(centerX,centerY,radius,0,2*Math.PI);
+
+        ctx.stroke();
+        ctx.fill();
     }
 }

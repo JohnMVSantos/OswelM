@@ -38,6 +38,7 @@ class Particle{
     }
 
     draw(ctx){
+        ctx.save();
         ctx.beginPath();
         ctx.fillStyle="red";
         ctx.strokeStyle="white";
@@ -45,6 +46,7 @@ class Particle{
         ctx.arc(...this.location,rad,0,Math.PI*2);
         ctx.fill();
         ctx.stroke();
+        ctx.restore();
     }
 }
 
