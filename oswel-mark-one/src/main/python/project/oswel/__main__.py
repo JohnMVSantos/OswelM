@@ -1,3 +1,11 @@
+# Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>. All Rights Reserved. 
+#
+# Unauthorized copying of this file, via any medium is strictly prohibited.
+# Proprietary and confidential.
+#
+# This source code is provided solely for runtime interpretation by Python.
+# Modifying or copying source code is explicitly forbidden. 
+
 from src.main.python.project.oswel.exceptions import UnrecognizedTaskException
 from src.main.python.project.oswel.nlp.training import TrainOswelNLP
 from src.main.python.project.oswel.nlp.deploy import DeployOswelNLP

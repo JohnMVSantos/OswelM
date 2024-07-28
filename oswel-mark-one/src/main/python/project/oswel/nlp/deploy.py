@@ -1,3 +1,11 @@
+# Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>. All Rights Reserved. 
+#
+# Unauthorized copying of this file, via any medium is strictly prohibited.
+# Proprietary and confidential.
+#
+# This source code is provided solely for runtime interpretation by Python.
+# Modifying or copying source code is explicitly forbidden. 
+
 from src.main.python.project.oswel.nlp.settings import MODEL_PATH, \
     CLASS_PATH, WORDS_PATH, INTENTS_PATH
 from tensorflow.keras.models import load_model
