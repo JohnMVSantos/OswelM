@@ -13,10 +13,11 @@ Also Django to run the application and allow a login page and settings page for 
 4) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
 5) Havent been testing :( Needs to be done ASAP! 
 6) Stocks and Finance?? Optional...
+7) Retraining of intents.json and new suggestion creations.
 
 Hardware and Face Detection
 ---------------------------
-1) Javascript and HTML to show the face and tracking **
+1) Javascript and HTML to show the face and tracking ** Add teeth, add ears, eye pupils move.
 2) Face Detection to control the face. 
 3) Startup message and Logo. Also display information for user input and oswel output.
 4) Integrate software to Raspberry PI.

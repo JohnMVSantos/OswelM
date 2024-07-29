@@ -21,10 +21,10 @@ class Nose{
             y:0.33
         }
 
-        ctx.quadraticCurveTo(tip.x,tip.y,0.00,0.335);
-        ctx.lineTo(-0.045,0.315);
-        ctx.moveTo(0.00,0.335);
-        ctx.lineTo(0.045,0.315);
+        ctx.quadraticCurveTo(tip.x,tip.y,0.00+tip.x*0.02,0.335+tip.y*0.01);
+        ctx.quadraticCurveTo(-0.02+tip.x*0.4,0.32,-0.045,0.315);
+        ctx.moveTo(0.00+tip.x*0.02,0.335+tip.y*0.01);
+        ctx.quadraticCurveTo(0.02+tip.x*0.4,0.32,0.045,0.315);
 
         ctx.stroke();
 

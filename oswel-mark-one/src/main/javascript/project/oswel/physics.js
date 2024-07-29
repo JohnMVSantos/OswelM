@@ -4,15 +4,15 @@
  */
 
 class Physics{
-    static G=[0,0.01];
+    static G=[0,0.003];
 
-    static updatePhysicsItem(items){
+    static updatePhysicsItems(items,gravityMultiplier){
         items.forEach(i=>{
-            i.update();
+            i.update(gravityMultiplier);
         });
     }
 
-    static drawPhysicsItem(items,ctx){
+    static drawPhysicsItems(items,ctx){
         items.forEach(i=>{
             i.draw(ctx);
         });
@@ -26,13 +26,13 @@ class Particle{
         this.isFixed=isFixed;
     }
 
-    update(){
+    update(gravityMultiplier=1){
         if(this.isFixed){
             return;
         }
-        const vel=subtract(this.location, this.oldLocation);
-        let newLocation=add(this.location, vel);
-        newLocation=add(newLocation, Physics.G);
+        const vel=subtract(this.location,this.oldLocation);
+        let newLocation=add(this.location,vel);
+        newLocation=add(newLocation,scale(Physics.G,gravityMultiplier));
         this.oldLocation=this.location;
         this.location=newLocation;
     }

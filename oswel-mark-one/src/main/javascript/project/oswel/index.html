@@ -14,6 +14,7 @@
                 position:absolute;
                 top:550;
                 left:10;
+                font-family: Arial;
             }
             #camCanvas{
                 max-width:173px;
@@ -23,9 +24,16 @@
     <body>
         <canvas id="myCanvas"></canvas>
         <div id="sliders">
-            x: <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
+            Face:<br>
+            X <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
             <br>
-            y: <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
+            Y <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
+            <br>
+            <br>
+            Mouth:<br>
+            X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
+            <br>
+            Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
             <br>
             <canvas id="camCanvas"></canvas>
         </div>
@@ -38,6 +46,7 @@
         <script src="nose.js"></script>
         <script src="mouth.js"></script>
         <script src="math.js"></script>
+        <script src="doublePendulum.js"></script>
         <script src="pendulum.js"></script>
         <script src="physics.js"></script>
         <script src="reference.js"></script>
@@ -63,7 +72,7 @@
 
             const skinTone="rgba(219,221,225,0.9)";
             // point A
-            const lookAt={x:0,y:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
+            const lookAt={x:0,y:-0.040,initX:0,initY:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
             const avatar=new Avatar(lookAt,skinTone);
 
             img.onload=function(){
@@ -135,6 +144,18 @@
                     case "y":
                         p.yOffset=value;
                         p.y=lerp(yRange[0],yRange[1],value);
+                        break;
+                } 
+            }
+
+            // Called when changing the sliders
+            function updateMouth(info,attr){   
+                switch(attr){
+                    case "x":
+                        avatar.mouth.x=info.value;
+                        break;
+                    case "y":
+                        avatar.mouth.y=info.value;
                         break;
                 } 
             }

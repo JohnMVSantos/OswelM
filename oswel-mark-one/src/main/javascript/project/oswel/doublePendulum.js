@@ -3,21 +3,23 @@
  * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
  */
 
-class Pendulum{
+class DoublePendulum{
     constructor(initLocation,length=0.1){
         this.initLocation=initLocation;
         this.particles=[
             new Particle([initLocation.x,initLocation.y],true),
+            new Particle([initLocation.x,initLocation.y+length/2]),
             new Particle([initLocation.x,initLocation.y+length])
         ],
         this.segments=[
-            new Segment(this.particles[0],this.particles[1])
+            new Segment(this.particles[0],this.particles[1]),
+            new Segment(this.particles[1],this.particles[2]),
         ]
     }
 
-    update2(attachLoc){
+    update2(attachLoc,gravityMultiplier){
         this.particles[0].location=attachLoc;
-        Physics.updatePhysicsItems(this.particles);
+        Physics.updatePhysicsItems(this.particles,gravityMultiplier);
         Physics.updatePhysicsItems(this.segments);
     }
 
