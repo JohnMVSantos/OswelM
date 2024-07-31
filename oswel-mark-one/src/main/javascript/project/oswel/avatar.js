@@ -7,6 +7,7 @@ class Avatar{
     constructor(lookAt,skinTone){
         this.complexions=new Complexions();
         this.eye=new Eye(skinTone);
+        this.ear=new Ear();
         this.nose=new Nose();
         this.mouth=new Mouth();
         this.neck=new Neck(skinTone);
@@ -70,6 +71,7 @@ class Avatar{
         
         ctx.restore();
 
+        this.ear.draw(this.lookAt,ctx);
         this.eye.draw(this.lookAt,ctx);
         this.complexions.drawFaceDetails(this.lookAt,ctx);
         this.nose.draw(this.lookAt,ctx);
