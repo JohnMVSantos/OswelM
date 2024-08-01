@@ -179,6 +179,29 @@ class Body{
         ctx.stroke();
         ctx.fill();
 
+        // Shoulder shell 4.
+        ctx.beginPath();
+
+        ctx.fillStyle="rgba(192,192,192,0.3)";
+        ctx.moveTo(0.38,0.81);
+        ctx.quadraticCurveTo(0.40,0.87,0.39,0.90);
+        ctx.quadraticCurveTo(0.36,0.92,0.31,0.95);
+        ctx.quadraticCurveTo(0.35,0.88,0.38,0.81);
+
+        ctx.stroke();
+        ctx.fill();
+
+        // Shoulder shell 5.
+        ctx.beginPath();
+
+        ctx.moveTo(0.31,0.95);
+        ctx.lineTo(0.38,0.94);
+        ctx.quadraticCurveTo(0.39,0.92,0.39,0.90);
+        ctx.lineTo(0.31,0.95);
+
+        ctx.stroke();
+        ctx.fill();
+
         // Collar bone 1 (top/main).
         ctx.beginPath();
 

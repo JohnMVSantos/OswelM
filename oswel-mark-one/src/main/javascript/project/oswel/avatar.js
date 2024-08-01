@@ -50,10 +50,10 @@ class Avatar{
 
         this.#drawHead(ctx,topPoint,bottomPoint);
 
-        this.leftWire.update(xTranslate,xScale);
-        this.leftWire.draw(ctx);
-        this.rightWire.update(xTranslate,xScale);
-        this.rightWire.draw(ctx);
+        // this.leftWire.update(xTranslate,xScale);
+        // this.leftWire.draw(ctx);
+        // this.rightWire.update(xTranslate,xScale);
+        // this.rightWire.draw(ctx);
         
         if(DEBUG){
             drawAxis(lookAt);

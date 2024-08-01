@@ -86,15 +86,15 @@
                 const x=(evt.x-canvas.width/2)/(canvas.width/2);
                 const y=(evt.y-canvas.height/2)/(canvas.height/2)
 
-                const offset = {
-                    x:x,
-                    y:y,
-                }
-                
-                // const offset={
-                //     x:x-lookAt.x,
-                //     y:y-lookAt.y
+                // const offset = {
+                //     x:x,
+                //     y:y,
                 // }
+                
+                const offset={
+                    x:x-lookAt.x,
+                    y:y-lookAt.y
+                }
                 console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
             }
             // END TODO
