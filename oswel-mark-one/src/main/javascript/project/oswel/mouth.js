@@ -15,7 +15,7 @@ class Mouth{
         ctx.scale(1-Math.abs(ref.xOffset)*0.34,1-Math.abs(ref.yOffset*0.20));
         ctx.translate(ref.x,ref.y);
 
-        // tip is at 0.08.
+        // Tip is at 0.08.
         const mouthCorner={
             x:-ref.xOffset*0.01,
         }
@@ -24,6 +24,15 @@ class Mouth{
             x:this.x*0.02,
             y:this.y*0.07,
         }
+
+        // Teeth
+        ctx.save();
+
+        this.#drawTeeth(mouthStretch,mouthCorner,ctx);
+        ctx.scale(-1,1);
+        this.#drawTeeth(mouthStretch,mouthCorner,ctx);
+
+        ctx.restore();
 
         // Middle lip (moving).
         ctx.beginPath();
@@ -43,7 +52,7 @@ class Mouth{
         ctx.stroke();
         ctx.fill();
 
-        // Bottom Lip
+        // Bottom lip.
         ctx.beginPath();
 
         ctx.strokeStyle="lightgrey";
@@ -52,7 +61,7 @@ class Mouth{
 
         ctx.stroke();
 
-        // Top Lip
+        // Top lip.
         ctx.beginPath();
 
         ctx.moveTo(-0.08+mouthCorner.x-mouthStretch.x,0.43);
@@ -64,7 +73,7 @@ class Mouth{
 
         ctx.stroke();
 
-        // Nose Connection
+        // Nose connection.
         ctx.beginPath();
 
         ctx.moveTo(-0.015,0.40);
@@ -74,6 +83,43 @@ class Mouth{
         
         ctx.stroke();
         ctx.restore();
+    }
+
+    #drawTeeth(mouthStretch,mouthCorner,ctx){
+        ctx.save();
+
+        // Top teeth.
+        ctx.beginPath();
+
+        ctx.strokeStyle="rgba(10,10,10,0.4)";
+        ctx.moveTo(0.00,0.420+mouthStretch.y*0.10);
+        ctx.lineTo(0.00,0.420+mouthStretch.y*0.27);
+        ctx.lineTo(0.00+mouthStretch.y*0.50,0.420+mouthStretch.y*0.27);
+        ctx.lineTo(0.00+mouthStretch.y*0.50,0.420+mouthStretch.y*0.10);
+
+        ctx.moveTo(0.00+mouthStretch.y*0.50,0.420+mouthStretch.y*0.35);
+        ctx.lineTo(0.00+mouthStretch.y*0.85,0.420+mouthStretch.y*0.35);
+        ctx.lineTo(0.00+mouthStretch.y*0.85,0.420+mouthStretch.y*0.10);
+
+        ctx.moveTo(0.00+mouthStretch.y*0.85,0.420+mouthStretch.y*0.24);
+        ctx.lineTo(0.00+mouthStretch.y*1.1,0.420+mouthStretch.y*0.24);
+        ctx.lineTo(0.00+mouthStretch.y*1.1,0.420+mouthStretch.y*0.10);
+
+        ctx.stroke();
+        
+        // Bottom teeth.
+        ctx.beginPath();
+        
+        ctx.strokeStyle="rgba(20,20,20,0.1)";
+        ctx.moveTo(0.00,0.46+mouthStretch.y*0.15);
+        ctx.lineTo(0.00,0.46+mouthStretch.y*0.01);
+        ctx.lineTo(0.00+mouthStretch.y*0.25,0.46+mouthStretch.y*0.01);
+        ctx.lineTo(0.00+mouthStretch.y*0.25,0.46+mouthStretch.y*0.15);
+
+        ctx.stroke();
+
+        ctx.restore();
+        ctx.stroke();
     }
 
 }

@@ -17,7 +17,7 @@ Also Django to run the application and allow a login page and settings page for 
 
 Hardware and Face Detection
 ---------------------------
-1) Javascript and HTML to show the face and tracking ** Add teeth.
+1) Javascript and HTML to show the face and tracking.
 2) Face Detection to control the face. 
 3) Startup message and Logo. Also display information for user input and oswel output.
 4) Integrate software to Raspberry PI.
