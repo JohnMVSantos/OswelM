@@ -65,7 +65,7 @@ function processImage(){
 
 function getConstellation(locs){
     // Map returns an array of all y values. P is the maximum (lowest) y point.
-    const chestPoint=locs.find(p=>p[1]==Math.max(...locs.map(l=>l[1])));
+    let chestPoint=locs.find(p=>p[1]==Math.max(...locs.map(l=>l[1])));
 
     // Get the point centered on the face.
     let facePoint=locs[0];
@@ -77,6 +77,24 @@ function getConstellation(locs){
             facePoint=locs[i];
         }
     }
+
+    // Averaging the values.
+    const fSet=[];
+    const cSet=[];
+    for(let i=0;i<locs.length;i++){
+        const fDist=distance(locs[i],facePoint);
+        const cDist=distance(locs[i],chestPoint);
+        const minDist=Math.min(fDist,cDist);
+        if(minDist==fDist){
+            fSet.push(locs[i]);
+        } else if(minDist==cDist){
+            cSet.push(locs[i]);
+        }
+    }
+
+    facePoint=average(fSet);
+    chestPoint=average(cSet);
+
     return {
         face:facePoint,
         chest:chestPoint,
