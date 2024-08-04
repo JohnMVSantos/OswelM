@@ -8,8 +8,9 @@ class Complexions{
 
     }
     
-    drawFaceDetails(ref,ctx) {
+    draw(ctx,ref) {
         ctx.save();
+
         ctx.translate(ref.x,ref.y+0.040);
         ctx.beginPath();
 
@@ -20,15 +21,16 @@ class Complexions{
 
         ctx.stroke();
 
-        this.#drawFaceLines(ref.xOffset,ref.yOffset,ctx);
+        this.#drawFaceLines(ctx,ref.xOffset,ref.yOffset);
         ctx.scale(-1,1);
-        this.#drawFaceLines(-ref.xOffset,ref.yOffset,ctx);
+        this.#drawFaceLines(ctx,-ref.xOffset,ref.yOffset);
 
         ctx.restore();
     }
 
-    #drawFaceLines(xOffset,yOffset,ctx) {
+    #drawFaceLines(ctx,xOffset,yOffset) {
         ctx.save();
+
         const scaleX=Math.max(0,xOffset);
         const scaleY=yOffset;
         ctx.scale(1-scaleX*0.55,1-Math.abs(scaleY*0.5));
@@ -47,8 +49,8 @@ class Complexions{
         ctx.lineTo(0.06,0.00);
         ctx.moveTo(0.04,0.06);
         ctx.quadraticCurveTo(0.11,0.17,0.18,0.23);
+        
         ctx.restore();
-
         ctx.stroke();
     }
 }

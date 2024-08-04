@@ -10,21 +10,25 @@ class Eye{
         this.irisColor="rgba(40,147,181,0.3)";
     }
     
-    draw(ref,ctx) {
+    draw(ctx,ref) {
         ctx.save();
+
         ctx.translate(ref.x,ref.y);
-        this.#drawEye(Math.max(0,ref.xOffset),ref.yOffset,ref.xOffset*0.015,ctx);
+        this.#drawEye(ctx,Math.max(0,ref.xOffset),ref.yOffset,ref.xOffset*0.015);
         ctx.scale(-1, 1);
-        this.#drawEye(Math.max(0,-ref.xOffset),ref.yOffset,-ref.xOffset*0.015,ctx);
+        this.#drawEye(ctx,Math.max(0,-ref.xOffset),ref.yOffset,-ref.xOffset*0.015);
+
         ctx.restore();
     }
 
-    #drawEye(scaleX,scaleY,azimuthLook,ctx) {
+    #drawEye(ctx,scaleX,scaleY,azimuthLook) {
         ctx.save();
+
         ctx.scale(1-scaleX*0.34,1-Math.abs(scaleY*0.20));
 
         // Shift downwards when looking left and right.
         const rangeLook = scaleX*0.008;
+        
         // Eye sockets.
         ctx.beginPath();
 

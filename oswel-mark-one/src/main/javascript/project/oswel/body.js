@@ -7,15 +7,30 @@ class Body{
     constructor(skinTone){
         this.skinTone=skinTone;
     }
-    draw(ctx,bottomPoint){
+    
+    draw(ctx,bottomPoint,xOffset){
         ctx.save();
+
+        // Slight movements to the body left/right.
+        const xTranslate=xOffset*0.005;
+        const xScale=1-Math.abs(xOffset)*0.04
+        ctx.translate(xTranslate,0);
+        ctx.scale(xScale*1.1,1);
+
+        ctx.save();
+
         this.#drawBackground(ctx,bottomPoint);
+
         ctx.restore();
 
         ctx.save();
+
         this.#drawDetails(ctx);
         ctx.scale(-1, 1);
         this.#drawDetails(ctx);
+
+        ctx.restore();
+
         ctx.restore();
     }
 
@@ -208,8 +223,8 @@ class Body{
         ctx.fillStyle="rgba(128,128,128,0.4)";
         ctx.moveTo(0.265,0.73);
         ctx.lineTo(0.25,0.70);
-        ctx.quadraticCurveTo(0.18,0.67,0.11,0.59);
-        ctx.quadraticCurveTo(0.105,0.605,0.11,0.62);
+        ctx.quadraticCurveTo(0.18,0.67,0.10,0.59);
+        ctx.quadraticCurveTo(0.09,0.605,0.10,0.62);
         ctx.quadraticCurveTo(0.18,0.68,0.24,0.71);
         ctx.lineTo(0.26,0.745);
         ctx.lineTo(0.265,0.73);
@@ -224,8 +239,8 @@ class Body{
         ctx.moveTo(0.25,0.75);
         ctx.lineTo(0.23,0.725);
         ctx.quadraticCurveTo(0.18,0.73,0.14,0.70);
-        ctx.quadraticCurveTo(0.12,0.67,0.12,0.63);
-        ctx.lineTo(0.11,0.62);
+        ctx.quadraticCurveTo(0.12,0.67,0.11,0.63); //
+        ctx.lineTo(0.10,0.62); //
         ctx.quadraticCurveTo(0.11,0.66,0.12,0.69);
         ctx.quadraticCurveTo(0.13,0.71,0.14,0.715);
         ctx.quadraticCurveTo(0.17,0.74,0.225,0.745);
@@ -284,8 +299,8 @@ class Body{
         ctx.beginPath();
 
         ctx.fillStyle="rgba(13,9,54,0.2)";
-        ctx.moveTo(0.11,0.47);
-        ctx.quadraticCurveTo(0.11,0.51,0.11,0.59);
+        ctx.moveTo(0.10,0.47);
+        ctx.quadraticCurveTo(0.10,0.51,0.10,0.59);
         ctx.quadraticCurveTo(0.18,0.67,0.25,0.70);
         ctx.lineTo(0.265,0.73);
         ctx.lineTo(0.28,0.68);
@@ -305,11 +320,11 @@ class Body{
         ctx.lineTo(-0.28,0.68);
         ctx.lineTo(-0.265,0.73);
         ctx.lineTo(-0.25,0.70);
-        ctx.quadraticCurveTo(-0.18,0.67,-0.11,0.59);
-        ctx.quadraticCurveTo(-0.11,0.51,-0.11,0.47);
+        ctx.quadraticCurveTo(-0.18,0.67,-0.10,0.59);
+        ctx.quadraticCurveTo(-0.10,0.51,-0.10,0.47);
         
         const yOffset = 1.225 + Math.log(bottomPoint.y);
-        ctx.quadraticCurveTo(bottomPoint.x,yOffset,0.11,0.47);
+        ctx.quadraticCurveTo(bottomPoint.x*0.7,yOffset,0.10,0.47);
         
         ctx.stroke();
         ctx.fill();

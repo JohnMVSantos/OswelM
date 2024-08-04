@@ -3,6 +3,11 @@
  * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
  */
 
+// Function to generate random number. Max value is not included.
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 // Vector Math
 function lerp(start, end, percentage){
     // Linear Interpolation

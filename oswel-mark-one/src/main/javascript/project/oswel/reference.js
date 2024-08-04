@@ -4,7 +4,7 @@
  */
 
 // Drawing MISC
-function drawAxis(lookAt) {
+function drawAxis(ctx,lookAt) {
     ctx.beginPath();
 
     // Draw the Axis References.
@@ -19,7 +19,7 @@ function drawAxis(lookAt) {
     ctx.stroke();
 }
 
-function drawPoint(loc,label,rad=0.04){
+function drawPoint(ctx,loc,label,rad=0.04){
     ctx.beginPath();
 
     // Visualize the control points.

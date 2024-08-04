@@ -8,10 +8,12 @@ class Nose{
 
     }
     
-    draw(ref,ctx) {
+    draw(ctx,ref) {
         ctx.save();
+
         ctx.scale(1-Math.abs(ref.xOffset)*0.34,1-Math.abs(ref.yOffset*0.20));
         ctx.translate(ref.x,ref.y);
+        
         ctx.beginPath();
 
         ctx.moveTo(0.00,0.13);

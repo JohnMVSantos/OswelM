@@ -8,29 +8,31 @@ class Ear{
 
     }
 
-    draw(ref,ctx){
+    draw(ctx,ref){
         ctx.save();
+
         ctx.translate(ref.x,ref.y);
 
         this.#drawEar(
+            ctx,
             Math.max(0,ref.xOffset),
             ref.yOffset,
             Math.min(0,ref.yOffset),
             Math.min(0,ref.xOffset),
-            ctx
         );
         ctx.scale(-1, 1);
         this.#drawEar(
+            ctx,
             Math.max(0,-ref.xOffset),
             ref.yOffset,
             Math.min(0,ref.yOffset),
             Math.min(0,-ref.xOffset),
-            ctx
         );
+
         ctx.restore();
     }
 
-    #drawEar(scaleX,scaleY,verticalScaler,horizontalScaler,ctx){
+    #drawEar(ctx,scaleX,scaleY,verticalScaler,horizontalScaler){
         ctx.save();
 
         const horizontalSquish=1-scaleX*0.39;

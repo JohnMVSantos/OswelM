@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    
+<!DOCTYPE html lang="en">
     <head>
         <title>Oswell's Avatar</title>
         <style>
@@ -12,7 +10,7 @@
             }
             #sliders{
                 position:absolute;
-                top:550;
+                top:510;
                 left:10;
                 font-family: Arial;
             }
@@ -36,23 +34,26 @@
             Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
             <br>
             <canvas id="camCanvas"></canvas>
+            <button onclick="setSpeak()">Speak</button>
+            <button onclick="calibrate()">Calibrate</button>
         </div>
-        <script src="camera.js"></script>
         <script src="avatar.js"></script>
+        <script src="head.js"></script>
         <script src="complexions.js"></script>
-        <script src="body.js"></script>
-        <script src="neck.js"></script>
         <script src="eye.js"></script>
         <script src="ear.js"></script>
         <script src="nose.js"></script>
         <script src="mouth.js"></script>
+        <script src="neck.js"></script>
+        <script src="body.js"></script>
+        <script src="camera.js"></script>
         <script src="math.js"></script>
         <script src="doublePendulum.js"></script>
         <script src="pendulum.js"></script>
         <script src="physics.js"></script>
         <script src="reference.js"></script>
         <script>
-            const DEBUG=false;
+            const DEBUG=true;
             const canvas=document.getElementById("myCanvas");
             canvas.width=800;
             canvas.height=500; 
@@ -86,15 +87,15 @@
                 const x=(evt.x-canvas.width/2)/(canvas.width/2);
                 const y=(evt.y-canvas.height/2)/(canvas.height/2)
 
-                // const offset = {
-                //     x:x,
-                //     y:y,
-                // }
-                
-                const offset={
-                    x:x-lookAt.x,
-                    y:y-lookAt.y
+                const offset = {
+                    x:x,
+                    y:y,
                 }
+                
+                // const offset={
+                //     x:x-lookAt.x,
+                //     y:y-lookAt.y
+                // }
                 console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
             }
             // END TODO
@@ -103,25 +104,15 @@
 
                 // TODO: Remove this at the end of the project.
                 ctx.clearRect(-1,-1,2,2);
-                ctx.globalAlpha=0.3;
-                ctx.drawImage(img,-1,-1,2,2);
+                // ctx.globalAlpha=0.3;
+                // ctx.drawImage(img,-1,-1,2,2);
                 // ctx.globalAlpha=0.5;
                 // ctx.drawImage(img_neck,-0.40,0.45,0.80,0.50);
-                ctx.globalAlpha=1;
+                // ctx.globalAlpha=1;
                 // END TODO
                 
                 if(video){
-                    camCtx.drawImage(video,0,0);
-                    const imgData=camCtx.getImageData(0,0,camCanvas.width,camCanvas.height);
-                    const locs=getMarkedLocations(imgData);
-                    if(locs.length>0){
-                        const avg=average(locs);
-                        const x=(avg[0]-imgData.width/2)/imgData.width;
-                        const y=(avg[1]-imgData.height/2)/imgData.height;
-                        updateLookAt({value:-x},'x');
-                        updateLookAt({value:y},'y');
-                    }
-
+                    processImage();
                 }
                 avatar.draw(ctx);
                 requestAnimationFrame(animate);
@@ -152,12 +143,17 @@
             function updateMouth(info,attr){   
                 switch(attr){
                     case "x":
-                        avatar.mouth.x=info.value;
+                        avatar.head.mouth.x=info.value;
                         break;
                     case "y":
-                        avatar.mouth.y=info.value;
+                        avatar.head.mouth.y=info.value;
                         break;
                 } 
+            }
+
+            // Set speaking status.
+            function setSpeak(){
+                avatar.head.mouth.speak=!avatar.head.mouth.speak;
             }
 
         </script>

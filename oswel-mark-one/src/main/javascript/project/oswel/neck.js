@@ -8,7 +8,7 @@ class Neck{
         this.skinTone=skinTone;
     }
     
-    draw(ref,ctx) {
+    draw(ctx,ref) {
         const xOffset = ref.x*0.085;
         const yOffset = (ref.y-0.58)*0.85;
         const adj = 3.5;
@@ -40,6 +40,7 @@ class Neck{
         ctx.fill();
 
         ctx.beginPath();
+
         ctx.fillStyle=this.skinTone;
         ctx.moveTo(-0.02,0.88+yOffset);
         ctx.lineTo(0.02,0.88+yOffset);
@@ -52,14 +53,16 @@ class Neck{
 
         // Side reflections.
         ctx.save();
-        this.#drawDetails(xOffset,yOffset+xOffset*adj,ctx);
+
+        this.#drawDetails(ctx,xOffset,yOffset+xOffset*adj);
         ctx.scale(-1, 1);
-        this.#drawDetails(-xOffset,yOffset-xOffset*adj,ctx);
+        this.#drawDetails(ctx,-xOffset,yOffset-xOffset*adj);
+
         ctx.restore();
 
     }
 
-    #drawDetails(xOffset,yOffset,ctx){
+    #drawDetails(ctx,xOffset,yOffset){
         ctx.save();
 
         // Outer boundary.
@@ -79,11 +82,11 @@ class Neck{
         ctx.beginPath();
         
         ctx.fillStyle="rgba(11,9,43,0.5)";
-        ctx.moveTo(0.15,0.81);
+        ctx.moveTo(0.15,0.825);
         ctx.lineTo(0.145,0.76);
         ctx.quadraticCurveTo(0.14,0.80,0.125,0.80);
-        ctx.lineTo(0.13,0.835);
-        ctx.quadraticCurveTo(0.14,0.82,0.15,0.81);
+        ctx.lineTo(0.13,0.843);
+        ctx.quadraticCurveTo(0.14,0.826,0.15,0.825);
 
         ctx.stroke();
         ctx.fill();

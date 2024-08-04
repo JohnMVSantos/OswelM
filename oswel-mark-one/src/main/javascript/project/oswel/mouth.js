@@ -7,9 +7,28 @@ class Mouth{
     constructor(){
         this.x=0;
         this.y=0;
+        
+        // Speaking options go here.
+        this.speak=0 // 0 means do not speak, 1 means to speak.
+        // 0 means open the mouth, 1 means closing the mouth. Start by opening first.
+        this.openVertical=0;
+        this.openHorizontal=0;
+        this.yIndex=0;
+        this.xIndex=0;
+        // Divisible by 80 => [1,2,4,5].
+        this.ySpeed=2;
+        // Divisble by 140 => [1,2,4,5].
+        this.xSpeed=2;
+        // Generate a value from 0-40 and multiply by 2 to get range [0,80].
+        this.yRange=Array(randomNumber(0,(80/this.ySpeed)+1)).fill(0).map((e,i)=>(i*this.ySpeed)+this.ySpeed);
+        this.xRange=Array(randomNumber(0,(140/this.xSpeed)+1)).fill(0).map((e,i)=>(i*this.xSpeed)+this.xSpeed);
     }
 
-    draw(ref,ctx){
+    draw(ctx,ref){
+        if(this.speak!=0) {
+            this.#speak();
+        }
+
         ctx.save();
 
         ctx.scale(1-Math.abs(ref.xOffset)*0.34,1-Math.abs(ref.yOffset*0.20));
@@ -28,9 +47,9 @@ class Mouth{
         // Teeth
         ctx.save();
 
-        this.#drawTeeth(mouthStretch,mouthCorner,ctx);
+        this.#drawTeeth(ctx,mouthStretch);
         ctx.scale(-1,1);
-        this.#drawTeeth(mouthStretch,mouthCorner,ctx);
+        this.#drawTeeth(ctx,mouthStretch);
 
         ctx.restore();
 
@@ -85,7 +104,7 @@ class Mouth{
         ctx.restore();
     }
 
-    #drawTeeth(mouthStretch,mouthCorner,ctx){
+    #drawTeeth(ctx,mouthStretch){
         ctx.save();
 
         // Top teeth.
@@ -122,4 +141,35 @@ class Mouth{
         ctx.stroke();
     }
 
+    #speak(){
+        // Speaking movement vertically.    
+        if(this.yIndex > this.yRange.length-1){
+            this.yIndex=0;
+            // Generate a value from 0-40 and multiply by 2 to get range [0,80].
+            this.yRange=Array(randomNumber(0,(80/this.ySpeed)+1)).fill(0).map((e,i)=>(i*this.ySpeed)+this.ySpeed);
+            if(this.openVertical!=0) {
+                //Reverse the order to make it appear mouth is closing vertically.
+                this.yRange.sort(function(a, b){return b-a});
+            } 
+            this.openVertical = randomNumber(0,2);
+        } 
+
+        // Speaking movement horizontally.
+        if(this.xIndex>this.xRange.length-1){
+            this.xIndex=0;
+            this.xRange=Array(randomNumber(0,(140/this.xSpeed)+1)).fill(0).map((e,i)=>(i*this.xSpeed)+this.xSpeed);
+            if(this.openHorizontal!=0) {
+                //Reverse the order to make it appear mouth is closing horizontally.
+                this.xRange.sort(function(a, b){return b-a});
+            }
+        }
+
+        // Range is [0.00,0.80].
+        this.y=this.yRange[this.yIndex]/100;
+        this.yIndex+=1;
+
+        // Domain is [-0.70,0.70].
+        this.x=(this.xRange[this.xIndex]-70)/100;
+        this.xIndex+=1;
+    }
 }
