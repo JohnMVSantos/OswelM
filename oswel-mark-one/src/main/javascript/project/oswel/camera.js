@@ -6,22 +6,7 @@
 const camCanvas=document.getElementById("camCanvas");
 let video=null;
 
-navigator.mediaDevices.getUserMedia({video:true}).
-    then(function(data) {
-        video=document.createElement("video");
-        video.srcObject=data;
-        video.play();
-        video.onloadeddata=function() {
-            camCanvas.width=video.videoWidth;
-            camCanvas.height=video.videoHeight;
-        }
-
-    }).catch(function(err){
-        console.log(err);
-    });
-
 let constellationPoints={}
-
 function processImage(){
     camCtx.drawImage(video,0,0);
     const imgData=camCtx.getImageData(0,0,camCanvas.width,camCanvas.height);

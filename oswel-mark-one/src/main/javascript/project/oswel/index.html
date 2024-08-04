@@ -8,7 +8,7 @@
             body{
                 margin:0;
             }
-            #sliders{
+            #side-panel{
                 position:absolute;
                 top:510;
                 left:10;
@@ -17,26 +17,56 @@
             #camCanvas{
                 max-width:173px;
             }
+            #sliders{
+                display:none;
+            }
+            #calibrateBtn{
+                display:none;
+            }
+            #speakBtn{
+                display:none;
+            }
+            #inputContainer{
+                position: relative;
+            }
         </style>
     </head>
     <body>
         <canvas id="myCanvas"></canvas>
-        <div id="sliders">
-            Face:<br>
-            X <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
-            <br>
-            Y <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
-            <br>
-            <br>
-            Mouth:<br>
-            X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
-            <br>
-            Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
-            <br>
-            <canvas id="camCanvas"></canvas>
-            <button onclick="setSpeak()">Speak</button>
-            <button onclick="calibrate()">Calibrate</button>
+        <div id="side-panel">
+            <div id="sliders">
+                Face:<br>
+                X <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
+                <br>
+                Y <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
+                <br><br>
+                Mouth:
+                <br>
+                X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
+                <br>
+                Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
+                <br>
+                <button id="speakBtn" onclick="setSpeak()">Speak</button>
+                <br><br>
+            </div>
+            <div id="cameraOutput">
+                <canvas id="camCanvas"></canvas>
+                <br><br>
+            </div>
+            
+            <div id="inputContainer">
+                INPUT:
+                <br>
+                <select name="input" id="input" onchange="onInputChange(this)">
+                    <option value="face detection">face detection</option>
+                    <option value="markers">markers</option>
+                    <option value="sliders">sliders</option>
+                </select>
+                <br><br>
+            </div>
+            <button id="calibrateBtn" onclick="calibrate()">Calibrate</button>
         </div>
+
         <script src="avatar.js"></script>
         <script src="head.js"></script>
         <script src="complexions.js"></script>
@@ -46,6 +76,7 @@
         <script src="mouth.js"></script>
         <script src="neck.js"></script>
         <script src="body.js"></script>
+        <script src="controlPanel.js"></script>
         <script src="camera.js"></script>
         <script src="math.js"></script>
         <script src="doublePendulum.js"></script>
@@ -69,9 +100,6 @@
             const img=new Image();
             img.src="oswel.avif";
             
-            const img_neck=new Image();
-            img_neck.src="robot_neck.jpg"
-
             const skinTone="rgba(219,221,225,0.9)";
             // point A
             const lookAt={x:0,y:-0.040,initX:0,initY:-0.040,xRange:[0,0.090],yRange:[-0.040,0.1],xOffset:0,yOffset:0};
@@ -106,8 +134,6 @@
                 ctx.clearRect(-1,-1,2,2);
                 // ctx.globalAlpha=0.3;
                 // ctx.drawImage(img,-1,-1,2,2);
-                // ctx.globalAlpha=0.5;
-                // ctx.drawImage(img_neck,-0.40,0.45,0.80,0.50);
                 // ctx.globalAlpha=1;
                 // END TODO
                 
