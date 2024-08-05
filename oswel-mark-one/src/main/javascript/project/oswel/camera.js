@@ -4,6 +4,8 @@
  */
 
 const camCanvas=document.getElementById("camCanvas");
+const camCtx=camCanvas.getContext("2d");
+
 let video=null;
 
 let constellationPoints={}
@@ -26,8 +28,10 @@ function processImage(){
         constellationPoints.face=face;
         constellationPoints.chest=chest;
 
-        drawPoint(camCtx,{x:face[0],y:face[1]},"F",20);
-        drawPoint(camCtx,{x:chest[0],y:chest[1]},"C",20);
+        if(DEBUG){
+            drawPoint(camCtx,{x:face[0],y:face[1]},"F",20);
+            drawPoint(camCtx,{x:chest[0],y:chest[1]},"C",20);
+        }
 
         // If d1=d2, then face stays still.
         // If d1>d2, then face should look up.

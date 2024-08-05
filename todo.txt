@@ -1,6 +1,8 @@
 
 Language Processing and Software
 --------------------------------
+0) Explore java and javascript servers to display the avatar.
+0.1) If there is a javascript frontend, then rely on it for speech input?
 Equipment definitions: Base equipment should be provided such as speech recognition and base voice.
 APIs should also be equipements but not provided by default unless added by the user. 
 Also Django to run the application and allow a login page and settings page for configuration avatar layouts and page appearances.
@@ -17,15 +19,17 @@ Also Django to run the application and allow a login page and settings page for 
 
 Hardware and Face Detection
 ---------------------------
-1) Javascript and HTML to show the face and tracking.
+1) Format control panel and avatar orientation based on design.
 2) Face Detection to control the face. 
-3) Startup message and Logo. Also display information for user input and oswel output.
-4) Integrate software to Raspberry PI.
-5) LCD for the raspberry pi.
+3) Startup message and Logo. 
+4) Also display information for user input and oswel output and various user interfaces.
+5) Integrate software to Raspberry PI.
+6) LCD for the raspberry pi.
 
 Documentation
 -------------
 0) Provide examples in the ReadMe of what it can do, what you can ask, etc.
+0.1) Write reflection of the process.
 1) Write a paper on the concept of Oswel and how different systems are managed and distributed to form the overall design. 
 2) Complete Readme.md, add hardware instructions and setup
 3) PDF to show instructions and system design. 

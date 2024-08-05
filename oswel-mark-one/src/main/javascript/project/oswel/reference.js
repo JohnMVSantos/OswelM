@@ -3,6 +3,18 @@
  * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
  */
 
+// Getting the mouseclick coordinates.
+function getCoords(evt) {
+    const x=(evt.x-canvas.width/2)/(canvas.width/2);
+    const y=(evt.y-canvas.height/2)/(canvas.height/2)
+
+    const offset = {
+        x:x,
+        y:y,
+    }
+    console.log(offset.x.toFixed(2)+","+offset.y.toFixed(2));
+}
+
 // Drawing MISC
 function drawAxis(ctx,lookAt) {
     ctx.beginPath();
@@ -19,10 +31,10 @@ function drawAxis(ctx,lookAt) {
     ctx.stroke();
 }
 
+// Visualize the control points.
 function drawPoint(ctx,loc,label,rad=0.04){
     ctx.beginPath();
 
-    // Visualize the control points.
     ctx.arc(loc.x,loc.y,rad,0,Math.PI*2);
     ctx.stroke();
     ctx.fillStyle="green";
@@ -36,7 +48,7 @@ function drawPoint(ctx,loc,label,rad=0.04){
     ctx.stroke();
 }
 
-// Image Processing
+// Image processing.
 function getMarkedLocations(imgData, color=[0,0,255], threshold=150) {
     const locs=[];
     const data=imgData.data;

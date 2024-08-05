@@ -4,6 +4,7 @@
  */
 
 class Physics{
+    // Less gravity means more movement.
     static G=[0,0.003];
 
     static updatePhysicsItems(items,gravityMultiplier){
