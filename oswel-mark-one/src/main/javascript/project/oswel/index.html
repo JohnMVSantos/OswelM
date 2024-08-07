@@ -1,5 +1,8 @@
 <!DOCTYPE html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Oswell's Avatar</title>
         <style>
             canvas{
@@ -7,6 +10,7 @@
             }
             body{
                 margin:0;
+                padding:0;
             }
             #side-panel{
                 position:absolute;
@@ -14,8 +18,17 @@
                 left:10;
                 font-family: Arial;
             }
-            #camCanvas{
-                max-width:173px;
+            #cameraOutput {
+                position: relative;
+                width: 200px;
+                height: 160px;
+            }
+            #cameraOutput canvas {
+                max-width:170px;
+                max-height: 130px;
+                position: absolute;
+                top: 0;
+                left: 0;
             }
             #sliders{
                 display:none;
@@ -45,13 +58,14 @@
                 X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
                 <br>
                 Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
-                <br>
-                <input type="checkbox" id="speakChk" onchange="toggleSpeak(this)">Speak</input>
+                
+                
                 <br><br>
             </div>
+            <input type="checkbox" id="speakChk" onchange="toggleSpeak(this)">Speak</input>
             <div id="cameraOutput">
-                <canvas id="camCanvas"></canvas>
-                <br><br>
+                <canvas id="camCanvas" width="170" height="130"></canvas>
+                <canvas id="detectionCanvas" width="170" height="130"></canvas>
             </div>
             
             <div id="inputContainer">
@@ -66,7 +80,8 @@
             </div>
             <button id="calibrateBtn" onclick="calibrate()">Calibrate</button> 
         </div>
-
+        
+        <script src="face-api.min.js"></script>
         <script src="avatar.js"></script>
         <script src="head.js"></script>
         <script src="complexions.js"></script>
@@ -113,10 +128,15 @@
             
             function animate(){
                 ctx.clearRect(-1,-1,2,2);
-
-                if(video){
-                    processImage();
-                }
+                
+                // TODO: Control based on the type of input (face detection, markers, or sliders).
+                // if(video){
+                //     if(processType=="face detection") {
+                //         processDetections();
+                //     } else {
+                //         processImage();
+                //     }
+                // }
 
                 avatar.draw(ctx);
                 requestAnimationFrame(animate);

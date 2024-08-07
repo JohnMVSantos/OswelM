@@ -172,3 +172,4 @@ cython_debug/
 # Model extensions
 *.h5
 *.bin
+**/resources/models/*

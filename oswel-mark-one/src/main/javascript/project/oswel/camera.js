@@ -6,9 +6,38 @@
 const camCanvas=document.getElementById("camCanvas");
 const camCtx=camCanvas.getContext("2d");
 
+// Properties used for the markers and the sliders option.
 let video=null;
-
 let constellationPoints={}
+
+// Properties used for the face detection initial starting point.
+let center={
+    x:0,
+    y:0,
+}
+
+function processDetections(detections){
+    camCtx.drawImage(video,0,0);
+    let maxScore=0.0;
+
+    if(detections.length>0){
+        let box=detections[0].detection._box
+        // Get the most confident detection.
+        for (let i=0;i<detections.length;i++) {
+            if(detections[i]._score>maxScore){
+                maxScore=detections[i].detection._score;
+                // Contains keys: _x, _y, _width,_height
+                box=detections[i].detection._box;
+            }
+        }
+        // Normalize against the context dimensions.
+        center.x = -1*0.2*(2*((box._x + box._width/2)/camCanvas.width)-1);
+        center.y = 2*((box._y + box._height/2)/camCanvas.height)-1;
+        updateLookAt({value:center.x},'x');
+        updateLookAt({value:center.y},'y');
+    }
+}
+
 function processImage(){
     camCtx.drawImage(video,0,0);
     const imgData=camCtx.getImageData(0,0,camCanvas.width,camCanvas.height);
@@ -96,5 +125,4 @@ function calibrate(){
         face:constellationPoints.face,
         chest:constellationPoints.chest,
     }
-    console.log(constellationPoints);
 }

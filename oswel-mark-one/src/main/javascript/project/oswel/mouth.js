@@ -15,13 +15,13 @@ class Mouth{
         this.openHorizontal=0;
         this.yIndex=0;
         this.xIndex=0;
-        // Divisible by 80 => [1,2,4,5].
-        this.ySpeed=2;
         // Divisble by 140 => [1,2,4,5].
-        this.xSpeed=2;
+        this.xSpeed=Physics.speed.x;
+        // Divisible by 80 => [1,2,4,5].
+        this.ySpeed=Physics.speed.y;
+        this.xRange=Array(randomNumber(0,(140/this.xSpeed)+1)).fill(0).map((e,i)=>(i*this.xSpeed)+this.xSpeed);
         // Generate a value from 0-40 and multiply by 2 to get range [0,80].
         this.yRange=Array(randomNumber(0,(80/this.ySpeed)+1)).fill(0).map((e,i)=>(i*this.ySpeed)+this.ySpeed);
-        this.xRange=Array(randomNumber(0,(140/this.xSpeed)+1)).fill(0).map((e,i)=>(i*this.xSpeed)+this.xSpeed);
     }
 
     draw(ctx,ref){

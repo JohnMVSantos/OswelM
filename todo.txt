@@ -19,8 +19,8 @@ Also Django to run the application and allow a login page and settings page for 
 
 Hardware and Face Detection
 ---------------------------
-1) Format control panel and avatar orientation based on design.
-2) Face Detection to control the face. 
+1) Format control panel and avatar orientation based on design. Controls (speed, gravity, threshold, color for markers).
+2) Control either to use processImage() for the markers (rename) or processDetections for face detections.
 3) Startup message and Logo. 
 4) Also display information for user input and oswel output and various user interfaces.
 5) Integrate software to Raspberry PI.

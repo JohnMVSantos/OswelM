@@ -1,10 +1,25 @@
+/* Oswell Application Front-End Avatar.
+ * 
+ * Copyright (C) 2024 John Santos <johnmarivsantos@gmail.com>
+ */
+
+// TODO: This causes complications for allowing different options for the input.
+Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri('../../../resources/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('../../../resources/models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('../../../resources/models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('../../../resources/models'),
+]).then(
+    initializeFaceDetection
+)
+
 function onInputChange(info){
     switch(info.value){
         case "face detection":
-            initializeCamera();
+            initializeFaceDetection();
             break;
         case "markers":
-            initializeCamera();
+            initializeMarkers();
             break;
         case "sliders":
             initializeSliders();
@@ -12,13 +27,63 @@ function onInputChange(info){
     }
 }
 
-function initializeCamera() {
+function initializeFaceDetection() {
     document.getElementById("sliders").style.display="none";
+    document.getElementById("detectionCanvas").style.display="block";
+    document.getElementById("calibrateBtn").style.display="none";
+    document.getElementById("cameraOutput").style.display="block";
+    
+    if(video){
+        video.pause(); 
+        video=null;
+    }
+
+    navigator.mediaDevices.getUserMedia({video:true}).
+        then(function(data) {
+            video=document.createElement("video");
+            video.srcObject=data;
+            video.play();
+            video.onloadeddata=function() {
+                camCanvas.width=video.videoWidth;
+                camCanvas.height=video.videoHeight;
+                const displaySize={width:170,height:130}
+
+                const detectionCanvas = faceapi.createCanvasFromMedia(video)
+                document.getElementById("cameraOutput").append(detectionCanvas)
+                faceapi.matchDimensions(detectionCanvas,displaySize)
+
+                // Every 100ms.
+                setInterval(async () => {
+                    const detections = await faceapi.detectAllFaces(
+                        video,
+                        new faceapi.TinyFaceDetectorOptions()
+                    ).withFaceLandmarks().withFaceExpressions()
+                    const resizedDetections=faceapi.resizeResults(detections,displaySize)
+                    detectionCanvas.getContext('2d').clearRect(0,0,detectionCanvas.width,detectionCanvas.height)
+                    if(DEBUG){
+                        faceapi.draw.drawDetections(detectionCanvas,resizedDetections)
+                        faceapi.draw.drawFaceLandmarks(detectionCanvas,resizedDetections)
+                        faceapi.draw.drawFaceExpressions(detectionCanvas,resizedDetections)
+                    }
+                    processDetections(detections)
+                }, 100)
+
+            }
+        }).catch(function(err){
+            console.log(err);
+            video.pause();
+        });
+}
+
+function initializeMarkers() {
+    document.getElementById("sliders").style.display="none";
+    document.getElementById("detectionCanvas").style.display="none";
     document.getElementById("calibrateBtn").style.display="block";
     document.getElementById("cameraOutput").style.display="block";
     
     if(video){
         video.pause();
+        video=null;
     }
     navigator.mediaDevices.getUserMedia({video:true}).
         then(function(data) {
@@ -38,6 +103,7 @@ function initializeCamera() {
 function initializeSliders(){
     contellationPoints={};
     document.getElementById("sliders").style.display="block";
+    document.getElementById("detectionCanvas").style.display="none";
     document.getElementById("calibrateBtn").style.display="none";
     document.getElementById("cameraOutput").style.display="none";
 
