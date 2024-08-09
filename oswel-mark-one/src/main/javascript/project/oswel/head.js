@@ -14,14 +14,7 @@ class Head{
     }
 
     draw(ctx,topPoint,bottomPoint,ref){
-        ctx.save();
-
         this.#drawBoundary(ctx,topPoint.x,topPoint.y,bottomPoint.x,bottomPoint.y);
-        ctx.scale(-1,1);
-        this.#drawBoundary(ctx,-topPoint.x,topPoint.y,-bottomPoint.x,bottomPoint.y);
-        
-        ctx.restore();
-
         this.complexions.draw(ctx,ref);
         this.ear.draw(ctx,ref);
         this.eye.draw(ctx,ref);
@@ -30,23 +23,34 @@ class Head{
     }
 
     #drawBoundary(ctx,topX,topY,bottomX,bottomY) {
+        // Not reflected along x-axis due to unusual line in the middle.
         ctx.beginPath();
 
-        // Draw top portion
+        ctx.fillStyle=this.skinTone;
+        // Draw top portion right
         ctx.moveTo(topX,topY);
         ctx.quadraticCurveTo(0.09,-0.77,0.15,-0.70);
         ctx.lineTo(0.15,-0.63);
         ctx.quadraticCurveTo(0.28,-0.41,0.23,-0.040);
-        // Draw bottom portion
+        
+        // Draw bottom portion right
         ctx.lineTo(0.23,0.06);
         ctx.quadraticCurveTo(0.21,0.18,0.15,0.30);
         ctx.quadraticCurveTo(0.14,0.40,0.10,0.49);
-        ctx.quadraticCurveTo(0.07,bottomY-0.015,bottomX,bottomY); 
+        ctx.quadraticCurveTo(0.07,bottomY-0.015,bottomX,bottomY);
+        
+        // Draw bottom portion left
+        ctx.quadraticCurveTo(-0.07,bottomY-0.015,-0.10,0.49);
+        ctx.quadraticCurveTo(-0.14,0.40,-0.15,0.30);
+        ctx.quadraticCurveTo(-0.21,0.18,-0.23,0.06);
+        ctx.lineTo(-0.23,-0.040);
+
+        // Draw top portion left
+        ctx.quadraticCurveTo(-0.28,-0.41,-0.15,-0.63);
+        ctx.lineTo(-0.15,-0.70);
+        ctx.quadraticCurveTo(-0.09,-0.77,-topX,topY);
 
         ctx.stroke();
-        ctx.closePath();
-
-        ctx.fillStyle=this.skinTone;
         ctx.fill();
 
         ctx.beginPath();
@@ -54,6 +58,10 @@ class Head{
         ctx.moveTo(0.15,0.30);
         ctx.lineTo(0.08+bottomX*0.15,0.50);  
 
+        ctx.moveTo(-0.15,0.30);
+        ctx.lineTo(-0.08-bottomX*0.15,0.50);  
+
         ctx.stroke();
+        
     }
 }

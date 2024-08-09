@@ -40,7 +40,7 @@ class Body{
         // Chest plate (main).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(192,192,192,0.3)";
+        ctx.fillStyle="rgba(192,192,192,0.95)";
         ctx.moveTo(0.09,0.95);
         ctx.quadraticCurveTo(0.10,0.83,0.19,0.79);
         ctx.lineTo(0.20,0.84);
@@ -59,7 +59,7 @@ class Body{
         // Chest plate (middle).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.3)";
+        ctx.fillStyle="rgba(128,128,128,0.9)";
         ctx.moveTo(0.21,0.88);
         ctx.quadraticCurveTo(0.19,0.83,0.14,0.95);
         ctx.lineTo(0.11,0.95);
@@ -71,7 +71,7 @@ class Body{
         // Chest plate (outer).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(192,192,192,0.3)";
+        ctx.fillStyle="rgba(192,192,192,1.0)";
         ctx.moveTo(0.21,0.88);
         ctx.quadraticCurveTo(0.19,0.92,0.17,0.95);
         ctx.lineTo(0.14,0.95);
@@ -83,7 +83,7 @@ class Body{
         // Disc (inner).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(20,120,200,0.4)";
+        ctx.fillStyle="rgba(20,120,200,0.1.0)";
         ctx.moveTo(0.195,0.816);
         ctx.lineTo(0.217,0.820);
         ctx.lineTo(0.20,0.84);
@@ -95,7 +95,7 @@ class Body{
         // Disc (middle).
         ctx.beginPath();
         
-        ctx.fillStyle="rgba(30,130,190,0.38)";
+        ctx.fillStyle="rgba(30,130,190,0.95)";
         ctx.moveTo(0.19,0.80);
         ctx.quadraticCurveTo(0.21,0.79,0.225,0.805);
         ctx.lineTo(0.217,0.820);
@@ -108,7 +108,7 @@ class Body{
         // Disc (outer).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(35,140,185,0.36)";
+        ctx.fillStyle="rgba(35,140,185,0.90)";
         ctx.moveTo(0.24,0.78);
         ctx.quadraticCurveTo(0.19,0.75,0.17,0.80);
         ctx.lineTo(0.19,0.79);
@@ -136,7 +136,7 @@ class Body{
         // Shoulder shell 2 (middle).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.3)";
+        ctx.fillStyle="rgba(128,128,128,0.90)";
         ctx.moveTo(0.25,0.88);
         ctx.lineTo(0.26,0.91);
         ctx.quadraticCurveTo(0.30,0.83,0.30,0.74);
@@ -160,7 +160,7 @@ class Body{
 
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.3)";
+        ctx.fillStyle="rgba(128,128,128,0.90)";
         ctx.moveTo(0.26,0.95);
         ctx.lineTo(0.245,0.95);
         ctx.lineTo(0.232,0.92);
@@ -173,7 +173,7 @@ class Body{
         // Shoulder shell 3 (outside).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.3)";
+        ctx.fillStyle="rgba(128,128,128,0.95)";
         ctx.moveTo(0.26,0.95);
         ctx.quadraticCurveTo(0.34,0.84,0.355,0.76);
         ctx.quadraticCurveTo(0.34,0.78,0.33,0.77);        
@@ -197,7 +197,7 @@ class Body{
         // Shoulder shell 4.
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(192,192,192,0.3)";
+        ctx.fillStyle="rgba(192,192,192,0.8)";
         ctx.moveTo(0.38,0.81);
         ctx.quadraticCurveTo(0.40,0.87,0.39,0.90);
         ctx.quadraticCurveTo(0.36,0.92,0.31,0.95);
@@ -220,7 +220,7 @@ class Body{
         // Collar bone 1 (top/main).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.4)";
+        ctx.fillStyle="rgba(128,128,128,0.0.95)";
         ctx.moveTo(0.265,0.73);
         ctx.lineTo(0.25,0.70);
         ctx.quadraticCurveTo(0.18,0.67,0.10,0.59);
@@ -235,7 +235,7 @@ class Body{
         // Collar bone 2 (middle).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.8)";
+        ctx.fillStyle="rgba(128,128,128,0.95)";
         ctx.moveTo(0.25,0.75);
         ctx.lineTo(0.23,0.725);
         ctx.quadraticCurveTo(0.18,0.73,0.14,0.70);
@@ -253,7 +253,7 @@ class Body{
         // Collar bone 3 (smallest).
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.4)";
+        ctx.fillStyle="rgba(128,128,128,0.95)";
         ctx.moveTo(0.19,0.77);
         ctx.quadraticCurveTo(0.15,0.75,0.14,0.72);
         ctx.lineTo(0.123,0.70);
@@ -278,7 +278,7 @@ class Body{
         
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(11,9,43,0.5)";
+        ctx.fillStyle="rgba(11,9,43,1.0)";
         ctx.moveTo(0.085,0.85);
         ctx.quadraticCurveTo(0.09,0.84,0.10,0.89);
         ctx.lineTo(0.11,0.86);
@@ -298,7 +298,7 @@ class Body{
     #drawBackground(ctx,bottomPoint){
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(13,9,54,0.2)";
+        ctx.fillStyle="rgba(13,9,54,0.6)";
         ctx.moveTo(0.10,0.47);
         ctx.quadraticCurveTo(0.10,0.51,0.10,0.59);
         ctx.quadraticCurveTo(0.18,0.67,0.25,0.70);

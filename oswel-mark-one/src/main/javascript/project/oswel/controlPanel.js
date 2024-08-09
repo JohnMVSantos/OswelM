@@ -15,7 +15,7 @@ Promise.all([
 
 function onInputChange(info){
     switch(info.value){
-        case "face detection":
+        case "face":
             initializeFaceDetection();
             break;
         case "markers":
@@ -153,4 +153,52 @@ function toggleSpeak(info){
 
 function toggleDebug(info){
     DEBUG=info.checked;
+}
+
+function toggleCamera(info){
+    if(info.checked){
+        document.getElementById("cameraOutput").style.display="block";
+    } else {
+        document.getElementById("cameraOutput").style.display="none";
+    }
+}
+
+function increaseSpeed(button, limit) {
+    const numberInput = button.parentElement.querySelector('.number');
+    var value = parseInt(numberInput.innerHTML, 10);
+    if(isNaN(value)) value = 0;
+    if(limit && value >= limit) return;
+    numberInput.innerHTML = value+1;
+    Physics.speed.x=value+1;
+    Physics.speed.y=value+1;
+}
+  
+function decreaseSpeed(button) {
+    const numberInput = button.parentElement.querySelector('.number');
+    var value = parseInt(numberInput.innerHTML, 10);
+    if(isNaN(value)) value = 0;  
+    if(value < 1) return;
+    numberInput.innerHTML = value-1;
+    Physics.speed.x=value-1;
+    Physics.speed.y=value-1;
+}
+
+function increaseGravity(button, limit) {
+    const numberInput = button.parentElement.querySelector('.number');
+    var value = parseFloat(numberInput.innerHTML);
+    if(isNaN(value)) value = 0.00;
+    if(value >= limit) return;
+    numberInput.innerHTML = value+0.001;
+    Physics.G[1]=value+0.001;
+    Physics.G[1]=value+0.001;
+}
+  
+function decreaseGravity(button) {
+    const numberInput = button.parentElement.querySelector('.number');
+    var value = parseFloat(numberInput.innerHTML);
+    if(isNaN(value)) value = 0.00;  
+    if(value < 0) return;
+    numberInput.innerHTML = value-0.001;
+    Physics.G[1]=value-0.001;
+    Physics.G[1]=value-0.001;
 }

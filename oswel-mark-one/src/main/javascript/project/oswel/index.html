@@ -8,8 +8,12 @@
         <script src="https://kit.fontawesome.com/03072761fd.js" crossorigin="anonymous"></script>
     </head>
     <body>
-
         <div class="main_box">
+            <canvas id="myCanvas"></canvas>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCamera(this)" checked>
+                <span class="slider round"><br><br>Toggle Camera</span>
+            </label>
 
             <div id="cameraOutput">
                 <canvas id="camCanvas" width="170" height="130"></canvas>
@@ -17,75 +21,120 @@
             </div>
 
             <input type="checkbox" id="check">
-            <div class="btn_one">
-                <label for="check">
+            <div class="btn_open_settings">
+                <label for="check"><!-- //NOSONAR -->
                     <i class="fa-solid fa-bars"></i>
                 </label>
             </div>
-            <div class="sidebar_menu">
+
+            <div class="side_panel">
                 <div class="logo">
                     <a href="#">SETTINGS</a>
                 </div>
-                <div class="btn_two">
-                    <label for="check">
+                <div class="btn_close_settings">
+                    <label for="check"><!-- //NOSONAR -->
                         <i class="fa-solid fa-xmark"></i>
                     </label>
                 </div>
                 <div class="menu">
                     <ul>
-                        <li><a href="#"><i class="fa fa-tasks" aria-hidden="true"></i>
-                            INPUT</a></li>
-                        <li><a href="#"><i class="fa-solid fa-gauge"></i>
-                            SPEED</a></li>
-                        <li><a href="#"><i class="fa-solid fa-weight-hanging"></i>
-                            GRAVITY</a></li>
-                        <li><a href="#"><i class="fa-solid fa-glasses"></i>
-                            DEBUG</a></li>
-                        <li><a href="#"><i class="fa-solid fa-circle-info"></i>
-                            ABOUT</a></li>
+                        <li><i class="fa fa-tasks" aria-hidden="true"></i>
+                            INPUT
+                            <select name="input" id="input" class="select_options" onchange="onInputChange(this)">
+                                <option value="face">FACE</option>
+                                <option value="markers">MARKERS</option>
+                                <option value="sliders">SLIDERS</option>
+                            </select>
+                        </li>
+                        <li><i class="fa-solid fa-gauge"></i>
+                            SPEED<div class="quantity-field" >
+                                <button 
+                                  class="value-button decrease-button" 
+                                  onclick="decreaseSpeed(this)" 
+                                  title="Azalt">-</button>
+                                  <div class="number">7</div>
+                                <button 
+                                  class="value-button increase-button" 
+                                  onclick="increaseSpeed(this, 10)">+</button>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-weight-hanging"></i>
+                            GRAVITY<div class="quantity-field" >
+                                <button 
+                                  class="value-button decrease-button" 
+                                  onclick="decreaseGravity(this)" 
+                                  title="Azalt">-</button>
+                                  <div class="number">0.003</div>
+                                <button 
+                                  class="value-button increase-button" 
+                                  onclick="increaseGravity(this, 0.01)">+</button>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-glasses"></i>
+                        <input type="checkbox" id="debugChk" class="chkbox" onchange="toggleDebug(this)">
+                            DEBUG</input></li>
+                        <li><i class="fa-solid fa-quote-left"></i>
+                        <input type="checkbox" id="speakChk" class="chkbox" onchange="toggleSpeak(this)">
+                            SPEAK</input></li>
+                        <li><i class="fa-solid fa-circle-info"></i>
+                            <div class="hidden_text">ABOUT
+                                <span class="show_text">
+
+                                    Ordinary Systems of a Well Established Language Library (OSWELL).
+                                    <br><br>
+                                    The purpose of this application is to enhance user interaction with 
+                                    generative entities such as ChatGPT by providing an interactive avatar
+                                    and direct access to realtime information such as current events,
+                                    the weather, and much more through APIs. Furthermore, the user can 
+                                    modify the endpoints of the APIs, retrain the models used, redraw/customize 
+                                    the avatar in any way shape or form. 
+                                    <br><br>
+                                    The default input is "FACE" which utilizes the camera to detect
+                                    human faces which the avatar will constantly follow. Another
+                                    option is "MARKERS" which takes two blue colored objects, one
+                                    on top of each other to control the avatar's movements. The last
+                                    option is "SLIDERS" which does not rely on the camera, but rather
+                                    manual movements of the avatar via mouse click on the sliders.
+                                    <br><br>
+                                    The options for speed and gravity adjusts the avatar's movements
+                                    in speed or weightlessness.
+                                    The checkbox for debug allows the user to see behind the scenes
+                                    that is involving the avatar's movements.
+                                    The checkbox for speak moves the avatar's mouth as if speaking.
+
+                                </span></a>
+                            </div>
+                        </li>
+                        <li>
+                            <button id="calibrateBtn" onclick="calibrate()">Calibrate</button> 
+                        </li>
+                        <li>
+                            <div id="sliders">
+                                Face:<br>
+                                X <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
+                                <br>
+                                Y <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
+                                <br><br>
+                                Mouth:<br>
+                                X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
+                                <br>
+                                Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
+                            </div>
+                        </li>
                     </ul>
                 </div>
+
                 <div class="social_media">
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#"><i class="fa-regular fa-envelope"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100080925862801" target="_blank">
+                        <i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/johnmvsantos/" target="_blank">
+                        <i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@johnmvsantos" target="_blank">
+                        <i class="fa-brands fa-youtube"></i></a>
+                    <a href="" target="_blank" class="hidden_text"><i class="fa-regular fa-envelope"></i>
+                        <span class="show_text">johnmarivsantos@gmail.com</span></a>
                 </div>
             </div>
-            <canvas id="myCanvas"></canvas>
-
-        </div>
-
-        <div id="side-panel">
-            <input type="checkbox" id="debugChk" onchange="toggleDebug(this)">DEBUG</input>
-            <br><br>
-            <div id="sliders">
-                Face:<br>
-                X <input type="range" min="-0.75" max="0.75" step="0.1" onChange="updateLookAt(this, 'x')"/>
-                <br>
-                Y <input type="range" min="-0.45" max="0.65" step="0.05" onChange="updateLookAt(this, 'y')"/>
-                <br><br>
-                Mouth:<br>
-                X <input type="range" min="-0.70" max="0.70" step="0.1" onChange="updateMouth(this, 'x')"/>
-                <br>
-                Y <input type="range" min="0.00" max="0.80" step="0.05" onChange="updateMouth(this, 'y')"/>
-                
-                <br><br>
-            </div>
-            <input type="checkbox" id="speakChk" onchange="toggleSpeak(this)">Speak</input>
-            
-            
-            <div id="inputContainer">
-                INPUT:
-                <br>
-                <select name="input" id="input" onchange="onInputChange(this)">
-                    <option value="face detection">face detection</option>
-                    <option value="markers">markers</option>
-                    <option value="sliders">sliders</option>
-                </select>
-                <br><br>
-            </div>
-            <button id="calibrateBtn" onclick="calibrate()">Calibrate</button> 
         </div>
         
         <script src="face-api.min.js"></script>
@@ -115,7 +164,7 @@
 
             const canvas=document.getElementById("myCanvas");
             const ctx=canvas.getContext("2d");
-            initCanvas(500,500);   
+            initCanvas(400,480);   
  
             animate();
 
@@ -125,8 +174,8 @@
 
                 // Transform canvas into coordinate system between [-1, 1].
                 ctx.translate(canvas.width/2,canvas.height/2);
-                // Original width is 800, reduced to 500, scale by 8/5 to keep original avatar dimensions.
-                ctx.scale(canvas.width*0.5*1.6,canvas.height*0.5);
+                // Original width is 800, reduced to 400, scale by 0.5*(800/400)=1 to keep original avatar dimensions.
+                ctx.scale(canvas.width,canvas.height*0.5*25/24);
                 ctx.lineWidth=0.005;
 
                 if(DEBUG){
@@ -137,9 +186,9 @@
             function animate(){
                 ctx.clearRect(-1,-1,2,2);
                 
-                // TODO: Control based on the type of input (face detection, markers, or sliders).
+                // TODO: Control based on the type of input (face, markers, or sliders).
                 // if(video){
-                //     if(processType=="face detection") {
+                //     if(processType=="face") {
                 //         processDetections();
                 //     } else {
                 //         processImage();

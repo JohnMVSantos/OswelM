@@ -16,7 +16,7 @@ class Neck{
         // Bottom Chin
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.3)";
+        ctx.fillStyle="rgba(128,128,128,0.8)";
         ctx.moveTo(-0.04+xOffset*2.0,0.57+yOffset-xOffset*adj*0.35);
         ctx.quadraticCurveTo(-0.02,0.61,-0.01,0.64);
         ctx.lineTo(0.01,0.64);
@@ -29,7 +29,7 @@ class Neck{
         // Middle Portion
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.4)";
+        ctx.fillStyle="rgba(128,128,128,0.7)";
         ctx.moveTo(-0.01,0.64);
         ctx.quadraticCurveTo(-0.01,0.85,-0.01,0.88+yOffset);
         ctx.lineTo(0.01,0.88+yOffset);
@@ -68,7 +68,7 @@ class Neck{
         // Outer boundary.
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(40,147,181,0.4)";
+        ctx.fillStyle="rgba(40,147,181,0.9)";
         ctx.moveTo(0.11+xOffset,0.47+yOffset*0.009);
         ctx.quadraticCurveTo(0.10,0.67,0.14,0.78);
         ctx.quadraticCurveTo(0.14,0.79,0.13,0.80);
@@ -81,7 +81,7 @@ class Neck{
         // Outer boundary bottom connection.
         ctx.beginPath();
         
-        ctx.fillStyle="rgba(11,9,43,0.5)";
+        ctx.fillStyle="rgba(11,9,43,0.8)";
         ctx.moveTo(0.15,0.825);
         ctx.lineTo(0.145,0.76);
         ctx.quadraticCurveTo(0.14,0.80,0.125,0.80);
@@ -94,7 +94,7 @@ class Neck{
         // Hydraulics bottom.
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(128,128,128,0.4)";
+        ctx.fillStyle="rgba(128,128,128,0.9)";
         ctx.moveTo(0.088,0.82);
         ctx.lineTo(0.09,0.63);
         ctx.quadraticCurveTo(0.08,0.64,0.07,0.63);
@@ -107,7 +107,7 @@ class Neck{
         // Hydraulics top.
         ctx.beginPath();
 
-        ctx.fillStyle="rgba(192,192,192,0.3)";
+        ctx.fillStyle="rgba(192,192,192,0.9)";
         ctx.moveTo(0.085,0.64);
         ctx.lineTo(0.085,0.52+yOffset);
         ctx.lineTo(0.075,0.53+yOffset);
