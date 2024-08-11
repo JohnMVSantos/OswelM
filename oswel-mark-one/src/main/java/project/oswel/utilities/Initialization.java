@@ -11,7 +11,6 @@ import project.oswel.speechrecognition.recognizer.GSpeechDuplex;
 import project.oswel.speechrecognition.microphone.Microphone;
 import project.oswel.speechrecognition.recognizer.Recognize;
 import net.sourceforge.javaflacencoder.FLACFileWriter;
-import project.oswel.connections.SerialConnection;
 import project.oswel.speech.constant.TtsStyleEnum;
 import project.oswel.speech.constant.VoiceEnum;
 import project.oswel.speech.service.TTSService;
@@ -41,10 +40,7 @@ import java.util.Random;
  */
 public abstract class Initialization {
 
-    private static final Logger LOGGER = Logger
-                                            .getLogger(
-                                                Initialization.class
-                                                                .getName());
+    private static final Logger LOGGER = Logger.getLogger(Initialization.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
 	private static TTSService tts = TTSService.builder()
 											 .usePlayer(true)
@@ -118,12 +114,10 @@ public abstract class Initialization {
 	 * user response collected to return an appropriate response.
 	 * @param duplex Object responsible for recognizing speech.
 	 * @param speechInterpreter Object responsible for interpreting speech.
-	 * @param serialConnect Object responsible for connecting to IoT devices. 
 	 */
 	public static void startProcess(
 		GSpeechDuplex duplex, 
-		SpeechProcess speechInterpreter, 
-		SerialConnection serialConnect
+		SpeechProcess speechInterpreter
 	) {
 		duplex.addResponseListener(new GSpeechResponseListener() {
 			public void onResponse(GoogleResponse googleResponse) {
@@ -142,18 +136,11 @@ public abstract class Initialization {
 								"Oswel said [" + oswelOutput[0] + "]: " + 
 								oswelOutput[1]
 							);
-							if (serialConnect.checkConnection()) {
-								serialConnect.writeBytes(
-									oswelOutput[1].getBytes(), 1000);
-							}
 							// Wait to complete writing the audio file.
 							duplex.wait(1500);
 							
 							if (oswelOutput[0].equalsIgnoreCase(
 											"departure")) {								
-								if (serialConnect.checkConnection()) {
-									serialConnect.closeConnection();
-								}
 								duplex.wait(Mp3Player.recordedTimeInSec + 4000);
 								System.exit(1);	
 							}

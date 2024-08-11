@@ -1,8 +1,15 @@
 
 Language Processing and Software
 --------------------------------
-0) Explore java and javascript servers to display the avatar.
-0.1) If there is a javascript frontend, then rely on it for speech input?
+1) Remove javascript/project/oswel source files and move it to a secure location. 
+2) Clean up the code in Java.
+3) Separate threads for the spring application and oswell backend.
+4) Add welcome page on boot and then open the main page. Button to go from page to page.
+4.1) Control speak with spring boot.
+5) Python to start the java application and also open the server in the browser.
+6) Clean up python code.
+7) If there is a javascript frontend, then rely on it for speech input?
+
 Equipment definitions: Base equipment should be provided such as speech recognition and base voice.
 APIs should also be equipements but not provided by default unless added by the user. 
 Also Django to run the application and allow a login page and settings page for configuration avatar layouts and page appearances.
@@ -15,11 +22,10 @@ Also Django to run the application and allow a login page and settings page for 
 4) Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
 5) Havent been testing :( Needs to be done ASAP! 
 6) Stocks and Finance?? Optional...
-7) Retraining of intents.json and new suggestion creations.
+7) Retraining of intents.json and new suggestion creations. Automatic training.
 
 Hardware and Face Detection
 ---------------------------
-1) Format control panel and avatar orientation based on design. Controls (speed, gravity, threshold, color for markers).
 2) Control either to use processImage() for the markers (rename) or processDetections for face detections.
 3) Startup message and Logo. 
 4) Also display information for user input and oswel output and various user interfaces.

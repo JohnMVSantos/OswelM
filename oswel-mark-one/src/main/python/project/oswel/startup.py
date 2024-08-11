@@ -10,11 +10,11 @@ from src.main.python.project.oswel.nlp.settings import MODEL_PATH, \
     CLASS_PATH, WORDS_PATH, INTENTS_PATH
 from src.main.python.project.oswel.nlp.deploy import DeployOswelNLP
 from src.main.python.project.oswel.logger import logger
-import speech_recognition as sr
-from pygame import mixer
+import speech_recognition as sr # type: ignore
+from pygame import mixer # type: ignore
 import subprocess
 import argparse
-import edge_tts
+import edge_tts # type: ignore
 import asyncio
 import time
 import os
@@ -29,15 +29,15 @@ class StartApp:
 
     Parameters
     ----------
-        deployOswel: DeployOswel
+        deploy_oswel: DeployOswel
             This object handles loading the keras NLP model make
             predictions based on the user's input.
     """
     def __init__(
             self, 
-            deployOswel
+            deploy_oswel
         ):
-        self.deployOswel = deployOswel
+        self.deploy_oswel = deploy_oswel
 
     @staticmethod
     def recognize():
@@ -91,7 +91,7 @@ class StartApp:
                 The model's response based on the user's message category.
                 [{'intent': 'category', 'probability': float}]
         """
-        return self.deployOswel.predict_class(message)
+        return self.deploy_oswel.predict_class(message)
     
     def process_intent(self, ints):
         """
@@ -111,12 +111,12 @@ class StartApp:
         """
         tag = ints[0]["intent"]
         if tag.lower() in ["status", "initialization"]:
-            response = self.deployOswel.get_response_by_tag("initialization")
+            response = self.deploy_oswel.get_response_by_tag("initialization")
         elif tag.lower() in ["greetings", "feeling"]:
             response = "I am currently not uploaded. " + \
-                        self.deployOswel.get_response_by_tag("initialization")
+                        self.deploy_oswel.get_response_by_tag("initialization")
         elif tag.lower == "departure":
-            response = self.deployOswel.get_response_by_tag(tag)
+            response = self.deploy_oswel.get_response_by_tag(tag)
         else:
             return None
         logger(f"Oswell says: {response}")

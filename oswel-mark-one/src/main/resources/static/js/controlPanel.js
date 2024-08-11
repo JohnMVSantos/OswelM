@@ -5,10 +5,10 @@
 
 // TODO: This causes complications for allowing different options for the input.
 Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('../../../resources/static/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('../../../resources/static/models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('../../../resources/static/models'),
-    faceapi.nets.faceExpressionNet.loadFromUri('../../../resources/static/models'),
+    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('/models'),
 ]).then(
     initializeFaceDetection
 )

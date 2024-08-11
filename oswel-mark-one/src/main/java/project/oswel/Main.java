@@ -5,8 +5,9 @@
 
 package project.oswel;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import project.oswel.speechrecognition.recognizer.GSpeechDuplex;
-import project.oswel.connections.SerialConnection;
+import org.springframework.boot.SpringApplication;
 import project.oswel.utilities.Initialization;
 import project.oswel.nlp.SpeechProcess;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
  * collects data based on the response from various API's.
  * @author John Santos
  */
+@SpringBootApplication
 public class Main {
 
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -26,27 +28,14 @@ public class Main {
 	 * This is the main function for which the program starts. 
 	 * @param args Command line arguments but it is not used in this case. 
 	 */
-    public static void main(String[] args) {
-		boolean connect = false;
-		String device = "linuxSerial";
-		if (args.length >= 2) {
-			if (args[0].equalsIgnoreCase("connect")) {
-				connect = true;
-				if (args[1].equalsIgnoreCase("linuxSerial")) {
-					device = "linuxSerial";
-				} else if (
-					args[1].equalsIgnoreCase("windowsSerial")) {
-					device = "windowsSerial";
-				} else {
-					LOGGER.severe(
-						"Choices are linuxSerial or WindowsSerial");
-				}
-			}	
-		}
+    public static void main(String[] args) {		
+		LOGGER.info("Starting the server...");
+		SpringApplication.run(Main.class, args);
 		
 		LOGGER.info("Reading license file...");
 		JSONObject oswelLicense = Initialization
 									.readJSONFile("oswel.lic");
+
 		LOGGER.info("Reading settings file...");
 		JSONObject settings = Initialization
 									.readJSONFile("settings.json");
@@ -62,17 +51,8 @@ public class Main {
 		//Start Voice Recognition
 		GSpeechDuplex duplex = Initialization.setVoiceRecognition(
 								oswelLicense.getString("googlespeech"));
+		
 		LOGGER.info("Listening ...");
-
-		if (connect) {
-			SerialConnection serialConnect = new SerialConnection(
-				settings.getString(device));
-			Initialization.startProcess(
-				duplex, speechInterpreter, serialConnect);  
-		} else {
-			SerialConnection serialConnect = new SerialConnection();
-			Initialization.startProcess(
-				duplex, speechInterpreter, serialConnect);  
-		}
-    };    
+		Initialization.startProcess(duplex, speechInterpreter); 
+    }    
 }
