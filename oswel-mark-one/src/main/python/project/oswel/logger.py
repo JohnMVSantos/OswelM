@@ -6,7 +6,7 @@
 # This source code is provided solely for runtime interpretation by Python.
 # Modifying or copying source code is explicitly forbidden. 
 
-def logger(message, code=''):
+def logger(message: str, code: str=''):
     """
     Outputs messages on the terminal when called.
         Type of message can be an error, a warning, \

@@ -17,7 +17,7 @@ class UnrecognizedTaskException(Exception):
         task: str
             The provided task.
     """
-    def __init__(self, task):
+    def __init__(self, task: str):
         sys.tracebacklimit=0
         super(UnrecognizedTaskException, self).__init__(
             "Unrecognized task {}. Can only accept 'train' or 'deploy'.".format(

@@ -40,16 +40,21 @@ import java.util.Random;
  */
 public abstract class Initialization {
 
+	private Initialization(){
+
+	}
+
     private static final Logger LOGGER = Logger.getLogger(Initialization.class.getName());
 	private static final Microphone mic = new Microphone(FLACFileWriter.FLAC);
 	private static TTSService tts = TTSService.builder()
 											 .usePlayer(true)
-											 .build();				
+											 .build();		
+	private static Random random = new Random();		
 
     /**
 	 * Reads a JSON file to grab the contents.
-	 * @param licenseFileName The name of the JSON file to read. 
-     * @return A JSONObject containing the contents of the JSON file. 
+	 * @param licenseFileName The name of the JSON file to read (String). 
+     * @return A JSONObject containing the contents of the JSON file (JSONObject). 
 	 */
     public static JSONObject readJSONFile(String fileName) {
         JSONObject jsonFile = new JSONObject();
@@ -71,7 +76,7 @@ public abstract class Initialization {
 
 	/**
 	 * Provides speaking capabilities in the application. 
-	 * @param prompt The string to speak.
+	 * @param prompt The string to speak (String).
 	 */
 	private static void speak(String prompt) {
 		SSML ssml = SSML.builder()
@@ -82,8 +87,11 @@ public abstract class Initialization {
         tts.sendText(ssml);
 	}
 
+	/**
+	 * Speaks the confirmation regarding completed startup process.
+	 * @param speechInterpreter The object to interpret the user's input (speechInterpreter).
+	 */
 	public static void startConfirmation(SpeechProcess speechInterpreter) {
-		Random rand = new Random();
 		int[] possibleIndices = new int[]{1,2,4,6};
 		JSONObject intent = speechInterpreter
 								.getChatKeras()
@@ -91,7 +99,7 @@ public abstract class Initialization {
 								.getJSONObject(0);
 		if ("status".equalsIgnoreCase((String) intent.get("tag"))) {
 			JSONArray responses = intent.getJSONArray("responses");
-			int index = rand.nextInt(possibleIndices.length);
+			int index = random.nextInt(possibleIndices.length);
 			speak(responses.getString(possibleIndices[index]));
 		}
 	}
@@ -100,8 +108,8 @@ public abstract class Initialization {
 	 * Sets the voice recognition language and intializes the resources
 	 * needed for voice recognition in the application if provided with
 	 * an Google API key.
-	 * @param googleSpeechKey
-	 * @return GSpeechDuplex object used for recognizing speech.
+	 * @param googleSpeechKey The API key for the google speech recognition (String).
+	 * @return GSpeechDuplex object used for recognizing speech (GSpeechDuplex).
 	 */
 	public static GSpeechDuplex setVoiceRecognition(String googleSpeechKey) {
 		GSpeechDuplex duplex = new GSpeechDuplex(googleSpeechKey);
@@ -112,8 +120,8 @@ public abstract class Initialization {
 	/**
 	 * Starts the speech recognition process and process each 
 	 * user response collected to return an appropriate response.
-	 * @param duplex Object responsible for recognizing speech.
-	 * @param speechInterpreter Object responsible for interpreting speech.
+	 * @param duplex Object responsible for recognizing speech (GSpeechDuplex).
+	 * @param speechInterpreter Object responsible for interpreting speech (speechInterpreter).
 	 */
 	public static void startProcess(
 		GSpeechDuplex duplex, 
@@ -141,7 +149,7 @@ public abstract class Initialization {
 							
 							if (oswelOutput[0].equalsIgnoreCase(
 											"departure")) {								
-								duplex.wait(Mp3Player.recordedTimeInSec + 4000);
+								duplex.wait(Mp3Player.recordedTimeInSec + (long)4000);
 								System.exit(1);	
 							}
 							LOGGER.info("Listening...");

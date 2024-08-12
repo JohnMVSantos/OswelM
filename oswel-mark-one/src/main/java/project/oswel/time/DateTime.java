@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
 
 /**
  * This class provides methods to get the time and date information
@@ -26,10 +27,14 @@ import java.util.Set;
  */
 public class DateTime {
 
+    private DateTime() {       
+        
+    }
+
     /**
      * This method formats the time from 24Hour format to 12 Hour format.
-     * @param hour The 24 Hour of the day.
-     * @param minute The minutes of the hour. 
+     * @param hour The 24 Hour of the day (int).
+     * @param minute The minutes of the hour (int). 
      * @return The 12 hour time format (String).
      */
     public static String formatTime(int hour, int minute) {
@@ -62,7 +67,7 @@ public class DateTime {
 
     /**
      * This method gets the current time in the city provided.
-     * @param city The name of the city for which to get the time.
+     * @param city The name of the city for which to get the time (String).
      * @return The time at a particular city (String).
      */
     public static String getCurrentTimeCity(String city) {
@@ -92,9 +97,9 @@ public class DateTime {
      * the value is the 2 letter country code.
      * @return HashMap<Country, Country Code>
      */
-    public static HashMap<String, String> getCountryCodes() {
+    public static Map<String, String> getCountryCodes() {
         String[] isoCountries = Locale.getISOCountries();
-        HashMap<String, String> countriesMapping = new HashMap<String, String>();
+        HashMap<String, String> countriesMapping = new HashMap<>();
         for (String country : isoCountries) {
             Locale locale = new Locale("en", country);
             String code = locale.getCountry();
@@ -120,7 +125,6 @@ public class DateTime {
      */
     public static String getCurrentDate() {
         LocalDate today = LocalDate.now();
-        today.getDayOfWeek();
         String weekDay = today.getDayOfWeek().toString();
         weekDay = weekDay.substring(0,1).toUpperCase() + 
                 weekDay.substring(1).toLowerCase();
@@ -136,10 +140,11 @@ public class DateTime {
      * This method returns the current start and end dates for the week. 
      * Assuming that Sunday is the start of the week and Saturday is the
      * the end of the week. 
-     * @return The start and end dates (String[2]).
+     * @return The start and end dates (String[]).
      */
     public static String[] getStartEndWeekDates() {
         LocalDate today = LocalDate.now();
+        String[] dates = new String[2];
 
         // Go backward to get Sunday.
         LocalDate sunday = today;
@@ -151,7 +156,8 @@ public class DateTime {
         while (saturday.getDayOfWeek() != DayOfWeek.SATURDAY) {
         saturday = saturday.plusDays(1);
         }
-        String[] dates = {sunday.toString(), saturday.toString()};
+        dates[0] = sunday.toString();
+        dates[1] = saturday.toString(); 
         return dates;
     }
 }

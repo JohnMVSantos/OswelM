@@ -26,7 +26,7 @@ public class ChatGPT {
     /**
      * Creates a ChatGPT object to allow usage of the methods to post 
      * requests to generate a response from ChatGPT.
-     * @param apiKey The API key to allow usage of the application.
+     * @param apiKey The API key to allow usage of the application (String).
      */
     public ChatGPT(String apiKey) {
         this.apiKey = apiKey; 
@@ -36,8 +36,8 @@ public class ChatGPT {
      * Creates a ChatGPT object specifying the endpoint which hosts
      * an API which runs ChatGPT to allow POST requests to generate a 
      * response.
-     * @param apiKey The API Key required for the specific endpoint.
-     * @param endPoint The specified endpoint to call.
+     * @param apiKey The API Key required for the specific endpoint (String).
+     * @param endPoint The specified endpoint to call (String).
      */
     public ChatGPT(String apiKey, String endPoint) {
         this.apiKey = apiKey;
@@ -46,24 +46,18 @@ public class ChatGPT {
 
     /**
      * Sets the endpoint to use. 
-     * @param endPoint The string endpoint to set.
+     * @param endPoint The string endpoint to set (String).
      */
     public void setEndpoint(String endPoint) { this.endPoint = endPoint; }
 
     /**
      * POST requests to the specified endpoint to generate a ChatGPT response.
-     * @param prompt The prompt to send to the endpoint. 
-     * @return The string describing the ChatGPT response. 
+     * @param prompt The prompt to send to the endpoint (String). 
+     * @return The string describing the ChatGPT response (String). 
      */
     public String getGPTResponse(String prompt) {
-
         RequestBody formBody = null;
-        // = new RequestBody() {
-            
-        // }
-        //     .add("text", prompt)
-        //     .build();
-
+    
         String description = "[ERROR] Failed To Get Data";
         Request request = new Request.Builder()
                 .header("api-key", this.apiKey)

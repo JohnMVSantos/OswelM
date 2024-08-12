@@ -21,4 +21,7 @@ WORDS_PATH = os.path.join(BASE_DIR, "resources/words.txt")
 # Path to save the class.txt during training
 CLASS_PATH = os.path.join(BASE_DIR, "resources/classes.txt") 
 # Path to save the model file during training
-MODEL_PATH = os.path.join(BASE_DIR, "resources/oswel.h5") 
+MODEL_PATH = os.path.join(BASE_DIR, "resources/static/models/nlp/oswel.h5") 
+
+JAR_PATH = os.path.join(BASE_DIR.parents[1], "target/oswel-mark-one-1.0.jar")
+SERVER_ACCESS = "localhost:8080"

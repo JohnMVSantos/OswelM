@@ -28,9 +28,9 @@ public class NER {
     /**
      * Creates an NER object given the names of the location and tagger models.
      * @param locationNERModelFileName The name of the location NER model
-     *                                 stored inside the resources folder.
+     *                                 stored inside the resources folder (String).
      * @param taggerNERModelFileName The name of the tagger NER model stored
-     *                               inside the resources folder.
+     *                               inside the resources folder (String).
      */
     public NER(String locationNERModelFileName, String taggerNERModelFileName) {
         this.loadLocationNERModel(locationNERModelFileName); 
@@ -38,9 +38,9 @@ public class NER {
     }
 
     /**
-     * Loads the location NER model provided with the name of the model.
+     * Loads the location NER model provided with the string path of the model.
      * @param locationNERModelFileName The name of the NER location model
-     *                                 stored inside the resources folder.
+     *                                 stored inside the resources folder (String).
      */
     private void loadLocationNERModel(String locationNERModelFileName) {
         try {
@@ -55,9 +55,22 @@ public class NER {
     }
 
     /**
-     * Loads the tagger NER model provided with the name of the model.
+     * Loads the tagger NER model from the InputStream object. 
+     * @param is This is the file input stream of the tagger model (InputStream). 
+     */
+    private void assignNERModel(InputStream is) {
+        try {
+            this.taggerNERModel = new POSModel(is);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads the tagger NER model provided with the string path of the model.
      * @param taggerNERModelFileName The name of the NER tagger model 
-     *                               stored inside the resources folder.
+     *                               stored inside the resources folder (String).
      */
     private void loadTaggerNERModel(String taggerNERModelFileName) {
         try {
@@ -65,12 +78,7 @@ public class NER {
                                         .getFile()
                                         .getPath();
             InputStream is = new FileInputStream(modelPath);
-            try {
-                this.taggerNERModel = new POSModel(is);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-              }
+            this.assignNERModel(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +86,7 @@ public class NER {
 
     /**
      * Finds the locations in a given sentence. 
-     * @param sentence The string sentence to parse the locations if any.
+     * @param sentence The string sentence to parse the locations if any (String).
      * @return The locations parsed (String[]).
      */
     public String[] findLocation(String sentence) {
@@ -102,13 +110,12 @@ public class NER {
 
     /**
      * Returns the tags describing each word in a sentence.
-     * @param sentence The string sentence to tag each word.
+     * @param sentence The string sentence to tag each word (String).
      * @return The tags denoting each word (String[]).
      */
     public String[] tagSentence(String sentence) {
         POSTaggerME tagger = new POSTaggerME(taggerNERModel);
-        String sent[] = sentence.split(" ");
-        String tags[] = tagger.tag(sent);
-        return tags;
+        String[] sent = sentence.split(" ");
+        return tagger.tag(sent); // This returns the String[] tags.
     }
 }

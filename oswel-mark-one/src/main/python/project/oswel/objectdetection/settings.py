@@ -15,4 +15,4 @@ import os
 
 BASE_DIR = Path(__file__).parents[4]
 # Path to the Face Detection Model
-FACE_PATH = os.path.join(BASE_DIR, "resources/oswelFace.h5") 
+FACE_PATH = os.path.join(BASE_DIR, "resources/static/models/face/oswelFace.h5") 

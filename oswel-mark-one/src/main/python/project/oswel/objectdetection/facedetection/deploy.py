@@ -6,21 +6,44 @@
 # This source code is provided solely for runtime interpretation by Python.
 # Modifying or copying source code is explicitly forbidden. 
 
+from typing import Union, Tuple
 import tensorflow as tf
 from PIL import Image
 import numpy as np
 import os
 
 class DeployOswelFaceDetection:
+    """
+    Deploys a Keras model for face detection.
 
+    Parameters
+    ----------
+        model_path: str
+            This is the path to the model file.
+
+        iou_threshold: float
+            This is the IoU threshold for the NMS.
+
+        score_threshold: float
+            This is the score threshold for the NMS.
+
+        norm: str
+            The type of image normalization to perform.
+
+        max_detections: int
+            The maximum number of detections to output.
+
+        label_offset: int
+            The label integer index to string offset.
+    """
     def __init__(
             self,
-            model_path,
-            iou_threshold=0.45,
-            score_threshold=0.70,
-            norm="unsigned",
-            max_detections=2,
-            label_offset=1
+            model_path: str,
+            iou_threshold: float=0.45,
+            score_threshold: float=0.70,
+            norm: str="unsigned",
+            max_detections: int=2,
+            label_offset: int=1
     ):
         if os.path.exists(model_path):
             self.model = self.load_model(model_path)
@@ -39,14 +62,53 @@ class DeployOswelFaceDetection:
                 "Can only support raw, unsigned, signed normalizations.")    
     
     @staticmethod
-    def load_model(model_path):
+    def load_model(model_path: str):
+        """
+        Loads the Keras model file.
+
+        Parameters
+        ----------
+            model_path: str 
+                The path to the model file.
+
+        Returns
+        -------
+            Loaded Keras model.
+        """
         return tf.keras.models.load_model(model_path, compile=False)
 
     @staticmethod
-    def clamp(value, min=0.0, max=1.0):
-        return min if value < min else max if value > max else value
+    def clamp(value: float, min: float=0.0, max: float=1.0):
+        """
+        Clamps the a given value between 0 and 1 (by default).
+
+        Parameters
+        ----------
+            value: float
+                The value to clamp.
+
+            min: float
+                The minimum allowable value.
+
+            max: float
+                The maximum allowable value.
+        """
+        return min if value < min else max if value > max else value #NOSONAR
     
-    def apply_normalization(self, image):
+    def apply_normalization(self, image: np.ndarray) -> np.ndarray:
+        """
+        Applies image normalization.
+
+        Parameters
+        ----------
+            image: np.ndarray
+                The image to normalize to either raw, signed, or unsigned.
+
+        Returns
+        -------
+            image: np.ndarray
+                The image that is normalized.
+        """
         if self.norm == 'signed':
             return np.expand_dims((image / 127.5) - 1.0, 0).astype(np.float32)
         elif self.norm == 'unsigned':
@@ -55,9 +117,24 @@ class DeployOswelFaceDetection:
             return np.expand_dims(image, 0).astype(np.float32)
         
     @staticmethod
-    def resize(image, size=None):
+    def resize(
+        image: Union[np.ndarray, None], size: Union[tuple, np.ndarray]=None
+        ) -> np.ndarray:
         """
-        # Resize method requires (width, height)
+        Resizes the input image.
+
+        Parameters
+        ----------
+            image: np.ndarray
+                The image to resize.
+
+            size: tuple, np.ndarray 
+                Resize method requires (width, height)
+
+        Returns
+        -------
+            image: np.ndarray
+                This is the image resized.
         """
         if size is None:
             return image
@@ -77,17 +154,67 @@ class DeployOswelFaceDetection:
                                     "Recieved type: {}".format(type(image)))
             return np.asarray(image)
         
-    def get_input_shape(self):
+    def get_input_shape(self) -> np.ndarray:
+        """
+        Returns the model input shape.
+
+        Returns
+        -------
+            The model input shape in the format (width, height).
+        """
         # This should roll the values from (height, width) to (width, height).
         return np.flip(self.model.input.shape[1:])[1:]
     
-    def run_single_instance(self, image):
+    def run_single_instance(
+            self, image: np.ndarray
+        ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        Runs the model on a single image/frame.
+
+        Parameters
+        ----------
+            image: np.ndarray
+                The model input image.
+
+        Returns
+        -------
+            boxes: np.ndarray   
+                The model prediction bounding boxes in [xmin, ymin, xmax, ymax].
+
+            classes: np.ndarray
+                The model prediction labels.
+
+            scores: np.ndarray
+                The model prediction scores.
+        """
         image = self.resize(image, self.get_input_shape())
         image = self.apply_normalization(image)
         outputs = self.model.predict(image, verbose=0)
         return self.apply_nms(outputs)
     
-    def apply_nms(self, outputs):
+    def apply_nms(
+            self, 
+            outputs: Union[np.ndarray, list]
+        ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        Runs NMS on the model output.
+
+        Parameters
+        ----------
+            outputs: list, np.ndarray
+                The raw output of the model which contains [boxes, scores].
+
+        Returns
+        -------
+            boxes: np.ndarray   
+                The model prediction bounding boxes in [xmin, ymin, xmax, ymax].
+
+            classes: np.ndarray
+                The model prediction labels.
+
+            scores: np.ndarray
+                The model prediction scores.
+        """
         boxes = outputs[-2]
         if self.label_offset > 0:
             scores = outputs[-1][..., self.label_offset:]

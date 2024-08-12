@@ -8,11 +8,11 @@
 
 from src.main.python.project.oswel.nlp.settings import MODEL_PATH, \
     CLASS_PATH, WORDS_PATH, INTENTS_PATH
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model #type: ignore
 from nltk.stem import WordNetLemmatizer
+from typing import Tuple
 import numpy as np
 import argparse
-import pickle
 import random
 import json
 import nltk
@@ -50,11 +50,11 @@ class DeployOswelNLP:
 
     def __init__(
         self,
-        model_path=MODEL_PATH,
-        class_path=CLASS_PATH,
-        words_path=WORDS_PATH,
-        intents_path=INTENTS_PATH,
-        score_threshold=0.25
+        model_path: str=MODEL_PATH,
+        class_path: str=CLASS_PATH,
+        words_path: str=WORDS_PATH,
+        intents_path: str=INTENTS_PATH,
+        score_threshold: float=0.25
         ):
         self.model = self.load_model(model_path)
         self.words, self.classes, self.intents = self.load_resources(
@@ -63,7 +63,7 @@ class DeployOswelNLP:
         self.score_threshold = score_threshold
 
     @staticmethod
-    def load_model(model_path):
+    def load_model(model_path: str):
         """
         Loads the Keras model.
 
@@ -91,7 +91,9 @@ class DeployOswelNLP:
                 ))
 
     @staticmethod
-    def load_resources(words_path, class_path, intents_path):
+    def load_resources(
+        words_path: str, class_path: str, intents_path: str
+    ) -> Tuple[list, list, dict]:
         """
         Reads the path to the intents, classes, and words and \
             returns the information contained in a variable.
@@ -144,8 +146,7 @@ class DeployOswelNLP:
             fp.close()
             return words, classes, intents
 
-
-    def clean_up_sentence(self, sentence):
+    def clean_up_sentence(self, sentence: str) -> list:
         """
         Tokenizes and lemmatizes the provided sentence string.
 
@@ -158,17 +159,13 @@ class DeployOswelNLP:
         -------
             sentence_words: list
                 This contains all the unique words in the sentence.
-
-        Raises
-        ------
-            None
         """
         sentence_words = nltk.word_tokenize(sentence)
         sentence_words = [
             self.lemmatizer.lemmatize(word).lower() for word in sentence_words]
         return sentence_words
 
-    def bag_of_words(self, sentence):
+    def bag_of_words(self, sentence: str) -> np.ndarray:
         """
         Creates a binary array of matches where one represents a matched \
             word in the provided sentence with the current bag of words \
@@ -183,10 +180,6 @@ class DeployOswelNLP:
         -------
             bag: np.ndarray
                 A binary array of 1's and 0's indicating word matches.
-
-        Raises
-        ------
-            None
         """
         sentence_words = self.clean_up_sentence(sentence)
         bag = [0] * len(self.words)
@@ -196,7 +189,7 @@ class DeployOswelNLP:
                 bag[index] = 1
         return np.array(bag)
 
-    def predict_class(self, sentence):
+    def predict_class(self, sentence: str) -> list:
         """
         Deploys the model to predict the category of the sentence.
 
@@ -210,14 +203,10 @@ class DeployOswelNLP:
             return_list: list
                 A list of dictionaries of possible entries provided the
                 scores are greater than the set score threshold. 
-
-        Raises
-        ------
-            None
         """
         bow = self.bag_of_words(sentence)
-        all = self.model.predict(np.array([bow]))
-        res = all[0]
+        all_predictions = self.model.predict(np.array([bow]))
+        res = all_predictions[0]
         results = [
             [i, r] for i, r in enumerate(res) if r > self.score_threshold]
         results.sort(key=lambda x:x[1], reverse=True)
@@ -227,7 +216,7 @@ class DeployOswelNLP:
                 {"intent": self.classes[r[0]], "probability": str(r[1])})
         return return_list
 
-    def get_response(self, intents_list):
+    def get_response(self, intents_list: list) -> str:
         """
         Gets a random response from a category described in the intents.json
 
@@ -242,15 +231,11 @@ class DeployOswelNLP:
             results: str
                 The resulting random response from the intents.json 
                 under the predicted category.
-
-        Raises
-        ------
-            None
         """
         tag = intents_list[0]["intent"]
         return self.get_response_by_tag(tag)
     
-    def get_response_by_tag(self, tag):
+    def get_response_by_tag(self, tag: str) -> str:
         """
         Gets a random response based on the given tag.
 
@@ -263,10 +248,6 @@ class DeployOswelNLP:
         -------
             result: str
                 The random response from the given tag.
-
-        Raises
-        ------
-            None
         """
         list_of_intents = self.intents["intents"]
         for i in list_of_intents:

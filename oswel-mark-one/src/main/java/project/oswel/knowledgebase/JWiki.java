@@ -19,17 +19,46 @@ import okhttp3.Request;
  */
 public class JWiki {
     private String endPoint;
-    private String displayTitle="";
-    private String imageURL="";
+    private String displayTitle = "";
+    private String imageURL = "";
 
     /**
      * This creates a new object with the subject to search for.
-     * @param subject The subject to search for in wikipedia. 
+     * @param subject The subject to search for in wikipedia (String). 
      */
     public JWiki(String endPoint) { this.endPoint = endPoint; }
 
     /**
+     * Returns the title of the wikipedia page.
+     * @return The title (String).
+     */
+    public String getDisplayTitle() {return displayTitle;}
+
+    /**
+     * Returns the URL pointing to the wikipedia page.
+     * @return The URL (String).
+     */
+    public String getImageURL() {return imageURL;}
+
+    /**
+     * Assigns the imageURL variable in the class. 
+     * @param jsonObject Client response as a JSONObject.
+     */
+    private void assignImageURL(JSONObject jsonObject) {
+        try {
+            JSONObject jsonObjectOriginalImage = jsonObject
+                                        .getJSONObject("originalimage");
+            imageURL= jsonObjectOriginalImage
+                                        .getString("source");
+        } catch (JSONException e) {
+            imageURL = "None";
+        }
+    }
+
+    /**
      * Communicates to the API to fetch the description of the topic passed. 
+     * @param subject The subject to get a definition in Wikipedia (String). 
+     * @return The extracted definition of the subject (String).
      */
     public String getData(String subject) {
         OkHttpClient client = new OkHttpClient();
@@ -44,20 +73,13 @@ public class JWiki {
             String data = response.body().string();
             JSONObject jsonObject = new JSONObject(data);
 
-            //get title from JSON response
-            displayTitle= jsonObject.getString("displaytitle");
+            // Get title from JSON response.
+            displayTitle = jsonObject.getString("displaytitle");
 
-            //first create a image object and then get image URL
-            try {
-                JSONObject jsonObjectOriginalImage = jsonObject
-                                            .getJSONObject("originalimage");
-                imageURL= jsonObjectOriginalImage
-                                            .getString("source");
-            } catch (JSONException e) {
-                imageURL = "None";
-            }
+            // First create a image object and then get image URL.
+            this.assignImageURL(jsonObject);
             
-            //get text
+            // Get the text.
             extractText = jsonObject.getString("extract");
         }
         catch (IOException e) {
@@ -65,16 +87,4 @@ public class JWiki {
         }
         return extractText;
     }
-
-    /**
-     * Returns the title of the wikipedia page.
-     * @return The title (String).
-     */
-    public String getDisplayTitle() {return displayTitle;}
-
-    /**
-     * Returns the URL pointing to the wikipedia page.
-     * @return The URL (String).
-     */
-    public String getImageURL() {return imageURL;}
 }

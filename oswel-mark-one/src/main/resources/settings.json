@@ -6,14 +6,12 @@
         "ChatGPT": "https://api.deepai.org/api/text-generator"
     },
     "resources": {
-        "oswelNLPModel": "oswel.h5",
         "wordsFile": "words.txt",
         "classesFile": "classes.txt",
         "intentsFile": "intents.json",
-        "locationNER": "en-ner-location.bin",
-        "posNER": "en-pos-maxent.bin"
+        "oswelNLPModel": "/static/models/nlp/oswel.h5",
+        "locationNER": "/static/models/ner/en-ner-location.bin",
+        "posNER": "/static/models/ner/en-pos-maxent.bin"
     },
-    "cityLocation": "Calgary",
-    "linuxSerial": "/dev/ttyAMA0",
-    "windowsSerial": "COM6"
+    "cityLocation": "Calgary"
 }

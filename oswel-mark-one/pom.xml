@@ -133,11 +133,6 @@
       <artifactId>java-flac-encoder</artifactId>
       <version>0.3.7</version>
     </dependency>
-    <!-- <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.13</version>
-    </dependency> -->
     <dependency>
       <groupId>com.googlecode.soundlibs</groupId>
       <artifactId>mp3spi</artifactId>
@@ -155,12 +150,9 @@
       <resource>
         <directory>src/main/resources</directory>
       </resource>
-      <resource>
-        <directory>src/main/javascript/project/oswel</directory>
-      </resource>
     </resources>
     <plugins>
-      <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+ 
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <groupId>org.graalvm.buildtools</groupId>
@@ -197,7 +189,7 @@
                 <mainClass>project.oswel.Main</mainClass>  
               </manifest>
               <manifestEntries>
-                <Build-Jdk>${jdk.version}</Build-Jdk>
+                <Build-Jdk>${java.version}</Build-Jdk>
                 <Implementation-Title>${project.name}</Implementation-Title>
                 <Implementation-Version>${project.version}</Implementation-Version>
                 <Specification-Title>${project.name} Library</Specification-Title>
@@ -243,7 +235,7 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
-      </pluginManagement>
+ 
     </plugins>
   </build>
 </project>

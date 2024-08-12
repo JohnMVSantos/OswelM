@@ -29,8 +29,8 @@ public enum Month {
     
     /**
      * Constructor
-     * @param monthName This is the string representation of the month.
-     * @param monthNumber This is the numerical representation of the month.
+     * @param monthName This is the string representation of the month (String).
+     * @param monthNumber This is the numerical representation of the month (int).
      */
     private Month(String monthName, int monthNumber) {
         this.monthName = monthName;
@@ -52,10 +52,9 @@ public enum Month {
     /**
      * Checks if the given name string exists in the Month enum.
      * It will only match if the name is in all lower case.
-     * @param name The string to be checked.
-     * @return The matching Month enum, if it exists
-     * @throws IllegalArgumentException if the provided name did not match 
-     * any cases.
+     * @param name The string to be checked (String).
+     * @return The matching Month enum, if it exists (String).
+     * @throws IllegalArgumentException if the provided name did not match any cases.
      */
     public static Month getMonthFromString (String name) 
                                         throws IllegalArgumentException {
@@ -92,7 +91,7 @@ public enum Month {
 
     /**
      * This method returns the name of the month represented by an integer.
-     * @param number The integer which the month represents.
+     * @param number The integer which the month represents (int).
      * @return The name of the month (String).
      */
     public static String getStringFromInt (int number) {

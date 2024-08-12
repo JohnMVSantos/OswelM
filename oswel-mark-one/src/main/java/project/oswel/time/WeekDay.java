@@ -23,16 +23,20 @@ public enum WeekDay {
 
     /**
      * Constructor
-     * @param index This is the index that corresponds to the week day.
+     * @param index This is the index that corresponds to the week day (int).
      */
     private WeekDay(int index) { this.index = index; }
     
     /**
      * This method returns the index of the given week day.
-     * @return index that represents the weekday.
+     * @return index that represents the weekday (int).
      */
     public int getIndex() { return this.index; }
 
+    /**
+     * Returns the days of the week.
+     * @return The days of the week (String[]).
+     */
     public static String[] getDaysOfWeek() {
         String[] daysOfWeek = {
                             "Sunday", 
@@ -49,10 +53,9 @@ public enum WeekDay {
     /**
      * Checks if the given name string exists in the WeekDay enum.
      * It will only match if the name is in all lower case.
-     * @param name The string to be checked.
-     * @return The matching WeekDay enum, if it exists
-     * @throws IllegalArgumentException if the provided name did not match 
-     * any cases.
+     * @param name The string to be checked (String).
+     * @return The matching WeekDay enum, if it exists (WeekDay).
+     * @throws IllegalArgumentException if the provided name did not match any cases.
      */
     public static WeekDay getWeekDayFromString (String name) 
                                         throws IllegalArgumentException {

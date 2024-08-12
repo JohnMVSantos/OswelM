@@ -1,13 +1,12 @@
 
 Language Processing and Software
 --------------------------------
-1) Remove javascript/project/oswel source files and move it to a secure location. 
-2) Clean up the code in Java.
 3) Separate threads for the spring application and oswell backend.
 4) Add welcome page on boot and then open the main page. Button to go from page to page.
 4.1) Control speak with spring boot.
 5) Python to start the java application and also open the server in the browser.
-6) Clean up python code.
+6.0) Clean up python code.
+6.1) Clean up the code in Java. 
 7) If there is a javascript frontend, then rely on it for speech input?
 
 Equipment definitions: Base equipment should be provided such as speech recognition and base voice.

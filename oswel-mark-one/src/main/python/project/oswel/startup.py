@@ -6,13 +6,16 @@
 # This source code is provided solely for runtime interpretation by Python.
 # Modifying or copying source code is explicitly forbidden. 
 
-from src.main.python.project.oswel.nlp.settings import MODEL_PATH, \
-    CLASS_PATH, WORDS_PATH, INTENTS_PATH
+from src.main.python.project.oswel.nlp.settings import (
+    MODEL_PATH, CLASS_PATH, WORDS_PATH, INTENTS_PATH, JAR_PATH, SERVER_ACCESS
+)
 from src.main.python.project.oswel.nlp.deploy import DeployOswelNLP
 from src.main.python.project.oswel.logger import logger
 import speech_recognition as sr # type: ignore
 from pygame import mixer # type: ignore
+from typing import Union
 import subprocess
+import webbrowser
 import argparse
 import edge_tts # type: ignore
 import asyncio
@@ -35,12 +38,12 @@ class StartApp:
     """
     def __init__(
             self, 
-            deploy_oswel
+            deploy_oswel: DeployOswelNLP
         ):
         self.deploy_oswel = deploy_oswel
 
     @staticmethod
-    def recognize():
+    def recognize() -> Union[str, None]:
         """
         This method recognizes the user's prompt using the microphone. 
 
@@ -75,7 +78,7 @@ class StartApp:
             return None
         return user_input
     
-    def interpret(self, message):
+    def interpret(self, message: str) -> list:
         """
         This method interprets the user's message and returns an appropriate 
         response.
@@ -93,7 +96,7 @@ class StartApp:
         """
         return self.deploy_oswel.predict_class(message)
     
-    def process_intent(self, ints):
+    def process_intent(self, ints: list) -> Union[str, None]:
         """
         This method returns an appropriate response based on 
         the user's response.
@@ -122,7 +125,7 @@ class StartApp:
         logger(f"Oswell says: {response}")
         return response
 
-    def speak(self, file):
+    def speak(self, file: str):
         """
         Plays the MP3 file which contains the oswel response.
 
@@ -140,8 +143,21 @@ class StartApp:
         os.remove(file)
 
     @staticmethod
-    async def amain(message, voice, file):
-        """Main function"""
+    async def amain(message: str, voice: str, file: str):
+        """
+        Main function
+        
+        Parameters
+        ----------
+            message:
+                The message to speak.
+
+            voice: str
+                The voice to use to speak the intention.
+
+            file: str
+                The path to save the MP3 file that saves the voice.
+        """
         communicate = edge_tts.Communicate(message, voice)
         await communicate.save(file)
 
@@ -150,11 +166,12 @@ class StartApp:
         """
         This method runs the Java application using subprocess.
         """
+        webbrowser.open_new_tab(SERVER_ACCESS)
         with subprocess.Popen(
-            ['java', '-jar', '.\\target\\oswel-mark-one-1.0.jar']) as p: 
+            ['java', '-jar', JAR_PATH]) as p: 
             p.wait()
 
-    def start_process(self, voice, file):
+    def start_process(self, voice: str, file: str):
         """
         This method starts the app process which essentially 
         recognizes the user's voice and runs the Java application 

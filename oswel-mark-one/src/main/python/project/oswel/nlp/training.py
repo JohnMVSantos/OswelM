@@ -8,11 +8,12 @@
 
 from src.main.python.project.oswel.nlp.settings import INTENTS_PATH, \
     WORDS_PATH, CLASS_PATH, MODEL_PATH
-from tensorflow.keras.optimizers.schedules import ExponentialDecay
+from tensorflow.keras.optimizers.schedules import ExponentialDecay #type: ignore
 from src.main.python.project.oswel.logger import logger
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout #type: ignore
+from tensorflow.keras.models import Sequential #type: ignore
 from nltk.stem import WordNetLemmatizer
+from typing import Union, Tuple
 import numpy as np
 import argparse
 import random
@@ -49,11 +50,11 @@ class TrainOswelNLP:
     """
     def __init__(
             self,
-            model_path=MODEL_PATH,
-            words_path=WORDS_PATH,
-            class_path=CLASS_PATH,
-            intents_path=INTENTS_PATH,
-            epochs=200
+            model_path: str=MODEL_PATH,
+            words_path: str=WORDS_PATH,
+            class_path: str=CLASS_PATH,
+            intents_path: str=INTENTS_PATH,
+            epochs: int=200
         ):
 
         self.intents = self.load_intents(intents_path)
@@ -64,7 +65,7 @@ class TrainOswelNLP:
         self.lemmatizer = WordNetLemmatizer()
 
     @staticmethod
-    def load_intents(intents_path):
+    def load_intents(intents_path: str) -> dict:
         """
         Reads the intents JSON file.
 
@@ -91,7 +92,7 @@ class TrainOswelNLP:
                 intents_path))
 
     @staticmethod 
-    def save_resource(file_path, resources):
+    def save_resource(file_path: str, resources: Union[list, np.ndarray]):
         """
         Saves the resources into text files which will be needed \
             for model deployement.
@@ -103,38 +104,24 @@ class TrainOswelNLP:
 
             resources: list or np.ndarray
                 An array usually containing words or classes.
-
-        Returns
-        -------
-            None
-
-        Raises
-        ------
-            None
         """
         with open(file_path, "w") as fp:
             for resource in resources:
                 fp.write("{}\n".format(resource))
         fp.close()
     
-    def process_resources(self):
+    def process_resources(self) -> Tuple[list, list]:
         """
         Processes training data into the proper formats that \
             will be used for training.
 
-        Parameters
-        ----------
-            None
-
         Returns
         -------
-           train_x
+           train_x: list
+                Training inputs.
 
-           train_y
-
-        Raises
-        ------
-            None
+           train_y: list
+                Training labels.
         """
         words, classes, documents = list(), list(), list()
         ignore_letters = ['?', "!", ".", ","]
@@ -176,24 +163,18 @@ class TrainOswelNLP:
         train_y = list(training[:, 1])
         return train_x, train_y
 
-    def train(self, train_x, train_y):
+    def train(self, train_x: list, train_y: list):
         """
         Trains the NLP model provided with the training data. The model \
             is saved as a Keras H5 file. 
 
         Parameters
         ----------
-            train_x
+            train_x: list
+                Training inputs.
 
-            train_y
-
-        Returns
-        -------
-            None
-
-        Raises
-        ------
-            None
+            train_y: list
+                Training labels.
         """
         # Building the neural network
         model = Sequential()
@@ -203,10 +184,10 @@ class TrainOswelNLP:
         model.add(Dropout(0.5))
         model.add(Dense(len(train_y[0]), activation="softmax"))
 
-        lr_schedule = ExponentialDecay(
-            initial_learning_rate=0.01,
-            decay_steps=10000,
-            decay_rate=0.9)
+        # lr_schedule = ExponentialDecay( #NOSONAR
+        #     initial_learning_rate=0.01,
+        #     decay_steps=10000,
+        #     decay_rate=0.9)
 
         model.compile(
             loss="categorical_crossentropy", 

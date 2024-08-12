@@ -47,20 +47,21 @@ public class ChatKeras {
     private ArrayList<String> words;
     private ArrayList<String> classes;
     private JSONArray intents;
+    private Random random = new Random();
 
     /**
      * Creates a new ChatKeras object given the model resources used/generated
      * during the training process.
      * @param modelFileName This is the name of the H5 model located under
-     *                      the resources folder.
+     *                      the resources folder (String).
      * @param wordsFileName This is the name of the file containing the words
      *                      used to train the model. By default this file is
-     *                      called words.txt.
+     *                      called words.txt (String).
      * @param classesFileName This is the name of the file containing all the
      *                        different tags used to categorize the words.
-     *                        By default this file is called classes.txt.
+     *                        By default this file is called classes.txt (String).
      * @param intentsFileName This is the name of the file used to train the
-     *                        model. By default this is the intents.json.
+     *                        model. By default this is the intents.json (String).
      */
     public ChatKeras(
         String modelFileName, 
@@ -93,15 +94,14 @@ public class ChatKeras {
     /**
      * Loads the Keras NLP model given the name of the model.
      * @param modelFileName This is the name of the H5 model primarily 
-     *                      stored inside the resources directory.
+     *                      stored inside the resources directory (String).
      */
     private void loadModel(String modelFileName) {
         try {
             String fullModel = new ClassPathResource(modelFileName)
                                     .getFile()
                                     .getPath();
-            this.model = KerasModelImport
-                            .importKerasSequentialModelAndWeights(
+            this.model = KerasModelImport.importKerasSequentialModelAndWeights(
                                     fullModel, 
                                     false
                             );
@@ -114,7 +114,7 @@ public class ChatKeras {
     /**
      * This reads the intents file and stores the contents as a JSONArray.
      * @param intentsFileName This is the name of the intents file. By 
-     *                        default it is called intents.json.
+     *                        default it is called intents.json (String).
      */
     private void readIntents(String intentsFileName) { 
         try {
@@ -132,28 +132,36 @@ public class ChatKeras {
     }
 
     /**
+     * Store the contents of a file inside the array.
+     * @param filePath The path to the file to read (String).
+     * @param contents The container for the contents of the file (ArrayList<String>).
+     */
+    private void fillContents(String filePath, ArrayList<String> contents) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contents.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * This reads text files line by line given the filename and stores
      * the contents inside an ArrayList.
      * @param fileName This is the name of the text file to be read. 
      *                 This file should be stored inside the resources 
-     *                 directory.
-     * @return The contents of the text file (ArrayList).
+     *                 directory (String).
+     * @return The contents of the text file (ArrayList<String>).
      */
-    private static ArrayList<String> readText(String fileName) {
-        ArrayList<String> contents = new ArrayList<String>();
+    private ArrayList<String> readText(String fileName) {
+        ArrayList<String> contents = new ArrayList<>();
         try {
             String filePath = new ClassPathResource(fileName)
                                     .getFile()
                                     .getPath();
-            try (BufferedReader br = new BufferedReader(
-                                        new FileReader(filePath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    contents.add(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.fillContents(filePath, contents);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,12 +170,11 @@ public class ChatKeras {
 
     /**
      * Lemmatizes the input sentence.
-     * @param documentText The input sentence as a string to be lemmatized.
-     * @return Contains all the lemmatized tokens making up the sentence
-     *         (LinkedList).
+     * @param documentText The input sentence as a string to be lemmatized (String).
+     * @return Contains all the lemmatized tokens making up the sentence (LinkedList<String>).
      */
     private LinkedList<String> lemmatize(String documentText) {
-        LinkedList<String> lemmas = new LinkedList<String>();
+        LinkedList<String> lemmas = new LinkedList<>();
         // create an empty Annotation just with the given text
         Annotation document = new Annotation(documentText);
         // run all Annotators on this text
@@ -189,17 +196,16 @@ public class ChatKeras {
      * Prior to being lemmatized, the sentence needs to be tokenized into
      * its different parts. However, after this process, this method calls
      * the lemmatizer to return the lemmatized tokens.
-     * @param sentence The sentence to be lemmatized and tokenized. 
-     * @return The lemmatized tokens (LinkedList).
+     * @param sentence The sentence to be lemmatized and tokenized (String). 
+     * @return The lemmatized tokens (LinkedList<String>).
      */
     private LinkedList<String> cleanUpSentence(String sentence) {
         StringTokenizer tokenizer = new StringTokenizer(sentence);
-        String documentText = "";
+        StringBuilder documentText = new StringBuilder("");
         while (tokenizer.hasMoreElements()) {
-            documentText += tokenizer.nextToken() + " ";
+            documentText.append(tokenizer.nextToken() + " ");
         }
-        LinkedList<String> lemmatizedTokens = this.lemmatize(documentText);        
-        return lemmatizedTokens;
+        return this.lemmatize(documentText.toString());        
     }
 
     /**
@@ -208,9 +214,8 @@ public class ChatKeras {
      * array. If there is a match in the word, this is denoted as a 1. 
      * Otherwise non matches are denoted as zeros.
      * @param sentence This is the sentence to process: tokenized, lemmatized,
-     *                 and translated into a bag of words.
-     * @return An binary array representing the words that have been matched
-     *         (INDArray).
+     *                 and translated into a bag of words (String).
+     * @return An binary array representing the words that have been matched (INDArray).
      */
     private INDArray bagOfWords(String sentence) { 
         LinkedList<String> lemmatizedTokens = this.cleanUpSentence(sentence);
@@ -227,21 +232,20 @@ public class ChatKeras {
     /**
      * This returns the scores per category or tag.
      * @param sentence This is the sentence to be processed and have the model
-     *                 make predictions as a classifier.
+     *                 make predictions as a classifier (String).
      * @return All the scores per category. Primarily the highest score is 
      *         denoted as the match (INDArray).
      */
     private INDArray predictScores(String sentence) {
         INDArray bow = this.bagOfWords(sentence);
-        INDArray scores = model.output(bow);
-        return scores;
+        return model.output(bow); // This returns INDArray scores.
     } 
 
     /**
      * Gets the category based on the maximum index which is reflected upon
      * as the index of the highest score.
      * @param maxIndex The index pointing to the maximum score the model 
-     *                 outputs.
+     *                 outputs (int).
      * @return The category upon which the passed sentence belongs (String).
      */
     private String getClass(int maxIndex) {
@@ -250,7 +254,7 @@ public class ChatKeras {
 
     /**
      * Retrieves the intents array.
-     * @return JSONArray contains the contents of the intents.json
+     * @return JSONArray contains the contents of the intents.json.
      */
     public JSONArray getIntents() {
         return this.intents;
@@ -263,7 +267,7 @@ public class ChatKeras {
      * maximum score to be the intention to return any random response from
      * the intended category.
      * @param sentence The sentence to classify belonging to a specific 
-     *                 category.
+     *                 category (String).
      * @return A container consisting of the category, the score, and
      *         the random generated response from the category (JSONObject).
      */
@@ -282,12 +286,11 @@ public class ChatKeras {
         response.put("category", category);
         response.put("score", score);
 
-        Random rand = new Random();
         for (int i=0; i<intents.length(); i++) {
             JSONObject intent = intents.getJSONObject(i);
             if (category.equalsIgnoreCase((String) intent.get("tag"))) {
                 JSONArray responses = intent.getJSONArray("responses");
-                int index = rand.nextInt(responses.length());
+                int index = this.random.nextInt(responses.length());
                 response.put("response", responses.getString(index));
                 return response;
             }

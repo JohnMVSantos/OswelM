@@ -11,11 +11,12 @@ import project.oswel.knowledgebase.JWiki;
 import project.oswel.time.DateTime;
 import project.oswel.time.WeekDay;
 import java.util.logging.Logger;
+import java.util.ArrayDeque;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Arrays;
-import java.util.Stack;
+import java.util.Deque;
+import java.util.Map;
 
 /**
  * This class processes the user input collected from the speech 
@@ -27,12 +28,10 @@ import java.util.Stack;
  */
 public class SpeechProcess {
 
-    private static HashMap<String, String> countriesMapping = DateTime
+    private static Map<String, String> countriesMapping = DateTime
                                                             .getCountryCodes();
-    private static final Logger LOGGER = Logger
-                                            .getLogger(
-                                                SpeechProcess.class
-                                                            .getName());
+    private static final Logger LOGGER = Logger.getLogger(
+                                                SpeechProcess.class.getName());
 
     private ChatKeras chatKeras;
     private WeatherAPI weatherInfo;
@@ -42,7 +41,7 @@ public class SpeechProcess {
 
 	/**
 	 * Retrieves the chatKeras object.
-	 * @return ChatKeras object that handles categorizing speech.
+	 * @return ChatKeras object that handles categorizing speech (ChatKeras).
 	 */
 	public ChatKeras getChatKeras() {
 		return this.chatKeras;
@@ -52,11 +51,11 @@ public class SpeechProcess {
 	 * Creates the speech interpreter object but requires the 
      * license file contents containing API keys needed
 	 * to fetch from various APIs to process the response.
-	 * @param oswelLicense JSONObject containing the API keys.
+	 * @param oswelLicense JSONObject containing the API keys (JSONObject).
 	 * @param resources JSONObject containing file names for the model and 
-     *                  resources.
-     * @param endpoints JSONObject containing endpoints to the APIs.
-     * @param cityLocation The current city location to fetch weather response.
+     *                  resources (JSONObject).
+     * @param endpoints JSONObject containing endpoints to the APIs (JSONObject).
+     * @param cityLocation The current city location to fetch weather response (String).
 	 */
     public SpeechProcess(
         JSONObject oswelLicense, 
@@ -89,11 +88,11 @@ public class SpeechProcess {
 
     /**
 	 * This method collected the nouns in a given sentence.
-	 * @param sentence The sentence to collect the nouns.
-	 * @return The indices of each word in the sentence identified to be nouns.
+	 * @param sentence The sentence to collect the nouns (String).
+	 * @return The indices of each word in the sentence identified to be nouns (Deque<Integer>).
 	 */
-	private Stack<Integer> collectNouns(String sentence) {
-		Stack<Integer> nouns = new Stack<Integer>();
+	private Deque<Integer> collectNouns(String sentence) {
+		Deque<Integer> nouns = new ArrayDeque<>();
 		String[] tags = ner.tagSentence(sentence);
 		for (int i=0; i<tags.length; i++) {
 			if (tags[i].equalsIgnoreCase("NN")) {
@@ -105,13 +104,13 @@ public class SpeechProcess {
     
     /**
      * Checks if a day is present in the user prompt. For example "Tuesday".
-     * @param userResponse The string prompt given by the user.
-     * @return The day if present in the prompt, otherwise "None".
+     * @param userResponse The string prompt given by the user (String).
+     * @return The day if present in the prompt, otherwise "None" (String).
      */
     private String getDayInUserPrompt(String userResponse) {
         String[] daysOfWeek = WeekDay.getDaysOfWeek();
         String day = "None";
-		ArrayList<String> userWords = new ArrayList<String>(
+		ArrayList<String> userWords = new ArrayList<>(
 			Arrays.asList(userResponse.split(" ")));
 		for(int i=0; i<daysOfWeek.length; i++) {
 			if (userWords.contains(daysOfWeek[i])) {
@@ -126,7 +125,7 @@ public class SpeechProcess {
      * This method updates the weather information for the current week based
      * on the city provided.
      * @param cityLocation The city to get the weather information for the 
-     *                     current week. 
+     *                     current week (String). 
      */
     private void getWeatherWeek(String cityLocation) {
         String[] weekStartEndDates = DateTime.getStartEndWeekDates();
@@ -136,6 +135,13 @@ public class SpeechProcess {
         );
     }
 
+	/**
+	 * Formats the response of the weather information gathered.
+	 * @param location The location described by the weather information (String). 
+	 * @param day The day described by the weather information (String).
+	 * @param dayValue This object contains the weather information gathered (JSONObject).
+	 * @return The response with the collected weather information in a sentence (String).
+	 */
     private String formatWeatherResponse(
         String location, String day, JSONObject dayValue
     ) {
@@ -163,25 +169,23 @@ public class SpeechProcess {
 	 * This method processes the weather response to detect if the user
 	 * specified the location to fetch weather information from. Or if the
 	 * user specified the day to fetch the weather. 
-	 * @param userResponse The response of the user to process.
+	 * @param userResponse The response of the user to process (String).
 	 * @return The processed string to output (String).
 	 */
 	private String processWeatherResponse(String userResponse) {
 		String[] locations = ner.findLocation(userResponse);
-		if (locations.length > 0) {
-			if (!locations[0].equalsIgnoreCase(weatherInfo.getLocation())) {
-                this.getWeatherWeek(locations[0]);
-			}
+		if (locations.length > 0 && 
+			!locations[0].equalsIgnoreCase(weatherInfo.getLocation())
+		) {
+            this.getWeatherWeek(locations[0]);
 		}
 
-        JSONObject dayValue = new JSONObject();
+        JSONObject dayValue;
 		String day = this.getDayInUserPrompt(userResponse);
         if (day.equals("None")) {
-			day = DateTime.getCurrentDay();
-			dayValue = weatherInfo.getWeatherInfoDay(day);
-		} else {
-            dayValue = weatherInfo.getWeatherInfoDay(day);
-        }	
+			day = DateTime.getCurrentDay();	
+		} 	
+		dayValue = weatherInfo.getWeatherInfoDay(day);
 		return this.formatWeatherResponse(
             weatherInfo.getLocation(), day, dayValue);
 	}
@@ -190,9 +194,9 @@ public class SpeechProcess {
 	 * This method process the time response to detect if the user 
 	 * specified the location to parse the time. Otherwise, by default it
 	 * parses the time in Calgary.
-	 * @param userResponse The response from the user to process.
+	 * @param userResponse The response from the user to process (String).
 	 * @return The processed string containing the time information for a
-	 * 		   particular city.
+	 * 		   particular city (String).
 	 */
 	private String processTimeResponse(String userResponse) {
 		String[] locations = ner.findLocation(userResponse);
@@ -209,26 +213,24 @@ public class SpeechProcess {
 	}
 
 	/**
-	 * This method processes the date response which returns the current
-	 * date. 
-	 * @param userResponse The user response to process.
+	 * This method processes the date response which returns the current date. 
 	 * @return The processed response containing the current date (String).
 	 */
-	private String processDateResponse(String userResponse) {
+	private String processDateResponse() {
 		return "%s " + DateTime.getCurrentDate();
 	}	
 
 	/**
 	 * This method processes the current events/news response to return
 	 * the top headlines in the US or by specific category. 
-	 * @param userResponse The user response to process.
+	 * @param userResponse The user response to process (String).
 	 * @return The processed response containing the fetched current evernts
-	 * 		   information.
+	 * 		   information (String).
 	 */
 	private String processNewsResponse(String userResponse) {
 		String[] words = userResponse.split(" ");
-		String[] summary = new String[3];
-		Stack<Integer> nouns = this.collectNouns(userResponse);
+		String[] summary;
+		Deque<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
 			summary = newsAPI.getNewsByTopic(topic);
@@ -249,15 +251,13 @@ public class SpeechProcess {
 	/**
 	 * This method searches for wikipedia for the high value term or topic
 	 * detected in the user's response.
-	 * @param userResponse The user response to process.
-	 * @param oswelResponse The random generated response returned by the 
-	 * 						NLP model
-	 * @return The wikipedia information based on the topic specified. 
+	 * @param userResponse The user response to process (String).
+	 * @return The wikipedia information based on the topic specified (String). 
 	 */
 	private String processWikipediaResponse(String userResponse) {		
 		String[] words = userResponse.split(" ");
 		String description = "";
-		Stack<Integer> nouns = this.collectNouns(userResponse);
+		Deque<Integer> nouns = this.collectNouns(userResponse);
 		if (nouns.size() >= 2) {
 			String topic = words[nouns.pop()];
 			description = jwiki.getData(topic);
@@ -269,9 +269,9 @@ public class SpeechProcess {
 	 * This method processes the response to get the category for which
 	 * the user response belongs and attempts to output the appropriate 
 	 * response by gathering information from various API.
-	 * @param userResponse The user response to process.
+	 * @param userResponse The user response to process (String).
 	 * @return The processed response as an attempt to answer/satisfy the
-	 * user response. 
+	 * user response (String[]). 
 	 */
 	public String[] processResponse(String userResponse) {
 		JSONObject oswelResponse = chatKeras.getRandomResponse(userResponse);
@@ -289,7 +289,7 @@ public class SpeechProcess {
 								oswelMessage);
 		} else if (category.equalsIgnoreCase("date")) {
 			oswelMessage = String.format(
-								this.processDateResponse(userResponse), 
+								this.processDateResponse(), 
 								oswelMessage);
 		} else if (category.equalsIgnoreCase("events")) {
 			oswelMessage = String.format(
@@ -297,14 +297,12 @@ public class SpeechProcess {
 								oswelMessage);
 		} else if (category.equalsIgnoreCase("confirmation")) {
 			String wikiMessage = this.processWikipediaResponse(userResponse);
-			if (wikiMessage != "") {
+			if (!wikiMessage.equals("")) {
 				category = "general";
 				oswelMessage = wikiMessage;
 				// TODO: ChatGPT response needs to be implemented here.
 			}
-		} else {
-			;
-		}
+		} 
 		finalResponse[0] = category;
 		finalResponse[1] = oswelMessage;
 		return finalResponse;
