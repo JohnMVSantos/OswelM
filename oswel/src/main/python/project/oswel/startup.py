@@ -166,9 +166,11 @@ class StartApp:
         """
         This method runs the Java application using subprocess.
         """
-        webbrowser.open_new_tab(SERVER_ACCESS)
-        with subprocess.Popen(
-            ['java', '-jar', JAR_PATH]) as p: 
+        with subprocess.Popen(['java', '-jar', JAR_PATH]) as p:
+            time.sleep(6)
+            webbrowser.open_new_tab(SERVER_ACCESS)
+            time.sleep(20)
+            webbrowser.open(SERVER_ACCESS+"/index", new=0)
             p.wait()
 
     def start_process(self, voice: str, file: str):
@@ -189,11 +191,7 @@ class StartApp:
         try:
             while True:
                 user_input = self.recognize()
-                if user_input is None:
-                    message = "Sorry, I was not able to understand that."
-                    loop.run_until_complete(self.amain(message, voice, file))
-                    self.speak(file)
-                else:
+                if user_input is not None:
                     ints = self.interpret(user_input)
                     message = self.process_intent(ints)
                     if isinstance(message, str):

@@ -11,8 +11,9 @@ import org.springframework.ui.Model;
 
 @Controller
 public class AvatarController {
-    @GetMapping
-    String getIndex(Model model){
+
+    @GetMapping("/index")
+    public String getIndex(Model model){
         model.addAttribute("speakControl", true);
         return "index";
     }

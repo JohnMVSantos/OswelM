@@ -170,6 +170,22 @@ To run the JAR file in a Raspberry PI 4 requires a linux operating system on an 
 mvn clean -Djavacpp.platform=linux-arm64 -f "path to the pom.xml" compile assembly:single
 ```
 
+Note: If the following error occurs: 
+
+```shell
+The JAVA_HOME environment variable is not defined correctly,
+this environment variable is needed to run this program.
+```
+
+The environment variable paths need to be set correctly.
+
+```shell
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME
+PATH=${JAVA_HOME}/bin:${PATH}
+export PATH
+```
+
 Depending on the system architecture, the JAR file can be run using the command below:
 ```shell
 java -jar oswel-mark-one-1.0-jar-with-dependencies.jar   
@@ -184,7 +200,7 @@ detection model for face tracking.
 
 To run the main application, run the following shell commands.
  ```shell
-    cd oswel-mark-one
+    cd oswel
     python -m src.main.python.project.oswel
 ```
 

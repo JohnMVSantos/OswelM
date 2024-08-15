@@ -8,10 +8,10 @@
     <version>3.3.2</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>project.oswel</groupId>
-  <artifactId>oswel-mark-one</artifactId>
+  <groupId>project</groupId>
+  <artifactId>oswel</artifactId>
   <version>1.0</version>
-  <name>oswel-mark-one</name>
+  <name>oswel</name>
   <url>https://github.com/JohnMVSantos/OswelM</url>
   <packaging>jar</packaging>
 
@@ -61,7 +61,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		<dependency>
+    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -152,7 +152,6 @@
       </resource>
     </resources>
     <plugins>
- 
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <groupId>org.graalvm.buildtools</groupId>
@@ -215,7 +214,7 @@
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
-              <appendAssemblyId>false</appendAssemblyId>
+              <appendAssemblyId>true</appendAssemblyId>
           </configuration>
         </plugin>
         <plugin>
@@ -235,7 +234,6 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
- 
     </plugins>
   </build>
 </project>
