@@ -1,10 +1,14 @@
 OSWELL Mark One
 ##################
-1) Proper redirect from welcome page to the avatar page. 
-2) Button to go from welcome page to index page and vice versa.
-3) Control speak with spring boot.
 4) Exit the application for downstreams and allow the python app to start again upon user's request.  (JUST NEED TO TEST)
-5) Integrate software to Raspberry PI. LCD for the raspberry pi.
+6) Integrate software to Raspberry PI. LCD for the raspberry pi.
+
+OSWELL Mark 1.1
+#################
+1) Control speak with spring boot. Maybe post request?
+2) Proper redirect from welcome page to the avatar page. 
+3) Pass path to the license file and other files?
+4) Weather API, take weather from current day to next 7 days.
 
 OSWELL Mark Two
 ##################
@@ -25,6 +29,7 @@ Also Django to run the application and allow a login page and settings page for 
     * Alternative to free ChatGPT..Explore PALM API. 
 7) Clean up the code in Java. Check out this news implementation as inpiration to better implement current news. https://github.com/KwabenBerko/News-API-Java
 8) Havent been testing :( Needs to be done ASAP! 
+9) Three.js with 3D view of the page.
 
 Hardware and Face Detection
 ---------------------------

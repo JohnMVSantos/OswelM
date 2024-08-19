@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" dir="ltr">
+<html xmlns:th="https://www.thymeleaf.org" dir="ltr" lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -11,6 +11,12 @@
     <body>
         <div class="main_box">
             <canvas id="myCanvas"></canvas>
+
+            <div class="lock_screen">
+                <a href="http://localhost:8080/">
+                    <i class="fa-solid fa-lock"></i></a>
+            </div>
+
             <label class="switch">
                 <input type="checkbox" onchange="toggleCamera(this)" checked>
                 <span class="slider round"><br><br>Toggle Camera</span>
@@ -156,7 +162,7 @@
         <script type="text/javascript" src="/js/physics.js"></script>
         <script type="text/javascript" src="/js/reference.js"></script>
 
-        <script>
+        <script th:inline="javascript">
             let DEBUG=false;
 
             const skinTone="rgba(219,221,225,0.9)";
@@ -165,7 +171,11 @@
 
             const canvas=document.getElementById("myCanvas");
             const ctx=canvas.getContext("2d");
-            initCanvas(400,480);   
+            initCanvas(400,480);  
+            
+            /*<![CDATA[*/
+                var speakControl = /*[[${speakControl}]]*/ 0;
+            /*]]>*/
  
             animate();
 
@@ -197,6 +207,7 @@
                 // }
 
                 avatar.draw(ctx);
+                avatar.head.mouth.speak=speakControl;
                 requestAnimationFrame(animate);
             }
             

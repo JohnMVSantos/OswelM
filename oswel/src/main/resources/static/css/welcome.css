@@ -12,17 +12,30 @@
     position: relative;
     width: 100%;
     background: #000;
+}
+
+.main i{
+    padding: 10px;
+    color: #fff;
+    opacity: 0.6;
+    font-size: 20px;
+    transition: all 0.2s linear;
+}
+
+.main i:hover{
+    opacity: 1;
+}
+
+.main .image-container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.main .image-container{
     padding: 10px;
 }
 
 .main .image-container .image{
+    padding-top: 10%;
     width: 100%;
     display: flex;
     align-items: center;

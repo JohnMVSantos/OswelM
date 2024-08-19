@@ -24,12 +24,11 @@ import java.util.logging.Logger;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
 import org.json.JSONTokener;
+import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import java.util.Random;
-
 
 /**
  * This class performs initialization process prior to starting the main

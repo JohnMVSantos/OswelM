@@ -38,6 +38,7 @@ public class SpeechProcess {
     private NewsAPI newsAPI;
     private JWiki jwiki;
     private NER ner;
+	private String cityLocation;
 
 	/**
 	 * Retrieves the chatKeras object.
@@ -72,16 +73,19 @@ public class SpeechProcess {
 
 		this.weatherInfo = new WeatherAPI(
 			oswelLicense.getString("visualcrossing"),
-			endpoints.getString("weather"));
-        this.getWeatherWeek(cityLocation);
+			endpoints.getString("weather")
+		);
+        this.cityLocation = cityLocation;
 
 		this.ner = new NER(
 			resources.getString("locationNER"), 
-			resources.getString("posNER"));
+			resources.getString("posNER")
+		);
 
 		this.newsAPI = new NewsAPI(
 			oswelLicense.getString("newsapi"),
-			endpoints.getString("currentEvents"));
+			endpoints.getString("currentEvents")
+		);
 		
 		this.jwiki = new JWiki(endpoints.getString("wikipedia"));	
     }
@@ -129,7 +133,7 @@ public class SpeechProcess {
      */
     private void getWeatherWeek(String cityLocation) {
         String[] weekStartEndDates = DateTime.getStartEndWeekDates();
-        weatherInfo.timelineRequestHttpClient(
+        this.weatherInfo.timelineRequestHttpClient(
             weekStartEndDates[0], weekStartEndDates[1], 
             cityLocation
         );
@@ -173,9 +177,13 @@ public class SpeechProcess {
 	 * @return The processed string to output (String).
 	 */
 	private String processWeatherResponse(String userResponse) {
+		if (this.weatherInfo.getWeatherInformation() == null) {
+			this.getWeatherWeek(this.cityLocation);
+		}
+
 		String[] locations = ner.findLocation(userResponse);
 		if (locations.length > 0 && 
-			!locations[0].equalsIgnoreCase(weatherInfo.getLocation())
+			!locations[0].equalsIgnoreCase(this.weatherInfo.getLocation())
 		) {
             this.getWeatherWeek(locations[0]);
 		}
@@ -184,10 +192,11 @@ public class SpeechProcess {
 		String day = this.getDayInUserPrompt(userResponse);
         if (day.equals("None")) {
 			day = DateTime.getCurrentDay();	
-		} 	
-		dayValue = weatherInfo.getWeatherInfoDay(day);
+		} 
+
+		dayValue = this.weatherInfo.getWeatherInfoDay(day);
 		return this.formatWeatherResponse(
-            weatherInfo.getLocation(), day, dayValue);
+            this.weatherInfo.getLocation(), day, dayValue);
 	}
 
 	/**

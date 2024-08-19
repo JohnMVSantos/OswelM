@@ -202,7 +202,23 @@ option {
 }
 /*******************************************/  
 
-/* Toggle Camera Switch*/
+/* Lock Screen Button */
+.lock_screen i{
+    position: absolute;
+    top: 2%;
+    left: 81%;
+    display: inline-block;
+    color: #fff;
+    opacity: 0.6;
+    font-size: 20px;
+    transition: all 0.2s linear;
+}
+
+.lock_screen i:hover{
+    opacity: 1;
+}
+
+/* Toggle Camera Switch */
 .switch {
     position: absolute;
     top: 1%;

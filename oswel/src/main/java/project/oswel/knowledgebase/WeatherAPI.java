@@ -76,6 +76,15 @@ public class WeatherAPI {
     }
 
     /**
+     * Return the weatherInformation object which contains JSONObjects of each
+     * day in the weak. 
+     * @return The container of the weather information in each day of the week (JSONArray).
+     */
+    public JSONArray getWeatherInformation() {
+        return this.weatherInformation;
+    }
+
+    /**
      * This method parses the JSON timeline to parse the individual contents
      * of the weather information.
      * @param rawResult This is the unparsed weather result (String). 
